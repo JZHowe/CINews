@@ -1,5 +1,6 @@
 package com.jju.yuxin.cinews.activity;
 
+
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,10 +64,13 @@ public class LoadingActivity extends BaseActivity {
                             //设置信息提示界面可见
                             show_message.setVisibility(View.VISIBLE);
                             //属性动画
-                            ObjectAnimator animator = ObjectAnimator.ofFloat(show_message, "translationY", -150, 0);
-                            animator.setDuration(500);
-                            animator.setInterpolator(new BounceInterpolator());
-                            animator.start();
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+                                ObjectAnimator animator = ObjectAnimator.ofFloat(show_message, "translationY", -150, 0);
+                                animator.setDuration(500);
+                                animator.setInterpolator(new BounceInterpolator());
+                                animator.start();
+                            }
+
                             //确定按钮
                             Button bt_left = (Button) findViewById(R.id.bt_left);
                             bt_left.setOnClickListener(new View.OnClickListener() {
