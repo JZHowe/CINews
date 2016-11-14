@@ -6,9 +6,10 @@ import android.view.Window;
 
 import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
+
 /**
- *=============================================================================
- *
+ * =============================================================================
+ * <p>
  * Copyright (c) 2016  yuxin rights reserved.
  * ClassName BaseActivity
  * Created by yuxin.
@@ -16,8 +17,8 @@ import com.jju.yuxin.cinews.utils.MyLogger;
  * Describe : baseactivity
  * History:
  * Version   1.0.
- *
- *==============================================================================
+ * 添加一行注释
+ * ==============================================================================
  */
 
 public class BaseActivity extends Activity {
@@ -37,12 +38,11 @@ public class BaseActivity extends Activity {
         llog = MyLogger.lLog();
         zlog = MyLogger.zLog();
         //打印输出当前所在activity
-        hlog.i("--------------"+getClass().getSimpleName()+"--------------");
+        hlog.i("--------------" + getClass().getSimpleName() + "--------------");
         //将当前activity添加置活动管理器
         ActivityCollector.addActivity(this);
 
     }
-
 
 
     @Override
