@@ -22,7 +22,7 @@ import java.util.List;
  * Describe :新闻Activity
  * History:
  * Version   1.0.
- *
+ *hhaha
  *==============================================================================
  */
 

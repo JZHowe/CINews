@@ -17,8 +17,6 @@ import com.jju.yuxin.cinews.utils.MyLogger;
  * Describe : baseactivity
  * History:
  * Version   1.0.
- * 添加一行注释
- * chao
  * ==============================================================================
  */
 
