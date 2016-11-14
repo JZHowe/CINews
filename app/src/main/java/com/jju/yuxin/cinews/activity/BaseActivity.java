@@ -17,18 +17,15 @@ import com.jju.yuxin.cinews.utils.MyLogger;
  * Describe : baseactivity
  * History:
  * Version   1.0.
- * 添加一行注释
- * chao
- * todo
  * ==============================================================================
  */
 
 public class BaseActivity extends Activity {
 
-    private MyLogger hlog;
-    private MyLogger jlog;
-    private MyLogger llog;
-    private MyLogger zlog;
+    public MyLogger hlog;
+    public MyLogger jlog;
+    public MyLogger llog;
+    public MyLogger zlog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

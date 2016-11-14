@@ -4,6 +4,10 @@
     <string name="tupian">图片</string>
     <string name="souchangjia">收藏夹</string>
     <string name="shipin">视频</string>
+    <string name="queding">确定</string>
+    <string name="quxiao">取消</string>
+    <string name="no_network">当前无可用网络</string>
+    <string name="goto_net_setting">是否跳转到网络设置界面?</string>
     <array name="new_title_list">
         <item>产业新闻</item>
         <item>动漫游戏</item>

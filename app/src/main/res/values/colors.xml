@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="rg_text_color">#aaff0000</color>
     <color name="tran">#00000000</color>
+    <color name="red_color">#FFFD0001</color>
+    <color name="lighter_gray">#bbb</color>
+    <color name="block_red">#ff640001</color>
 </resources>
