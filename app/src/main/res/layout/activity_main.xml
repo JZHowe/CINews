@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost
+    android:id="@android:id/tabhost"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#33000000"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0" />
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.0"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <RadioGroup
+                android:id="@+id/main_tab_group"
+                android:paddingTop="@dimen/dimen_s"
+                android:paddingBottom="@dimen/dimen_s"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/main_tab_news"
+                    style="@style/MMTabButton"
+                    android:checked="true"
+                    android:layout_weight="1.0"
+                    android:drawableTop="@drawable/bt_news_selector"
+                    android:text="@string/xinwen" />
+
+                <RadioButton
+                    android:id="@+id/main_tab_picture"
+                    style="@style/MMTabButton"
+                    android:layout_weight="1.0"
+                    android:drawableTop="@drawable/bt_picture_selector"
+                    android:text="@string/tupian" />
+                <RadioButton
+                    android:id="@+id/main_tab_vedio"
+                    style="@style/MMTabButton"
+                    android:layout_weight="1.0"
+                    android:drawableTop="@drawable/bt_video_selector"
+                    android:text="@string/shipin" />
+
+                <RadioButton
+                    android:id="@+id/main_tab_favorite"
+                    style="@style/MMTabButton"
+                    android:layout_weight="1.0"
+                    android:drawableTop="@drawable/bt_shoucanjia_selector"
+                    android:text="@string/souchangjia" />
+            </RadioGroup>
+        </FrameLayout>
+    </LinearLayout>
+</TabHost>

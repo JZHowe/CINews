@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_news"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jju.yuxin.cinews.activity.NewsActivity">
+
+    <include layout="@layout/top_bar"/>
+
+    <com.jju.yuxin.cinews.views.OuterViewPager
+        android:id="@+id/vp_new_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pt_new_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            >
+
+        </android.support.v4.view.PagerTabStrip>
+
+    </com.jju.yuxin.cinews.views.OuterViewPager>
+
+</LinearLayout>

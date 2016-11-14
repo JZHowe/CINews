@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <com.jju.yuxin.cinews.views.InnerViewPager
+        android:id="@+id/new_inner_vp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vp_title"
+        android:background="#0f0">
+    </com.jju.yuxin.cinews.views.InnerViewPager>
+
+        <TextView
+            android:id="@+id/tv_vp_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_bar_bt"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="@dimen/dimen_s"
+            android:layout_marginRight="@dimen/dimen_s"
+            android:background="#FFD30901"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#0ff">
+    </ListView>
+</LinearLayout>

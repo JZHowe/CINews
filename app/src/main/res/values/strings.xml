@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">CINews</string>
+    <string name="xinwen">新闻</string>
+    <string name="tupian">图片</string>
+    <string name="souchangjia">收藏夹</string>
+    <string name="shipin">视频</string>
+    <array name="new_title_list">
+        <item>产业新闻</item>
+        <item>动漫游戏</item>
+        <item>工艺美术</item>
+        <item>休闲旅游</item>
+        <item>园区基地</item>
+        <item>演艺传媒</item>
+        <item>文化金融</item>
+        <item>协会动态</item>
+    </array>
+</resources>
