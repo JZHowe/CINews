@@ -53,8 +53,7 @@ public class NewsActivity extends BaseActivity {
 
         //将导航栏和ViewPager联动起来
         tl_new_content.setupWithViewPager(vp_new_content);
-
-
+        
     }
 
     /**
