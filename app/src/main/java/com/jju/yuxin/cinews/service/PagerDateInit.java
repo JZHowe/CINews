@@ -1,10 +1,16 @@
 package com.jju.yuxin.cinews.service;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.bean.NewsBean;
+import com.jju.yuxin.cinews.utils.Ksoap2Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * =============================================================================
@@ -28,24 +34,20 @@ public class PagerDateInit {
      * @param viewtag
      * @return
      */
-    public static ArrayList<Integer> getInnerPagerdata(Context context, String viewtag) {
+    static List<NewsBean> olist1=new ArrayList<>();
+    public static void getInnerPagerdata(Context context, String viewtag,Handler handler) {
 
-        ArrayList<Integer> picList = new ArrayList<Integer>();
 
         //获取ViewPager对应的导航栏的文字信息
         String[] stringArray = context.getResources().getStringArray(R.array.new_title_list);
 
         //加载产业新闻的viewpager
         if (stringArray[0].equals(viewtag)) {
-            //数据的初始化
-            picList.add(R.drawable.ab);
-            picList.add(R.drawable.ae);
-            picList.add(R.drawable.ah);
-            picList.add(R.drawable.bi);
-
+            String name = "getguodongartile";
+            Map<String, Object> oMap = new HashMap<>();
+            Ksoap2Util.doBackgroud(handler, R.id.text1, name, oMap);
         }
 
-        return picList;
 
 
     }
@@ -119,7 +121,7 @@ public class PagerDateInit {
 
             return stringArray;
 
-        }else{
+        } else {
             return stringArray;
         }
     }

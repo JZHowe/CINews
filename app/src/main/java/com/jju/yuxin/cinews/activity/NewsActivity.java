@@ -74,7 +74,7 @@ public class NewsActivity extends BaseActivity {
             //为导航栏添加内容
             tl_new_content.addTab(tl_new_content.newTab().setText(new_title[i]));
 
-            //获取当前item对应的顶栏
+            //获取当前item对应的顶栏（InnerViewPager）
             LinearLayout ll_top = (LinearLayout) view1.findViewById(R.id.ll_top);
 
             //设置所有视图的标记为不可见,.标记的是里层viewpages的状态

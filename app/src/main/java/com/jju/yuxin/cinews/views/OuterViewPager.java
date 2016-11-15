@@ -3,7 +3,6 @@ package com.jju.yuxin.cinews.views;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 
 /**
  * =============================================================================
@@ -20,12 +19,10 @@ public class OuterViewPager extends ViewPager {
 
     public OuterViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // TODO Auto-generated constructor stub
     }
 
     public OuterViewPager(Context context) {
         super(context);
-        // TODO Auto-generated constructor stub
     }
 
     /**

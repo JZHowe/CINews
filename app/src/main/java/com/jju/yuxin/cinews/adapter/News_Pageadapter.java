@@ -1,18 +1,23 @@
 package com.jju.yuxin.cinews.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.bean.NewsBean;
+import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.service.PagerDateInit;
+import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.InnerViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,10 +37,10 @@ public class News_Pageadapter extends PagerAdapter {
     private List<View> viewList;
     private String[] new_title;
     private LayoutInflater inflater;
+    private TextView textView;
 
     /**
-     *
-     * viewList是需要加载的item集合
+     * viewList是需要加载的item集合（OuterViewPager的集合）
      * 传入的new_title是item对应的标题
      *
      * @param context
@@ -67,9 +72,14 @@ public class News_Pageadapter extends PagerAdapter {
 
         //获取当前item是否隐藏的视图
         LinearLayout ll_top = (LinearLayout) viewList.get(position).findViewById(R.id.ll_top);
+        if (textView == null) {
+            textView = (TextView) viewList.get(position).findViewById(R.id.tv_vp_content);
+
+        }
 
         //获取当前item的listview
         ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
+
 
         //判断顶栏的viewpages是否是需要显示
         if (ll_top.getTag().equals(View.GONE)) {
@@ -82,18 +92,32 @@ public class News_Pageadapter extends PagerAdapter {
             ll_top.setVisibility(View.VISIBLE);
 
             //加载里层数viewpages
-            InnerViewPager new_inner_vp = (InnerViewPager) viewList.get(position).findViewById(R.id.new_inner_vp);
+            final InnerViewPager new_inner_vp = (InnerViewPager) viewList.get(position).findViewById(R.id.new_inner_vp);
 
-            //根据view当前位置,解析对应的viewpager
-            ArrayList<Integer> innerPagerdata = PagerDateInit.getInnerPagerdata(context, (String) viewList.get(position).getTag());
 
-            //viewList.get(position).getTag()
-            new_inner_vp.setAdapter(new InnerPagerAdapter(context, innerPagerdata));
+            Handler handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    switch (msg.what) {
+                        case R.id.text1:
+                            String info = (String) msg.obj;
+                            MyLogger.lLog().e(info);
+                            List<NewsBean> olist1 = JsonUtil.parseJSON(info);
+                            //viewList.get(position).getTag()
+                            new_inner_vp.setAdapter(new InnerPagerAdapter(context, olist1, textView));
+                            break;
+                    }
+                }
+            };
+
+            //根据view当前位置,解析对应的viewpager 图片
+            PagerDateInit.getInnerPagerdata(context, (String) viewList.get(position).getTag(), handler);
 
         }
 
+
         //根据view当前位置,对应ListView的内容
-        String[] new_contents= PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag());
+        String[] new_contents = PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag());
 
         //listview的数据初始化
         lv_content.setAdapter(new Lv_content_Adapter(context, new_contents));

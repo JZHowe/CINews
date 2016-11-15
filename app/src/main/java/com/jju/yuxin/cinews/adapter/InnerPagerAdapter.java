@@ -1,12 +1,18 @@
 package com.jju.yuxin.cinews.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.bean.NewsBean;
+import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *=============================================================================
@@ -24,22 +30,30 @@ import android.widget.ImageView;
 
 public class InnerPagerAdapter extends PagerAdapter {
 	private Context context;
-	private ArrayList<Integer> picList;
+	private List<NewsBean> picList=new ArrayList<>();
+	private TextView textView;
 
 	/**
 	 * 构造函数picList传入的是图片的resid,可以更改为包含了bitmap或者resid其中一个的对象
 	 * @param context
 	 * @param picList
      */
-	public InnerPagerAdapter(Context context, ArrayList<Integer> picList) {
+	public InnerPagerAdapter(Context context, List<NewsBean> picList,TextView textView) {
 		this.context = context;
 		this.picList = picList;
+		this.textView = textView;
 	}
 
 	//获取总数
 	@Override
 	public int getCount() {
 		return picList.size();
+	}
+
+	@Override
+	public void setPrimaryItem(ViewGroup container, int position, Object object) {
+		super.setPrimaryItem(container, position, object);
+		textView.setText(picList.get(position).getName());
 	}
 
 	//当前对象的比较
@@ -53,10 +67,12 @@ public class InnerPagerAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup container, int position) {
 		// 实例化控件
 		ImageView imageView = new ImageView(context);
+
+
 		//设置图片拉伸填充整个控件
 		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-		//设置图片资源
-		imageView.setImageResource(picList.get(position));
+		//使用图片三级缓存
+		ImageCacheManager.loadImage(context, picList.get(position).getUrl(), imageView, R.drawable.defaut_pic, R.drawable.fail_pic,0,0, ImageView.ScaleType.FIT_XY);
 		//将控件放置到容器中
 		container.addView(imageView);
 		return imageView;
