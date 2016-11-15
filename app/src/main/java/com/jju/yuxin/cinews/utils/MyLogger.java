@@ -21,7 +21,7 @@ public class MyLogger
 {
     private final static boolean                logFlag         = true;  //调试模式 true  上线模式 false
 
-    public final static String                  tag             = "WeiBo";//日志打印  tag
+    public final static String                  tag             = "CINews";//日志打印  tag
     private final static int                    logLevel        = Log.VERBOSE; //日志级别
     //集合
     private static Hashtable<String, MyLogger>    sLoggerTable    = new Hashtable<String, MyLogger>();

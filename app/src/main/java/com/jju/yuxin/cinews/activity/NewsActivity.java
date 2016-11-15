@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.adapter.News_Pageadapter;
@@ -30,8 +29,8 @@ import java.util.List;
 
 public class NewsActivity extends BaseActivity {
 
-    private String[] new_title;
-    private OuterViewPager vp_new_content;
+    private String[] new_title;             //导航栏文字
+    private OuterViewPager vp_new_content;  //外层的ViewPager
     private List<View> viewList;
     private TabLayout tl_new_content;
 

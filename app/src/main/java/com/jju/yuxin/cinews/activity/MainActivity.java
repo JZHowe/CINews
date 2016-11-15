@@ -3,12 +3,11 @@ package com.jju.yuxin.cinews.activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
 
 import com.jju.yuxin.cinews.R;
+
 /**
  *=============================================================================
  *
