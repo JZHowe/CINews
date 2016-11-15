@@ -9,5 +9,11 @@
     tools:context="com.jju.yuxin.cinews.activity.VedioActivity">
 
     <include layout="@layout/top_bar"/>
+    <ListView
+        android:id="@+id/lv_vedio_news"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
 
 </LinearLayout>

@@ -4,8 +4,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.adapter.VedioList_Adapter;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 
 import org.jsoup.Connection;
@@ -33,10 +35,14 @@ import java.util.List;
  * ==============================================================================
  */
 public class VedioActivity extends BaseActivity {
-
+    //视频新闻爬取地址
     private static final String path = "http://www.jxntv.cn/";
+    //加载成功
     private static final int SUCCESS_LOAD = 0;
+    //加载失败
     private static final int FAIL_LOAD = 1;
+
+    private ListView lv_vedio_news;
 
     Handler mhandler = new Handler() {
         @Override
@@ -46,8 +52,8 @@ public class VedioActivity extends BaseActivity {
                 //加载成功
                 case SUCCESS_LOAD:
                     List<VedioInfoBean> vedioinfos = (List<VedioInfoBean>) msg.obj;
-                    hlog.e(vedioinfos.toString());
-
+                    //将内容填充到ListView
+                    lv_vedio_news.setAdapter(new VedioList_Adapter(VedioActivity.this,vedioinfos,volleyUtils));
                     break;
                 //加载失败
                 case FAIL_LOAD:
@@ -61,10 +67,12 @@ public class VedioActivity extends BaseActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vedio);
+        lv_vedio_news = (ListView) findViewById(R.id.lv_vedio_news);
 
     }
 
@@ -101,6 +109,10 @@ public class VedioActivity extends BaseActivity {
                         Element info_ele = element.select("div.info").first();
                         String video_src = info_ele.getElementsByTag("a").first().attr("href");
                         String news_info = info_ele.getElementsByTag("a").text();
+                        if (news_info.contains("]")){
+                            String[] split = news_info.split("]");
+                            news_info=split[1];
+                        }
                         String news_date = info_ele.select("div.date").first().text();
                         vedioinfos.add(new VedioInfoBean(news_info, img_src, video_src, news_date));
                     }
