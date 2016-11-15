@@ -54,4 +54,6 @@ public class Lv_content_Adapter extends BaseAdapter {
          convertView = inflater.inflate(R.layout.lv_new_item,null);
         return convertView;
     }
+
+
 }

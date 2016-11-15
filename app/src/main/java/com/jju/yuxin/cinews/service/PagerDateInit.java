@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class PagerDateInit {
 
     /**
+     * 给里层的viewpager设置图片资源
      * 根据传入的viewtag,判断需要加载那个模块的viewpager信息
      *
      * @param context
@@ -76,34 +77,46 @@ public class PagerDateInit {
 
         //加载产业新闻的ListViewn内容
         if (stringArray[0].equals(viewtag)) {
+
+
             return stringArray;
 
             //加载动漫游戏的ListViewn内容
         } else if (stringArray[1].equals(viewtag)) {
+
+
             return stringArray;
 
             //加载工艺美术的ListViewn内容
         } else if (stringArray[2].equals(viewtag)) {
+
+
             return stringArray;
 
             //加载休闲旅游的ListViewn内容
         } else if (stringArray[3].equals(viewtag)) {
+
+
             return stringArray;
 
             //加载园区基地的ListViewn内容
         } else if (stringArray[4].equals(viewtag)) {
+
             return stringArray;
 
             //加载演艺传媒的ListViewn内容
         } else if (stringArray[5].equals(viewtag)) {
+
             return stringArray;
 
             //加载文化金融的ListViewn内容
         } else if (stringArray[6].equals(viewtag)) {
+
             return stringArray;
 
             //加载协会动态的ListViewn内容
         } else if (stringArray[7].equals(viewtag)) {
+
             return stringArray;
 
         }else{

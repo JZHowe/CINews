@@ -8,4 +8,6 @@
     <color name="red_color">#FFFD0001</color>
     <color name="lighter_gray">#bbb</color>
     <color name="block_red">#ff640001</color>
+    <color name="tab_text_select_color">#fd4848</color>
+    <color name="tab_text_color">#626262</color>
 </resources>
