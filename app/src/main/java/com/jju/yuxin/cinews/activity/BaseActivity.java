@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
+import com.jju.yuxin.cinews.volleyutils.VolleyUtils;
 
 /**
  * =============================================================================
@@ -29,6 +30,7 @@ public class BaseActivity extends Activity {
     public MyLogger jlog;
     public MyLogger llog;
     public MyLogger zlog;
+    public VolleyUtils volleyUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,9 @@ public class BaseActivity extends Activity {
         //将当前activity添加置活动管理器
         ActivityCollector.addActivity(this);
 
+        //volley工具类的封装,在构造函数中已经对RequestQueue进行了初始化
+        volleyUtils = new VolleyUtils(this);
+
     }
 
 
@@ -55,18 +60,18 @@ public class BaseActivity extends Activity {
     }
 
     //记录用户首次点击返回键的时间
-    private long firstTime=0;
+    private long firstTime = 0;
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode){
+        switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                long secondTime=System.currentTimeMillis();
-                if(secondTime-firstTime>2000){
-                    Toast.makeText(this,"再按一次退出程序",Toast.LENGTH_SHORT).show();
-                    firstTime=secondTime;
+                long secondTime = System.currentTimeMillis();
+                if (secondTime - firstTime > 2000) {
+                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                    firstTime = secondTime;
                     return true;
-                }else{
+                } else {
                     ActivityCollector.removeActivity(this);
                 }
                 break;
