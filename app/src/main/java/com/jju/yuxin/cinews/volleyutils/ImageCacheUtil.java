@@ -1,20 +1,5 @@
 package com.jju.yuxin.cinews.volleyutils;
 
-/**
- * =============================================================================
- * Copyright (c) 2016 yuxin All rights reserved.
- * Packname com.jju.yuxin.cinews.utils
- * Created by yuxin.
- * Created time 2016/11/15 0015 下午 4:12.
- * Version   1.0;
- * Describe :
- * History:
- * ==============================================================================
- */
-
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -24,17 +9,29 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.jju.yuxin.cinews.utils.MD5Utils;
 import com.jju.yuxin.cinews.utils.MyLogger;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+
 
 /**
- * 图片缓存帮助类
- * 包含内存缓存LruCache和磁盘缓存DiskLruCache
- * @author Javen
+ *=============================================================================
+ *
+ * Copyright (c) 2016  yuxin rights reserved.
+ * ClassName ImageCacheUtil
+ * Created by javen.
+ * Created time 15-11-2016 16:57.
+ * Describe : * 图片缓存帮助类
+ *              包含内存缓存LruCache和磁盘缓存DiskLruCache
+ * History:
+ * Version   1.0.
+ *
+ *==============================================================================
  */
 public class ImageCacheUtil implements ImageCache {
 

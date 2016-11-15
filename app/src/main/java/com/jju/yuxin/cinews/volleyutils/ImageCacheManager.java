@@ -1,18 +1,5 @@
 package com.jju.yuxin.cinews.volleyutils;
 
-/**
- * =============================================================================
- * Copyright (c) 2016 yuxin All rights reserved.
- * Packname com.jju.yuxin.cinews.utils
- * Created by yuxin.
- * Created time 2016/11/15 0015 下午 4:10.
- * Version   1.0;
- * Describe :
- * History:
- * ==============================================================================
- */
-
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,9 +10,17 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 
 
 /**
- * 图片缓存管理类 获取ImageLoader对象
- * @author Javen
+ *=============================================================================
  *
+ * Copyright (c) 2016  yuxin rights reserved.
+ * ClassName ImageCacheManager
+ * Created by javen.
+ * Created time 15-11-2016 16:57.
+ * Describe : 图片缓存管理类 获取ImageLoader对象
+ * History:
+ * Version   1.0.
+ *
+ *==============================================================================
  */
 public class ImageCacheManager {
     private static String TAG = ImageCacheManager.class.getSimpleName();

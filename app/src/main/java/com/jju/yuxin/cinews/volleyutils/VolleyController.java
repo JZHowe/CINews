@@ -1,5 +1,15 @@
 package com.jju.yuxin.cinews.volleyutils;
 
+
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
+
+
 /**
  * =============================================================================
  * Copyright (c) 2016 yuxin All rights reserved.
@@ -11,14 +21,6 @@ package com.jju.yuxin.cinews.volleyutils;
  * History:
  * ==============================================================================
  */
-
-import android.content.Context;
-import android.text.TextUtils;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
 
 
 public class VolleyController {
