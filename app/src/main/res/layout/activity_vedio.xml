@@ -9,11 +9,19 @@
     tools:context="com.jju.yuxin.cinews.activity.VedioActivity">
 
     <include layout="@layout/top_bar"/>
-    <ListView
-        android:id="@+id/lv_vedio_news"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </ListView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lv_vedio_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+        <!--加载动画,id=pb_loading,需要注意的是应该和ListView在同一个RelativeLayout下-->
+        <include layout="@layout/activity_loading_pb"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -10,4 +10,5 @@
     <color name="block_red">#ff640001</color>
     <color name="tab_text_select_color">#fd4848</color>
     <color name="tab_text_color">#626262</color>
+    <color name="white">#f9f9f9</color>
 </resources>

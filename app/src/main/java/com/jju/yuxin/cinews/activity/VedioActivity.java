@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.jju.yuxin.cinews.R;
@@ -43,6 +45,8 @@ public class VedioActivity extends BaseActivity {
     private static final int FAIL_LOAD = 1;
 
     private ListView lv_vedio_news;
+    //加载动画
+    private LinearLayout pb_loading;
 
     Handler mhandler = new Handler() {
         @Override
@@ -63,16 +67,23 @@ public class VedioActivity extends BaseActivity {
                 default:
                     break;
             }
+            //不管是否加载成功,让加载动画消失
+            pb_loading.setVisibility(View.GONE);
 
         }
     };
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vedio);
+        //新闻列表
         lv_vedio_news = (ListView) findViewById(R.id.lv_vedio_news);
+        //加载动画
+        pb_loading = (LinearLayout) findViewById(R.id.pb_loading);
+        pb_loading.setVisibility(View.VISIBLE);
 
     }
 
@@ -132,6 +143,5 @@ public class VedioActivity extends BaseActivity {
                 }
             }
         }.start();
-
     }
 }
