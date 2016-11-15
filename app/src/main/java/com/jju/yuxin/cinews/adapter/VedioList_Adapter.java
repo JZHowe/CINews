@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
+import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
 import com.jju.yuxin.cinews.volleyutils.VolleyUtils;
 
 import org.w3c.dom.Text;
@@ -71,8 +72,11 @@ public class VedioList_Adapter extends BaseAdapter {
         }else{
             viewHolder= (ViewHolder) convertView.getTag();
         }
-        volleyUtils.doImageLoaderToImageView(vedioinfos.get(position).getImg_src(), viewHolder.iv_vedio_pic, R.drawable.defaut_pic, R.drawable.fail_pic);
+        //使用图片三级缓存
+        ImageCacheManager.loadImage(context, vedioinfos.get(position).getImg_src(), viewHolder.iv_vedio_pic, R.drawable.defaut_pic, R.drawable.fail_pic,0,0, ImageView.ScaleType.FIT_XY);
+        //设置新闻标题
         viewHolder.tv_vedio_title.setText(vedioinfos.get(position).getNews_info()+"");
+        //设置新闻时间
         viewHolder.tv_vedio_date.setText(vedioinfos.get(position).getNews_date()+"");
         return convertView;
     }

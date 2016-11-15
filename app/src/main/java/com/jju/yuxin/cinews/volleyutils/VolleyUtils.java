@@ -139,59 +139,59 @@ public class VolleyUtils {
         return this;
     }
 
-    /**
-     * 图片加载操作  <推荐的加载方式>
-     * 将图片加载到指定的imageview
-     * url 图片地址
-     * view 控件
-     * defaultImageResId 默认图片
-     * errorImageResId 加载错误的图片
-     * @param url
-     * @param view
-     * @param defaultImageResId
-     * @param errorImageResId
-     */
-    public void doImageLoaderToImageView(String url,ImageView view,int defaultImageResId,int errorImageResId){
-
-        final Map<String, Bitmap> omap = new HashMap<>();
-
-        ImageLoader imageLoader = new ImageLoader(queue,
-               new  BitmapCache());
-        ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(view,defaultImageResId,errorImageResId);
-        imageLoader.get(url, imageListener);
-
-    }
-
-    /**
-     * <请不要修改这段代码>
-     * 用于实现图片的三级缓存!
-     */
-
-    public class BitmapCache implements ImageLoader.ImageCache {
-
-        private LruCache<String, Bitmap> mCache;
-
-        public BitmapCache() {
-            int maxSize = (int) (Runtime.getRuntime().maxMemory()/1024/8);
-            mCache = new LruCache<String, Bitmap>(maxSize) {
-                @Override
-                protected int sizeOf(String key, Bitmap bitmap) {
-                    return bitmap.getRowBytes() * bitmap.getHeight();
-                }
-            };
-        }
-
-        @Override
-        public Bitmap getBitmap(String url) {
-            return mCache.get(url);
-        }
-
-        @Override
-        public void putBitmap(String url, Bitmap bitmap) {
-            mCache.put(url, bitmap);
-        }
-
-    }
+//    /**
+//     * 图片加载操作
+//     * 将图片加载到指定的imageview
+//     * url 图片地址
+//     * view 控件
+//     * defaultImageResId 默认图片
+//     * errorImageResId 加载错误的图片
+//     * @param url
+//     * @param view
+//     * @param defaultImageResId
+//     * @param errorImageResId
+//     */
+//    public void doImageLoaderToImageView(String url,ImageView view,int defaultImageResId,int errorImageResId){
+//
+//        final Map<String, Bitmap> omap = new HashMap<>();
+//
+//        ImageLoader imageLoader = new ImageLoader(queue,
+//               new  BitmapCache());
+//        ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(view,defaultImageResId,errorImageResId);
+//        imageLoader.get(url, imageListener);
+//
+//    }
+//
+//    /**
+//     * <请不要修改这段代码>
+//     * 用于实现图片的二级缓存!
+//     */
+//
+//    public class BitmapCache implements ImageLoader.ImageCache {
+//
+//        private LruCache<String, Bitmap> mCache;
+//
+//        public BitmapCache() {
+//            int maxSize = (int) (Runtime.getRuntime().maxMemory()/1024/8);
+//            mCache = new LruCache<String, Bitmap>(maxSize) {
+//                @Override
+//                protected int sizeOf(String key, Bitmap bitmap) {
+//                    return bitmap.getRowBytes() * bitmap.getHeight();
+//                }
+//            };
+//        }
+//
+//        @Override
+//        public Bitmap getBitmap(String url) {
+//            return mCache.get(url);
+//        }
+//
+//        @Override
+//        public void putBitmap(String url, Bitmap bitmap) {
+//            mCache.put(url, bitmap);
+//        }
+//
+//    }
 
 
 
