@@ -99,7 +99,7 @@ public class NewsActivity extends BaseActivity {
             RelativeLayout view1 = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout
                     .news_item, null);
 
-            //将当前的标题的hashcode设置为view的tag
+            //将当前的标题设置为view的tag
             view1.setTag(list_add.get(i));
 
             //为导航栏添加内容

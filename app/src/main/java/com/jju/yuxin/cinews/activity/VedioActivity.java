@@ -85,7 +85,7 @@ public class VedioActivity extends BaseActivity {
                 //获取当前点击的item的对象
                 VedioInfoBean vedioInfoBean = vedioinfos.get(position);
                 //跳转至新闻详情页面
-                Intent intent=new Intent(VedioActivity.this,NewsDetailsActivity.class);
+                Intent intent=new Intent(VedioActivity.this,VedioNewsDetailsActivity.class);
                 intent.putExtra("vedio_news",vedioInfoBean);
                 startActivity(intent);
 

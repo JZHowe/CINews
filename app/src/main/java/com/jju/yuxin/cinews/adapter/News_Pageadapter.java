@@ -121,8 +121,6 @@ public class News_Pageadapter extends PagerAdapter {
                 public void handleMessage(Message msg) {
                     switch (msg.what) {
                         case R.id.text1:
-
-
                             String info = (String) msg.obj;
                             MyLogger.lLog().e(info);
                             olist1 = JsonUtil.parseJSON(info);

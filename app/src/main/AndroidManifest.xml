@@ -34,6 +34,7 @@
         </activity>
         <activity android:name=".activity.NewsDetailsActivity">
         </activity>
+        <activity android:name=".activity.VedioNewsDetailsActivity"/>
     </application>
 
 </manifest>
