@@ -72,13 +72,19 @@ public class Lv_content_Adapter extends BaseAdapter {
         }
 
         //三级缓存图片
-        MyLogger.zLog().e(context + "$$$$" + oList.get(position).getUrl() + "$$$$$" + holder.image + "~~~~~~~~~~");
-        if (oList.get(position).getUrl() != null) {
+        if (oList.get(position).getUrl()!=null) {
+            holder.image.setVisibility(View.VISIBLE);
+            holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
             ImageCacheManager.loadImage(context, oList.get(position).getUrl(), holder.image, R.drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.FIT_XY);
+            holder.name.setText(oList.get(position).getName());
+            holder.summary.setText(oList.get(position).getSummary());
+            holder.time.setText(oList.get(position).getTime());
+        }else {
+            holder.image.setVisibility(View.GONE);
+            holder.name.setText(oList.get(position).getName());
+            holder.summary.setText(oList.get(position).getSummary());
+            holder.time.setText(oList.get(position).getTime());
         }
-        holder.name.setText(oList.get(position).getName());
-        holder.summary.setText(oList.get(position).getSummary());
-        holder.time.setText(oList.get(position).getTime());
         return convertView;
     }
 

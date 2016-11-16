@@ -120,7 +120,6 @@ public class News_Pageadapter extends PagerAdapter {
                 switch (msg.what) {
                     case R.id.text2:
                         String info = (String) msg.obj;
-                        MyLogger.zLog().e(info + "!!!!!!!!!!!!!!");
                         List<NewsBean> olist2 = JsonUtil.parseJSON(info);
                         //listview的数据初始化
                         if (olist2 != null) {
@@ -143,8 +142,8 @@ public class News_Pageadapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 
-        container.removeView((View)viewList.get((Integer) object));
-       // container.removeView(viewList.get(position));
+//        container.removeView((View)viewList.get((Integer) object));
+        container.removeView(viewList.get(position));
     }
 
 
