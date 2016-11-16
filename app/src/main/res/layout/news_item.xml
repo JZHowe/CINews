@@ -39,6 +39,7 @@
             android:textSize="@dimen/text_size16"/>
 
         <View
+            android:layout_below="@+id/tv_vp_content"
             android:layout_width="match_parent"
             android:layout_height="2px"
             android:layout_marginLeft="@dimen/dimen_s"

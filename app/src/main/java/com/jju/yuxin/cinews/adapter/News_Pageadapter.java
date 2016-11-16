@@ -42,6 +42,14 @@ public class News_Pageadapter extends PagerAdapter {
     private LayoutInflater inflater;
     private TextView textView;
     private InnerViewPager new_inner_vp;   //里层的ViewPager
+    private List<NewsBean> olist1;       //里层viewPager的信息集合
+    private LinearLayout ll;
+
+    private int index = 0;
+    private boolean isstop = false;
+    private MyThread thread=new MyThread();
+    //初始化图片轮播的线程
+    private   MyThread threads=new MyThread();
 
     /**
      * viewList是需要加载的item集合（OuterViewPager的集合）
@@ -56,6 +64,8 @@ public class News_Pageadapter extends PagerAdapter {
         this.list = list;
         this.viewList = viewList;
         inflater = LayoutInflater.from(context);
+        //在viewpager的构造中将初始化了的图片轮播线程开启
+        thread.start();
     }
 
     @Override
@@ -72,14 +82,18 @@ public class News_Pageadapter extends PagerAdapter {
     //为下一个即将加载的item初始化
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
+        //当第一个页面被初始化的时候，将线程从暂停状态转为运行状态
+        if (position==0){
+            isstop=false;
+        }
         //获取当前item是否隐藏的视图
         RelativeLayout ll_top = (RelativeLayout) viewList.get(position).findViewById(R.id.ll_top);
         if (textView == null) {
             textView = (TextView) viewList.get(position).findViewById(R.id.tv_vp_content);
+            ll = (LinearLayout) viewList.get(position).findViewById(R.id.ll);
 
         }
-        final LinearLayout ll = (LinearLayout) viewList.get(position).findViewById(R.id.ll);
+
 
         //获取当前item的listview
         final ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
@@ -104,27 +118,30 @@ public class News_Pageadapter extends PagerAdapter {
                 public void handleMessage(Message msg) {
                     switch (msg.what) {
                         case R.id.text1:
+
+
                             String info = (String) msg.obj;
                             MyLogger.lLog().e(info);
-                            List<NewsBean> olist1 = JsonUtil.parseJSON(info);
-
-                            for (int i = 0; i < olist1.size(); i++) {
-                                TextView textView = new TextView(context);
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
-                                        (10, 10);
-                                params.setMargins(0, 5, 15, 0);
-                                textView.setLayoutParams(params);
-                                textView.setBackgroundResource(R.drawable.text_white);
-                                textView.setTag(i);
-                                textviewLists.add(textView);
-                                textviewLists.get(0).setBackgroundResource(R.drawable.text_red);
-                                ll.addView(textView);
+                            olist1 = JsonUtil.parseJSON(info);
+                            MyLogger.lLog().e("zi"+ll.getChildCount());
+                            if (ll.getChildCount()==0) {
+                                textviewLists = new ArrayList<>();
+                                for (int i = 0; i < olist1.size(); i++) {
+                                    TextView textView = new TextView(context);
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                                            (10, 10);
+                                    params.setMargins(0, 5, 15, 0);
+                                    textView.setLayoutParams(params);
+                                    textView.setBackgroundResource(R.drawable.text_white);
+                                    textView.setTag(i);
+                                    textviewLists.add(textView);
+                                    textviewLists.get(0).setBackgroundResource(R.drawable.text_red);
+                                    ll.addView(textView);
+                                }
                             }
                             new_inner_vp.setAdapter(new InnerPagerAdapter(context, olist1,
                                     textView));
 
-                            //开启定时器，图片轮播
-                            image_thread();
                             break;
                     }
                 }
@@ -160,48 +177,50 @@ public class News_Pageadapter extends PagerAdapter {
         return position;
     }
 
-    private int index = 0;
-    private boolean isstop = false;
+
     private Handler image_handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case R.id.image_thread:
-                    new_inner_vp.setCurrentItem(index % textviewLists.size());
+                    new_inner_vp.setCurrentItem(index % olist1.size());
                     break;
             }
         }
     };
 
-    //图片轮播
-    private void image_thread() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                while (true) {
-                    while (!isstop) {
-                        try {
-                            sleep(5000);
-                            index++;
-                            image_handler.sendEmptyMessage(R.id.image_thread);
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
+    //图片轮播的线程
+    class MyThread extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            while (true) {
+                while (!isstop) {
+                    try {
+                        sleep(4000);
+                        index++;
+                        image_handler.sendEmptyMessage(R.id.image_thread);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
-        }.start();
-
+        }
     }
 
 
     //移除除了自己本身和自己左右的的item
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        //当地一个页面被注销的时候，将线程停止
+        if (position==0){
+            isstop=true;
+            index=0;
+        }
 
-//        container.removeView((View)viewList.get((Integer) object));
         container.removeView(viewList.get(position));
     }
 
@@ -214,7 +233,7 @@ public class News_Pageadapter extends PagerAdapter {
     }
 
 
-    List<TextView> textviewLists = new ArrayList<>();
+    List<TextView> textviewLists;
     //里层ViewPager的滑动监听事件
     private ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
         @Override
