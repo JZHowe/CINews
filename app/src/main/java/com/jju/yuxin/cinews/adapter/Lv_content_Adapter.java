@@ -84,6 +84,7 @@ public class Lv_content_Adapter extends BaseAdapter {
             holder.name.setText(oList.get(position).getName());
             holder.summary.setText(oList.get(position).getSummary());
             holder.time.setText(oList.get(position).getTime());
+
         }
         return convertView;
     }
