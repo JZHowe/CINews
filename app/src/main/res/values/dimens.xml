@@ -20,4 +20,5 @@
     <!--一个像素的高度-->
     <dimen name="high_1px">1px</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_5dp">5dp</dimen>
 </resources>

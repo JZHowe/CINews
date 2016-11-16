@@ -1,5 +1,8 @@
 package com.jju.yuxin.cinews.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * =============================================================================
  * Copyright (c) 2016 yuxin All rights reserved.
@@ -12,7 +15,7 @@ package com.jju.yuxin.cinews.bean;
  * ==============================================================================
  */
 
-public class VedioInfoBean {
+public class VedioInfoBean implements Parcelable {
 
     private int id;
     private String img_src;
@@ -88,4 +91,38 @@ public class VedioInfoBean {
                 ", news_date='" + news_date + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.img_src);
+        dest.writeString(this.video_src);
+        dest.writeString(this.news_info);
+        dest.writeString(this.news_date);
+    }
+
+    protected VedioInfoBean(Parcel in) {
+        this.id = in.readInt();
+        this.img_src = in.readString();
+        this.video_src = in.readString();
+        this.news_info = in.readString();
+        this.news_date = in.readString();
+    }
+
+    public static final Parcelable.Creator<VedioInfoBean> CREATOR = new Parcelable.Creator<VedioInfoBean>() {
+        @Override
+        public VedioInfoBean createFromParcel(Parcel source) {
+            return new VedioInfoBean(source);
+        }
+
+        @Override
+        public VedioInfoBean[] newArray(int size) {
+            return new VedioInfoBean[size];
+        }
+    };
 }
