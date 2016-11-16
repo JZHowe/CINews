@@ -101,7 +101,13 @@ public class LoadingActivity extends BaseActivity {
                 @Override
                 public void run() {
                     //网络连接正常进入主界面
-                    loadMainActivity();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadMainActivity();
+                        }
+                    });
+
                 }
             }, DALAY_TIME);
 
@@ -115,5 +121,7 @@ public class LoadingActivity extends BaseActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+
     }
 }

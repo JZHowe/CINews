@@ -47,9 +47,9 @@ public class News_Pageadapter extends PagerAdapter {
 
     private int index = 0;
     private boolean isstop = false;
-    private MyThread thread=new MyThread();
+    private MyThread thread = new MyThread();
     //初始化图片轮播的线程
-    private   MyThread threads=new MyThread();
+    private MyThread threads = new MyThread();
 
     /**
      * viewList是需要加载的item集合（OuterViewPager的集合）
@@ -83,8 +83,8 @@ public class News_Pageadapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         //当第一个页面被初始化的时候，将线程从暂停状态转为运行状态
-        if (position==0){
-            isstop=false;
+        if (position == 0) {
+            isstop = false;
         }
         //获取当前item是否隐藏的视图
         RelativeLayout ll_top = (RelativeLayout) viewList.get(position).findViewById(R.id.ll_top);
@@ -97,6 +97,9 @@ public class News_Pageadapter extends PagerAdapter {
 
         //获取当前item的listview
         final ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
+        //加载动画
+        final LinearLayout pb_loading = (LinearLayout)viewList.get(position).findViewById(R.id.pb_loading);
+        pb_loading.setVisibility(View.VISIBLE);
 
 
         //判断顶栏的viewpages是否是需要显示
@@ -123,8 +126,8 @@ public class News_Pageadapter extends PagerAdapter {
                             String info = (String) msg.obj;
                             MyLogger.lLog().e(info);
                             olist1 = JsonUtil.parseJSON(info);
-                            MyLogger.lLog().e("zi"+ll.getChildCount());
-                            if (ll.getChildCount()==0) {
+                            MyLogger.lLog().e("zi" + ll.getChildCount());
+                            if (ll.getChildCount() == 0) {
                                 textviewLists = new ArrayList<>();
                                 for (int i = 0; i < olist1.size(); i++) {
                                     TextView textView = new TextView(context);
@@ -166,6 +169,7 @@ public class News_Pageadapter extends PagerAdapter {
                         }
                         break;
                 }
+                pb_loading.setVisibility(View.GONE);
             }
         };
 
@@ -183,16 +187,17 @@ public class News_Pageadapter extends PagerAdapter {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case R.id.image_thread:
-                    new_inner_vp.setCurrentItem(index % olist1.size());
+                    if (olist1 != null) {
+                        new_inner_vp.setCurrentItem(index % olist1.size());
+                    }
                     break;
             }
         }
     };
 
 
-
     //图片轮播的线程
-    class MyThread extends Thread{
+    class MyThread extends Thread {
         @Override
         public void run() {
             super.run();
@@ -216,9 +221,9 @@ public class News_Pageadapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         //当地一个页面被注销的时候，将线程停止
-        if (position==0){
-            isstop=true;
-            index=0;
+        if (position == 0) {
+            isstop = true;
+            index = 0;
         }
 
         container.removeView(viewList.get(position));

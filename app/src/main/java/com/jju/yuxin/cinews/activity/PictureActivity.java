@@ -3,6 +3,8 @@ package com.jju.yuxin.cinews.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.jju.yuxin.cinews.R;
@@ -34,6 +36,7 @@ public class PictureActivity extends BaseActivity {
     private Map<String, Object> oMap = new HashMap<>();
     private String name = "getlistartile";
     private List<NewsBean> olist = new ArrayList<>();
+    private LinearLayout pb_loading;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -43,9 +46,9 @@ public class PictureActivity extends BaseActivity {
                     MyLogger.lLog().e(info);
                     olist = JsonUtil.parseJSON(info);
                     listView.setAdapter(new PAdapter(PictureActivity.this,olist));
-
                     break;
             }
+            pb_loading.setVisibility(View.GONE);
 
         }
     };
@@ -56,13 +59,14 @@ public class PictureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
         listView = (ListView) findViewById(R.id.p_listView);
+        //加载动画
+        pb_loading = (LinearLayout) findViewById(R.id.pb_loading);
+        pb_loading.setVisibility(View.VISIBLE);
 
         oMap.put("id", "404d560a-442c-46a5-b1cf-c44fe459f893");
         oMap.put("page", 1);
         Ksoap2Util.doBackgroud(handler, R.id.text4, name, oMap);
 
     }
-
-
 
 }

@@ -1,57 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/ll_top"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.jju.yuxin.cinews.views.InnerViewPager
-            android:id="@+id/new_inner_vp"
+        <RelativeLayout
+            android:id="@+id/ll_top"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/vp_title"
-            android:background="@color/white">
-        </com.jju.yuxin.cinews.views.InnerViewPager>
-        <LinearLayout
-            android:id="@+id/ll"
+            android:layout_height="wrap_content">
+
+            <com.jju.yuxin.cinews.views.InnerViewPager
+                android:id="@+id/new_inner_vp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/vp_title"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/new_inner_vp"
+                android:layout_marginBottom="5dp"
+                android:gravity="right"
+                android:orientation="horizontal" />
+
+            <com.jju.yuxin.cinews.views.MarqueeText
+                android:id="@+id/tv_vp_content"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/top_bar"
+                android:layout_below="@id/new_inner_vp"
+                android:background="@color/white"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingLeft="@dimen/dimen_s"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_below="@+id/tv_vp_content"
+                android:layout_marginLeft="@dimen/dimen_s"
+                android:layout_marginRight="@dimen/dimen_s"
+                android:background="#FFD30901" />
+        </RelativeLayout>
+
+
+        <ListView
+            android:id="@+id/lv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/new_inner_vp"
-            android:gravity="right"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal" />
+            android:background="#ffffff" />
+    </LinearLayout>
+    <!--加载动画-->
+    <include layout="@layout/activity_loading_pb" />
 
-        <com.jju.yuxin.cinews.views.MarqueeText
-            android:id="@+id/tv_vp_content"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/top_bar"
-            android:background="@color/white"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:paddingLeft="@dimen/dimen_s"
-            android:singleLine="true"
-            android:layout_below="@id/new_inner_vp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size16"/>
-
-        <View
-            android:layout_below="@+id/tv_vp_content"
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:layout_marginLeft="@dimen/dimen_s"
-            android:layout_marginRight="@dimen/dimen_s"
-            android:background="#FFD30901"/>
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/lv_content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#ffffff">
-    </ListView>
-</LinearLayout>
+</RelativeLayout>

@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,7 +96,7 @@ public class NewsActivity extends BaseActivity {
         //初始化item布局个数
         for (int i = 0; i < list_add.size(); i++) {
             //新闻模块所有子模块对应的相同的布局
-            LinearLayout view1 = (LinearLayout) LayoutInflater.from(this).inflate(R.layout
+            RelativeLayout view1 = (RelativeLayout) LayoutInflater.from(this).inflate(R.layout
                     .news_item, null);
 
             //将当前的标题的hashcode设置为view的tag

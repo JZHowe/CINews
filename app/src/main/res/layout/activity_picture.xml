@@ -10,12 +10,20 @@
     tools:context="com.jju.yuxin.cinews.activity.PictureActivity">
 
     <include layout="@layout/top_bar"/>
-    <ListView
-        android:id="@+id/p_listView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:dividerHeight="10dp"
-        android:divider="#00000000"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/p_listView"
+            android:layout_width="match_parent"
+            android:dividerHeight="10dp"
+            android:divider="#00000000"
+            android:layout_height="wrap_content">
+        </ListView>
+
+        <include layout="@layout/activity_loading_pb"/>
+
+    </RelativeLayout>
+
 
 </LinearLayout>
