@@ -5,6 +5,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -43,6 +44,8 @@ public class VedioActivity extends BaseActivity {
     private static final int SUCCESS_LOAD = 0;
     //加载失败
     private static final int FAIL_LOAD = 1;
+    //加载完成的新闻集合
+    private List<VedioInfoBean> vedioinfos;
 
     private ListView lv_vedio_news;
     //加载动画
@@ -55,9 +58,9 @@ public class VedioActivity extends BaseActivity {
             switch (msg.what) {
                 //加载成功
                 case SUCCESS_LOAD:
-                    List<VedioInfoBean> vedioinfos = (List<VedioInfoBean>) msg.obj;
+                    vedioinfos = (List<VedioInfoBean>) msg.obj;
                     //将内容填充到ListView
-                    lv_vedio_news.setAdapter(new VedioList_Adapter(VedioActivity.this,vedioinfos,volleyUtils));
+                    lv_vedio_news.setAdapter(new VedioList_Adapter(VedioActivity.this, vedioinfos,volleyUtils));
                     break;
                 //加载失败
                 case FAIL_LOAD:
@@ -84,6 +87,15 @@ public class VedioActivity extends BaseActivity {
         //加载动画
         pb_loading = (LinearLayout) findViewById(R.id.pb_loading);
         pb_loading.setVisibility(View.VISIBLE);
+        lv_vedio_news.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //获取当前点击的item的对象
+                VedioInfoBean vedioInfoBean = vedioinfos.get(position);
+
+
+            }
+        });
 
     }
 
@@ -115,6 +127,7 @@ public class VedioActivity extends BaseActivity {
                     //获取视频新闻列表
                     Element new_list = news_select.select("div.m-bd").first();
                     Elements news_items = new_list.getElementsByTag("li");
+                    //遍历出新闻
                     for (Element element : news_items) {
                         String img_src = element.select("div.pic").first().getElementsByTag("img").first().attr("src");
                         Element info_ele = element.select("div.info").first();
