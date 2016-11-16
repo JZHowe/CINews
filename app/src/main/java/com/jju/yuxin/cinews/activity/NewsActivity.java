@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,7 +107,7 @@ public class NewsActivity extends BaseActivity {
             tl_new_content.addTab(tl_new_content.newTab().setText(list_add.get(i)));
 
             //获取当前item对应的顶栏（InnerViewPager）
-            LinearLayout ll_top = (LinearLayout) view1.findViewById(R.id.ll_top);
+            RelativeLayout ll_top = (RelativeLayout) view1.findViewById(R.id.ll_top);
 
             //设置所有视图的标记为不可见,.标记的是里层viewpages的状态
             ll_top.setTag(View.GONE);

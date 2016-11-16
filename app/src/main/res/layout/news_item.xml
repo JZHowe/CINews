@@ -4,23 +4,34 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <com.jju.yuxin.cinews.views.InnerViewPager
             android:id="@+id/new_inner_vp"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/vp_title"
-            android:background="#0f0">
+            android:layout_height="@dimen/vp_title">
         </com.jju.yuxin.cinews.views.InnerViewPager>
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/new_inner_vp"
+            android:gravity="right"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal" />
 
         <TextView
+            android:layout_below="@+id/ll"
             android:id="@+id/tv_vp_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/top_bar_bt"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="16sp"
+            android:textColor="@color/black"
             android:gravity="center"/>
 
         <View
@@ -29,7 +40,7 @@
             android:layout_marginLeft="@dimen/dimen_s"
             android:layout_marginRight="@dimen/dimen_s"
             android:background="#FFD30901"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_content"

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
@@ -18,6 +20,7 @@ import com.jju.yuxin.cinews.service.PagerDateInit;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.InnerViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +41,7 @@ public class News_Pageadapter extends PagerAdapter {
     private List<String> list;
     private LayoutInflater inflater;
     private TextView textView;
+    private InnerViewPager new_inner_vp;   //里层的ViewPager
 
     /**
      * viewList是需要加载的item集合（OuterViewPager的集合）
@@ -70,11 +74,12 @@ public class News_Pageadapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
 
         //获取当前item是否隐藏的视图
-        LinearLayout ll_top = (LinearLayout) viewList.get(position).findViewById(R.id.ll_top);
+        RelativeLayout ll_top = (RelativeLayout) viewList.get(position).findViewById(R.id.ll_top);
         if (textView == null) {
             textView = (TextView) viewList.get(position).findViewById(R.id.tv_vp_content);
 
         }
+        final LinearLayout ll= (LinearLayout) viewList.get(position).findViewById(R.id.ll);
 
         //获取当前item的listview
         final ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
@@ -91,8 +96,8 @@ public class News_Pageadapter extends PagerAdapter {
             ll_top.setVisibility(View.VISIBLE);
 
             //加载里层数viewpages
-            final InnerViewPager new_inner_vp = (InnerViewPager) viewList.get(position).findViewById(R.id.new_inner_vp);
-
+            new_inner_vp = (InnerViewPager) viewList.get(position).findViewById(R.id.new_inner_vp);
+            new_inner_vp.setOnPageChangeListener(listener);
 
             Handler handler = new Handler() {
                 @Override
@@ -102,8 +107,22 @@ public class News_Pageadapter extends PagerAdapter {
                             String info = (String) msg.obj;
                             MyLogger.lLog().e(info);
                             List<NewsBean> olist1 = JsonUtil.parseJSON(info);
-                            //viewList.get(position).getTag()
+
+                            for (int i = 0; i< olist1.size(); i++){
+                                TextView textView = new TextView(context);
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10, 10);
+                                params.setMargins(0, 5, 15, 0);
+                                textView.setLayoutParams(params);
+                                textView.setBackgroundResource(R.drawable.text_white);
+                                textView.setTag(i);
+                                textviewLists.add(textView);
+                                textviewLists.get(0).setBackgroundResource(R.drawable.text_red);
+                                ll.addView(textView);
+                            }
                             new_inner_vp.setAdapter(new InnerPagerAdapter(context, olist1, textView));
+
+                            //开启定时器，图片轮播
+                            image_thread();
                             break;
                     }
                 }
@@ -138,6 +157,42 @@ public class News_Pageadapter extends PagerAdapter {
         return position;
     }
 
+    private int index=0;
+    private boolean isstop = false;
+    private Handler image_handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case R.id.image_thread:
+                    new_inner_vp.setCurrentItem(index % textviewLists.size());
+                    break;
+            }
+        }
+    };
+
+    //图片轮播
+    private void image_thread() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                while (true) {
+                    while (!isstop) {
+                        try {
+                            index++;
+                            image_handler.sendEmptyMessage(R.id.image_thread);
+                            sleep(2000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }.start();
+
+    }
+
+
     //移除除了自己本身和自己左右的的item
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -153,4 +208,29 @@ public class News_Pageadapter extends PagerAdapter {
         //返回当前TabStrip的title
         return list.get(position);
     }
+
+
+    List<TextView> textviewLists = new ArrayList<>();
+    //里层ViewPager的滑动监听事件
+    private ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            for (TextView textView:textviewLists){
+                textView.setBackgroundResource(R.drawable.text_white);
+            }
+            textviewLists.get(position).setBackgroundResource(R.drawable.text_red);
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 }

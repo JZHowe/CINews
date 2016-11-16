@@ -6,11 +6,20 @@ package com.jju.yuxin.cinews.bean;
  */
 
 public class NewsBean {
+    private String id;
     private String url;
     private String key;
     private String name;
     private String summary;
     private String time;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTime() {
         return time;

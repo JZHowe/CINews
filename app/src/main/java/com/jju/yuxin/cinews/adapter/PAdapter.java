@@ -57,6 +57,8 @@ public class PAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.textView.setText(olist.get(position).getName());
+        //设置图片拉伸填充整个控件
+        viewHolder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         ImageCacheManager.loadImage(context, olist.get(position).getUrl(), viewHolder.imageView, R.drawable.loading, R.drawable.failu, 0, 0, ImageView.ScaleType.FIT_XY);
         return view;
     }
