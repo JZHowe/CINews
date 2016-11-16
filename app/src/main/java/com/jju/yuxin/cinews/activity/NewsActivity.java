@@ -114,8 +114,10 @@ public class NewsActivity extends BaseActivity {
 
             viewList.add(view1);
         }
-        //设置第一个可见
-        viewList.get(0).findViewById(R.id.ll_top).setTag(View.VISIBLE);
+        if (new_title[0].equals(list_add.get(0))) {
+            //设置产业新闻可见
+            viewList.get(0).findViewById(R.id.ll_top).setTag(View.VISIBLE);
+        }
 
 
         //给外层Viewpager设置适配器

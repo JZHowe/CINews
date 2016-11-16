@@ -79,7 +79,7 @@ public class News_Pageadapter extends PagerAdapter {
             textView = (TextView) viewList.get(position).findViewById(R.id.tv_vp_content);
 
         }
-        final LinearLayout ll= (LinearLayout) viewList.get(position).findViewById(R.id.ll);
+        final LinearLayout ll = (LinearLayout) viewList.get(position).findViewById(R.id.ll);
 
         //获取当前item的listview
         final ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
@@ -108,9 +108,10 @@ public class News_Pageadapter extends PagerAdapter {
                             MyLogger.lLog().e(info);
                             List<NewsBean> olist1 = JsonUtil.parseJSON(info);
 
-                            for (int i = 0; i< olist1.size(); i++){
+                            for (int i = 0; i < olist1.size(); i++) {
                                 TextView textView = new TextView(context);
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10, 10);
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                                        (10, 10);
                                 params.setMargins(0, 5, 15, 0);
                                 textView.setLayoutParams(params);
                                 textView.setBackgroundResource(R.drawable.text_white);
@@ -119,7 +120,8 @@ public class News_Pageadapter extends PagerAdapter {
                                 textviewLists.get(0).setBackgroundResource(R.drawable.text_red);
                                 ll.addView(textView);
                             }
-                            new_inner_vp.setAdapter(new InnerPagerAdapter(context, olist1, textView));
+                            new_inner_vp.setAdapter(new InnerPagerAdapter(context, olist1,
+                                    textView));
 
                             //开启定时器，图片轮播
                             image_thread();
@@ -129,7 +131,8 @@ public class News_Pageadapter extends PagerAdapter {
             };
 
             //根据view当前位置,解析对应的viewpager 图片
-            PagerDateInit.getInnerPagerdata(context, (String) viewList.get(position).getTag(), handler);
+            PagerDateInit.getInnerPagerdata(context, (String) viewList.get(position).getTag(),
+                    handler);
 
         }
 
@@ -157,7 +160,7 @@ public class News_Pageadapter extends PagerAdapter {
         return position;
     }
 
-    private int index=0;
+    private int index = 0;
     private boolean isstop = false;
     private Handler image_handler = new Handler() {
         @Override
@@ -179,9 +182,10 @@ public class News_Pageadapter extends PagerAdapter {
                 while (true) {
                     while (!isstop) {
                         try {
+                            sleep(5000);
                             index++;
                             image_handler.sendEmptyMessage(R.id.image_thread);
-                            sleep(2000);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -221,7 +225,7 @@ public class News_Pageadapter extends PagerAdapter {
 
         @Override
         public void onPageSelected(int position) {
-            for (TextView textView:textviewLists){
+            for (TextView textView : textviewLists) {
                 textView.setBackgroundResource(R.drawable.text_white);
             }
             textviewLists.get(position).setBackgroundResource(R.drawable.text_red);

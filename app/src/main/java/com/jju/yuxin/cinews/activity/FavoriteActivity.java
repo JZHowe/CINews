@@ -31,6 +31,5 @@ public class FavoriteActivity extends BaseActivity {
         bt_top_right.setVisibility(View.VISIBLE);
         bt_top_right.setBackgroundResource(R.drawable.bt_delete_selector);
 
-
     }
 }

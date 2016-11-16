@@ -12,7 +12,8 @@
         <com.jju.yuxin.cinews.views.InnerViewPager
             android:id="@+id/new_inner_vp"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/vp_title">
+            android:layout_height="@dimen/vp_title"
+            android:background="@color/white">
         </com.jju.yuxin.cinews.views.InnerViewPager>
         <LinearLayout
             android:id="@+id/ll"
@@ -23,16 +24,19 @@
             android:layout_marginBottom="5dp"
             android:orientation="horizontal" />
 
-        <TextView
-            android:layout_below="@+id/ll"
+        <com.jju.yuxin.cinews.views.MarqueeText
             android:id="@+id/tv_vp_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/top_bar_bt"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="16sp"
+            android:layout_height="@dimen/top_bar"
+            android:background="@color/white"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingLeft="@dimen/dimen_s"
+            android:singleLine="true"
+            android:layout_below="@id/new_inner_vp"
             android:textColor="@color/black"
-            android:gravity="center"/>
+            android:textSize="@dimen/text_size16"/>
 
         <View
             android:layout_width="match_parent"
