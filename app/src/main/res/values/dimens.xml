@@ -10,7 +10,7 @@
     <!--viewpager的高度-->
     <dimen name="vp_title">150dp</dimen>
     <!--listview的item的高度-->
-    <dimen name="dimen_item">80dp</dimen>
+    <dimen name="dimen_item">70dp</dimen>
     <!--常用字体的大小-->
     <dimen name="text_size16">16sp</dimen>
     <dimen name="text_size18">18sp</dimen>

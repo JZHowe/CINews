@@ -5,8 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.bean.NewsBean;
+import com.jju.yuxin.cinews.utils.MyLogger;
+import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
+
+import java.util.List;
 
 /**
  * =============================================================================
@@ -16,7 +23,7 @@ import com.jju.yuxin.cinews.R;
  * Created time 2016/11/12 0012 下午 10:44.
  * Version   1.0;
  * Describe :Listview的适配器,这是一个listview的model,
- *           对于每一个模块应该有自己的adapter,在子ListView应该编写自己的ViewHolder
+ * 对于每一个模块应该有自己的adapter,在子ListView应该编写自己的ViewHolder
  * History:
  * ==============================================================================
  */
@@ -25,23 +32,23 @@ public class Lv_content_Adapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private String[] olist;
+    private List<NewsBean> oList;
 
 
-    public Lv_content_Adapter(Context context, String[] olist) {
+    public Lv_content_Adapter(Context context, List<NewsBean> oList) {
         this.context = context;
-        this.olist = olist;
-        inflater=LayoutInflater.from(context);
+        this.oList = oList;
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return olist.length;
+        return oList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return olist[position];
+        return oList.get(position);
     }
 
     @Override
@@ -51,8 +58,34 @@ public class Lv_content_Adapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-         convertView = inflater.inflate(R.layout.lv_new_item,null);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.lv_new_item, null);
+            holder.image = (ImageView) convertView.findViewById(R.id.iv_itme_image);
+            holder.name = (TextView) convertView.findViewById(R.id.tv_itme_name);
+            holder.summary = (TextView) convertView.findViewById(R.id.tv_itme_summary);
+            holder.time = (TextView) convertView.findViewById(R.id.tv_itme_time);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        //三级缓存图片
+        MyLogger.zLog().e(context + "$$$$" + oList.get(position).getUrl() + "$$$$$" + holder.image + "~~~~~~~~~~");
+        if (oList.get(position).getUrl() != null) {
+            ImageCacheManager.loadImage(context, oList.get(position).getUrl(), holder.image, R.drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.FIT_XY);
+        }
+        holder.name.setText(oList.get(position).getName());
+        holder.summary.setText(oList.get(position).getSummary());
+        holder.time.setText(oList.get(position).getTime());
         return convertView;
+    }
+
+    class ViewHolder {
+        ImageView image;
+        TextView name, summary, time;
+
     }
 
 

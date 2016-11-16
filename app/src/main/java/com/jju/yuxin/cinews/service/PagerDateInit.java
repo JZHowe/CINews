@@ -6,6 +6,7 @@ import android.os.Handler;
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.utils.Ksoap2Util;
+import com.jju.yuxin.cinews.utils.MyLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,6 @@ public class PagerDateInit {
     static List<NewsBean> olist1=new ArrayList<>();
     public static void getInnerPagerdata(Context context, String viewtag,Handler handler) {
 
-
         //获取ViewPager对应的导航栏的文字信息
         String[] stringArray = context.getResources().getStringArray(R.array.new_title_list);
 
@@ -48,8 +48,6 @@ public class PagerDateInit {
             Ksoap2Util.doBackgroud(handler, R.id.text1, name, oMap);
         }
 
-
-
     }
 
     /**
@@ -59,7 +57,7 @@ public class PagerDateInit {
      * @param viewtag
      * @return
      */
-    public static String[] getItemListdata(Context context, String viewtag) {
+    public static void getItemListdata(Context context, String viewtag,Handler handler) {
 
         /**
          * 这里是模拟加载
@@ -79,50 +77,66 @@ public class PagerDateInit {
 
         //加载产业新闻的ListViewn内容
         if (stringArray[0].equals(viewtag)) {
-
-
-            return stringArray;
-
+            MyLogger.zLog().e(viewtag+"###0");
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","69e8ad24-76f8-40c3-9e6c-f09c4eb39839");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
             //加载动漫游戏的ListViewn内容
         } else if (stringArray[1].equals(viewtag)) {
-
-
-            return stringArray;
-
+            MyLogger.zLog().e(viewtag+"###1");
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","d2ce6ce0-d55c-46ce-9b9e-0df3bb726877");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
             //加载工艺美术的ListViewn内容
         } else if (stringArray[2].equals(viewtag)) {
-
-
-            return stringArray;
-
+            MyLogger.zLog().e(viewtag+"###2");
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","218617c3-539b-4fe6-9023-a891750590da");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
             //加载休闲旅游的ListViewn内容
         } else if (stringArray[3].equals(viewtag)) {
-
-
-            return stringArray;
+            MyLogger.zLog().e(viewtag+"###3");
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","c0bb5dab-2120-4e5b-885c-e17dd227ec3e");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
 
             //加载园区基地的ListViewn内容
         } else if (stringArray[4].equals(viewtag)) {
-
-            return stringArray;
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","5b5b5cb2-898a-4899-b51a-6a4e684f860e");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
 
             //加载演艺传媒的ListViewn内容
         } else if (stringArray[5].equals(viewtag)) {
-
-            return stringArray;
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","a4ce81c3-727d-45c9-856f-5e7813b05166");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
 
             //加载文化金融的ListViewn内容
         } else if (stringArray[6].equals(viewtag)) {
-
-            return stringArray;
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","e14512f4-f384-4575-8982-1df4f3ea96ea");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
 
             //加载协会动态的ListViewn内容
         } else if (stringArray[7].equals(viewtag)) {
-
-            return stringArray;
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","68332b3d-846f-4712-9511-a2467f541550");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
 
         } else {
-            return stringArray;
+            Map<String,Object>oMap = new HashMap<String,Object>();
+            oMap.put("id","404d560a-442c-46a5-b1cf-c44fe459f893");
+            oMap.put("page",1);
+            Ksoap2Util.doBackgroud(handler, R.id.text2, "getlistartile", oMap);
         }
     }
 }

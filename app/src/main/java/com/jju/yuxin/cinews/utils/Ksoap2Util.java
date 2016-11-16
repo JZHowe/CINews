@@ -25,6 +25,7 @@ public class Ksoap2Util {
                 //TODO
                 //message.obj = JsonUtil.getInstance().StringToJson(info, what);
                 message.obj = info;
+//                MyLogger.zLog().e(info+"!!!!!!!!!!!!!!!!!");
                 message.what = what;
                 handler.sendMessage(message);
 
@@ -35,7 +36,6 @@ public class Ksoap2Util {
 
     public static String connect(final String name, final Map<String, Object> oMap) {
         String info = null;
-
         try {
 
             //1. 指定WebService的命名空间和调用的方法名
@@ -59,14 +59,12 @@ public class Ksoap2Util {
 
             //5.使用getResponse方法获得WebService方法的返回结果
             info = envelope.getResponse().toString();
-
+            MyLogger.zLog().e(info+"$$$$$$$$$$$$$$$$");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return info;
-
     }
 
 }

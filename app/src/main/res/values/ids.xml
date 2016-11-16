@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  textview  -->
+    <item name="tv_itme_name" type="id"/>
+    <item name="tv_itme_summary" type="id"/>
+    <item name="tv_itme_time" type="id"/>
+    <!--  imageview  -->
+    <item name="iv_itme_image" type="id"/>
+
+
     <item name="text1" type="id">111</item>
+    <item name="text2" type="id">222</item>
 </resources>

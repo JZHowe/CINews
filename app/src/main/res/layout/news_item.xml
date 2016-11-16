@@ -14,7 +14,7 @@
             android:id="@+id/new_inner_vp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/vp_title"
-            android:background="@color/white">
+            android:background="#0f0">
         </com.jju.yuxin.cinews.views.InnerViewPager>
 
         <TextView
@@ -34,8 +34,8 @@
     <ListView
         android:id="@+id/lv_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white">
+        android:background="#ffffff">
     </ListView>
 </LinearLayout>

@@ -10,6 +10,15 @@ public class NewsBean {
     private String key;
     private String name;
     private String summary;
+    private String time;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getUrl() {
         return url;
@@ -50,6 +59,7 @@ public class NewsBean {
                 ", key='" + key + '\'' +
                 ", name='" + name + '\'' +
                 ", summary='" + summary + '\'' +
+                ", time='" + time + '\'' +
                 '}';
     }
 }

@@ -194,8 +194,7 @@ public class NewsActivity extends BaseActivity {
                             SharedUtil.getEditor(mContext).putBoolean("add" + i, false).commit();
                         }
                     }
-
-                    startActivity(new Intent(mContext, NewsActivity.class));
+                    startActivity(new Intent(mContext, MainActivity.class));
                     finish();
                     break;
                 default:

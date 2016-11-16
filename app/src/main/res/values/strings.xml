@@ -19,4 +19,11 @@
         <item>文化金融</item>
         <item>协会动态</item>
     </array>
+
+    <string name="methodname">getlistartile</string>
+
+    <string name="id">69e8ad24-76f8-40c3-9e6c-f09c4eb39839</string>
+
+    <integer name="page">1</integer>
+
 </resources>

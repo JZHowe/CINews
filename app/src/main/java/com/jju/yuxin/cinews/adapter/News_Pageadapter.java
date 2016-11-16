@@ -66,7 +66,6 @@ public class News_Pageadapter extends PagerAdapter {
     }
 
     //为下一个即将加载的item初始化
-
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
@@ -78,7 +77,7 @@ public class News_Pageadapter extends PagerAdapter {
         }
 
         //获取当前item的listview
-        ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
+        final ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
 
 
         //判断顶栏的viewpages是否是需要显示
@@ -115,12 +114,25 @@ public class News_Pageadapter extends PagerAdapter {
 
         }
 
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case R.id.text2:
+                        String info = (String) msg.obj;
+                        MyLogger.zLog().e(info + "!!!!!!!!!!!!!!");
+                        List<NewsBean> olist2 = JsonUtil.parseJSON(info);
+                        //listview的数据初始化
+                        if (olist2 != null) {
+                            lv_content.setAdapter(new Lv_content_Adapter(context, olist2));
+                        }
+                        break;
+                }
+            }
+        };
 
         //根据view当前位置,对应ListView的内容
-        String[] new_contents = PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag());
-
-        //listview的数据初始化
-        lv_content.setAdapter(new Lv_content_Adapter(context, new_contents));
+        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler);
 
         //将当前的的页面添加至最外层的viewpages
         container.addView(viewList.get(position));
@@ -130,7 +142,9 @@ public class News_Pageadapter extends PagerAdapter {
     //移除除了自己本身和自己左右的的item
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(viewList.get(position));
+
+        container.removeView((View)viewList.get((Integer) object));
+       // container.removeView(viewList.get(position));
     }
 
 
