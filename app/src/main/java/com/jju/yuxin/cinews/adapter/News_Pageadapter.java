@@ -35,7 +35,7 @@ import java.util.List;
 public class News_Pageadapter extends PagerAdapter {
     private Context context;
     private List<View> viewList;
-    private String[] new_title;
+    private List<String> list;
     private LayoutInflater inflater;
     private TextView textView;
 
@@ -44,12 +44,12 @@ public class News_Pageadapter extends PagerAdapter {
      * 传入的new_title是item对应的标题
      *
      * @param context
-     * @param new_title
+     * @param list
      * @param viewList
      */
-    public News_Pageadapter(Context context, String[] new_title, List<View> viewList) {
+    public News_Pageadapter(Context context, List<String> list, List<View> viewList) {
         this.context = context;
-        this.new_title = new_title;
+        this.list = list;
         this.viewList = viewList;
         inflater = LayoutInflater.from(context);
     }
@@ -138,6 +138,6 @@ public class News_Pageadapter extends PagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         //返回当前TabStrip的title
-        return new_title[position];
+        return list.get(position);
     }
 }
