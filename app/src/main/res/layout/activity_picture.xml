@@ -9,5 +9,10 @@
     tools:context="com.jju.yuxin.cinews.activity.PictureActivity">
 
     <include layout="@layout/top_bar"/>
+    <ListView
+        android:id="@+id/p_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
 
 </LinearLayout>
