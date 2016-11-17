@@ -1,5 +1,6 @@
 package com.jju.yuxin.cinews.activity;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,16 +8,21 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.adapter.VedioList_Adapter;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
+
+import java.util.List;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -30,11 +36,19 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private Button bt_top_left;
     private Button bt_top_right;
     private VedioInfoBean vedioInfoBean;
+    //加载完成的新闻集合
+    private List<VedioInfoBean> vedioinfos;
+
+
+    //视频新闻爬取地址
+    private static final String path = "http://www.jxntv.cn/";
 
     //加载成功
     private static final int SUCCESS_LOAD = 0;
     //加载失败
     private static final int FAIL_LOAD = 1;
+    //加载失败
+    private static final int SUCCESS_LOAD_DETAIL = 2;
 
     //当加载数据完毕需要更新界面数据
     Handler mhandler = new Handler() {
@@ -43,8 +57,15 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             super.handleMessage(msg);
 
             switch (msg.what) {
-                //视频新闻加载成功
+
+                //加载成功
                 case SUCCESS_LOAD:
+                    vedioinfos = (List<VedioInfoBean>) msg.obj;
+                    //将内容填充到ListView
+                    lv_more_vedio.setAdapter(new VedioList_Adapter(VedioNewsDetailsActivity.this, vedioinfos,volleyUtils));
+                    break;
+                //视频新闻加载成功
+                case SUCCESS_LOAD_DETAIL:
                     vedioInfoBean = (VedioInfoBean) msg.obj;
                     //设置新闻内容
                     news_title.setText(vedioInfoBean.getNews_title());
@@ -70,6 +91,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private VideoView vedio_paly;
     private ImageView iv_shard;
     private int per_position = 0;
+    private ListView lv_more_vedio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +123,11 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         //视屏播放器
         vedio_paly = (VideoView) findViewById(R.id.vedio_paly);
 
+        //更多视频
+        lv_more_vedio = (ListView) findViewById(R.id.lv_more_vedio);
+
+        JsoupUtils.getNewPaper(path,mhandler);
+
         //给左侧按键设置点击事件,点击左侧按键将当前activity销毁
         bt_top_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +146,21 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         //传过来的视频新闻对象
         vedioInfoBean = getIntent().getParcelableExtra("vedio_news");
+
+        lv_more_vedio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //获取当前点击的item的对象
+                VedioInfoBean vedioInfoBean = vedioinfos.get(position);
+                //跳转至新闻详情页面
+                Intent intent=new Intent(VedioNewsDetailsActivity.this,VedioNewsDetailsActivity.class);
+                intent.putExtra("vedio_news",vedioInfoBean);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
 
 
@@ -262,8 +304,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         }
     }
-
-
     private class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
 
         @Override

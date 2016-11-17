@@ -34,6 +34,9 @@ public class JsoupUtils {
     //加载失败
     private static final int FAIL_LOAD = 1;
 
+    //加载成功
+    private static final int SUCCESS_LOAD_DETAIL = 2;
+
     /**
      * 获取视频新闻对象,显示在ListView中
      * @param path
@@ -135,7 +138,7 @@ public class JsoupUtils {
                     MyLogger.hLog().e("play_src:" + play_src + "push_date:" + push_date + "news_title:" + news_title + "play_count" + play_count);
                     //成功获取到视频新闻详情需要显示的内容
                     Message msg=Message.obtain();
-                    msg.what=SUCCESS_LOAD;
+                    msg.what=SUCCESS_LOAD_DETAIL;
                     msg.obj=vedioInfoBean;
                     mhandler.sendMessage(msg);
 

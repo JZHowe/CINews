@@ -79,6 +79,7 @@ public class VedioActivity extends BaseActivity {
         //加载动画
         pb_loading = (LinearLayout) findViewById(R.id.pb_loading);
         pb_loading.setVisibility(View.VISIBLE);
+
         lv_vedio_news.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

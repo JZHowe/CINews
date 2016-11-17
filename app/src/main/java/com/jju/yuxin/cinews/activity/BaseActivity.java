@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.volleyutils.VolleyUtils;
@@ -47,8 +48,8 @@ public class BaseActivity extends Activity {
 
         //volley工具类的封装,在构造函数中已经对RequestQueue进行了初始化
         volleyUtils = new VolleyUtils(this);
-
-
+        //将所有的activity跳转都带动画
+        overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
 
     }
 
