@@ -45,7 +45,6 @@ public class LoadingActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-
         //检查联网状态
         if (NetUtils.isConnected(LoadingActivity.this) == NetUtils.NO_CONNECTED) {
             hlog.e("联网失败");
