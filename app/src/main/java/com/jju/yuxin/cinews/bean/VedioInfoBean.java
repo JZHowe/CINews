@@ -10,7 +10,7 @@ import android.os.Parcelable;
  * Created by yuxin.
  * Created time 2016/11/15 0015 上午 10:33.
  * Version   1.0;
- * Describe :
+ * Describe :视屏信息的bean
  * History:
  * ==============================================================================
  */

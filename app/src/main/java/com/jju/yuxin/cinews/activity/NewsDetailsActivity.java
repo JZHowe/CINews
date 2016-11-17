@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.bean.MessageBean;
+import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
@@ -69,7 +70,8 @@ public class NewsDetailsActivity extends BaseActivity {
 
         }
     };
-    
+    private NewsBean newsBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,9 +119,10 @@ public class NewsDetailsActivity extends BaseActivity {
     //接收的list信息详情
     private void getInfo(){
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        //获取传送过来的新闻对象,方便收藏操作存储
+        newsBean = intent.getParcelableExtra("news");
         Map<String,Object> oMap = new HashMap<String,Object>();
-        oMap.put("id",id);
+        oMap.put("id", newsBean.getId());
         Ksoap2Util.doBackgroud(mhandler,R.id.text3,"getartile",oMap);
     }
 

@@ -289,9 +289,9 @@ public class News_Pageadapter extends PagerAdapter {
     private AdapterView.OnItemClickListener itmeListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String id_ = olist2.get(position).getId();
             Intent intent = new Intent(context, NewsDetailsActivity.class);
-            intent.putExtra("id",id_);
+            //将新闻列表对象传入方便收藏操作存储
+            intent.putExtra("news",olist2.get(position));
             context.startActivity(intent);
         }
     };

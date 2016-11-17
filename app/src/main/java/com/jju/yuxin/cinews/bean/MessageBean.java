@@ -1,5 +1,8 @@
 package com.jju.yuxin.cinews.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * =============================================================================
  * Copyright (c) 2016 yuxin All rights reserved.
@@ -7,12 +10,12 @@ package com.jju.yuxin.cinews.bean;
  * Created by yuxin.
  * Created time 2016/11/17 0017 上午 8:42.
  * Version   1.0;
- * Describe :
+ * Describe : 新闻详情的Bean
  * History:
  * ==============================================================================
  */
 
-public class MessageBean {
+public class MessageBean implements Parcelable {
     private String name;
     private String time;
     private String Source;
@@ -69,4 +72,41 @@ public class MessageBean {
     public void setTime(String time) {
         this.time = time;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.time);
+        dest.writeString(this.Source);
+        dest.writeString(this.Content);
+        dest.writeString(this.Count);
+    }
+
+    public MessageBean() {
+    }
+
+    protected MessageBean(Parcel in) {
+        this.name = in.readString();
+        this.time = in.readString();
+        this.Source = in.readString();
+        this.Content = in.readString();
+        this.Count = in.readString();
+    }
+
+    public static final Parcelable.Creator<MessageBean> CREATOR = new Parcelable.Creator<MessageBean>() {
+        @Override
+        public MessageBean createFromParcel(Parcel source) {
+            return new MessageBean(source);
+        }
+
+        @Override
+        public MessageBean[] newArray(int size) {
+            return new MessageBean[size];
+        }
+    };
 }

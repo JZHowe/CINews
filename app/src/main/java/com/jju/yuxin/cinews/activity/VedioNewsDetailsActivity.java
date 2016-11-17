@@ -115,10 +115,12 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         //播放完成回调
         vedio_paly.setOnCompletionListener(new MyPlayerOnCompletionListener());
 
+        //播放错误监听
         vedio_paly.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 hlog.e("what"+what+"extra"+extra);
+                Toast.makeText(VedioNewsDetailsActivity.this, "视频好像出现了一点问题!", Toast.LENGTH_SHORT).show();
                 vedio_paly.seekTo(0);
                 return true;
             }
