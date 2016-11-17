@@ -1,6 +1,7 @@
 package com.jju.yuxin.cinews.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -8,18 +9,21 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.activity.NewsDetailsActivity;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.service.PagerDateInit;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.InnerViewPager;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,7 @@ public class News_Pageadapter extends PagerAdapter {
     private TextView textView;
     private InnerViewPager new_inner_vp;   //里层的ViewPager
     private List<NewsBean> olist1;       //里层viewPager的信息集合
+    private List<NewsBean> olist2 = new ArrayList<>();
     private LinearLayout ll;
 
     private int index = 0;
@@ -66,6 +71,23 @@ public class News_Pageadapter extends PagerAdapter {
         inflater = LayoutInflater.from(context);
         //在viewpager的构造中将初始化了的图片轮播线程开启
         thread.start();
+    }
+
+    //获得当前的view
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what==R.id.text5) {
+                    String info = (String) msg.obj;
+                    olist2 = JsonUtil.parseJSON(info);
+                    MyLogger.zLog().e(olist2+"%%%%%%%%%%%");
+                }
+            }
+        };
+        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler,R.id.text5);
+
     }
 
     @Override
@@ -160,10 +182,13 @@ public class News_Pageadapter extends PagerAdapter {
                 switch (msg.what) {
                     case R.id.text2:
                         String info = (String) msg.obj;
-                        List<NewsBean> olist2 = JsonUtil.parseJSON(info);
+                        List<NewsBean> olist = new ArrayList<NewsBean>();
+                        olist = JsonUtil.parseJSON(info);
                         //listview的数据初始化
-                        if (olist2 != null) {
-                            lv_content.setAdapter(new Lv_content_Adapter(context, olist2));
+                        if (olist != null) {
+                            lv_content.setAdapter(new Lv_content_Adapter(context, olist));
+                            lv_content.setOnItemClickListener(itmeListener);
+
                         }
                         break;
                 }
@@ -172,7 +197,7 @@ public class News_Pageadapter extends PagerAdapter {
         };
 
         //根据view当前位置,对应ListView的内容
-        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler);
+        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler,R.id.text2);
 
         //将当前的的页面添加至最外层的viewpages
         container.addView(viewList.get(position));
@@ -257,6 +282,17 @@ public class News_Pageadapter extends PagerAdapter {
         @Override
         public void onPageScrollStateChanged(int state) {
 
+        }
+    };
+
+    //列表项点击事件
+    private AdapterView.OnItemClickListener itmeListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String id_ = olist2.get(position).getId();
+            Intent intent = new Intent(context, NewsDetailsActivity.class);
+            intent.putExtra("id",id_);
+            context.startActivity(intent);
         }
     };
 }

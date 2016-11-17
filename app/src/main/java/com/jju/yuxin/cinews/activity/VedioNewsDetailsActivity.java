@@ -8,7 +8,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -16,6 +15,7 @@ import android.widget.VideoView;
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
+
 
 public class VedioNewsDetailsActivity extends BaseActivity {
 
@@ -37,7 +37,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             switch (msg.what) {
                 //视频新闻加载成功
                 case SUCCESS_LOAD:
-                    VedioInfoBean vedioInfoBean= (VedioInfoBean) msg.obj;
+                    VedioInfoBean vedioInfoBean = (VedioInfoBean) msg.obj;
                     //设置新闻内容
                     news_title.setText(vedioInfoBean.getNews_title());
                     push_date.setText(vedioInfoBean.getPush_date());
@@ -55,7 +55,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         }
     };
-
 
 
     private TextView news_title;
@@ -107,20 +106,35 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private void playVedio(String play_src) {
 
 
-        Uri uri = Uri.parse( play_src );
+        Uri uri = Uri.parse(play_src);
 
 
         //设置视频控制器
         vedio_paly.setMediaController(new MediaController(this));
 
         //播放完成回调
-        vedio_paly.setOnCompletionListener( new MyPlayerOnCompletionListener());
+        vedio_paly.setOnCompletionListener(new MyPlayerOnCompletionListener());
+
+        vedio_paly.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                hlog.e("what"+what+"extra"+extra);
+                vedio_paly.seekTo(0);
+                return true;
+            }
+        });
 
         //设置视频路径
         vedio_paly.setVideoURI(uri);
 
-        //开始播放视频
-        vedio_paly.start();
+        //准备完成
+        vedio_paly.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                //开始播放视频
+                vedio_paly.start();
+            }
+        });
 
     }
 
@@ -138,7 +152,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         @Override
         public void onCompletion(MediaPlayer mp) {
-            Toast.makeText( VedioNewsDetailsActivity.this, "播放完成!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VedioNewsDetailsActivity.this, "播放完成!", Toast.LENGTH_SHORT).show();
         }
     }
 }

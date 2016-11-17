@@ -21,6 +21,7 @@
     <dimen name="high_1px">1px</dimen>
     <dimen name="high_2px">2px</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
     <dimen name="dimen_50dp">50dp</dimen>
     <dimen name="dimen_5dp">5dp</dimen>
 </resources>
