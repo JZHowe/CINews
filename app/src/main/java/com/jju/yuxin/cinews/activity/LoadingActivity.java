@@ -121,7 +121,8 @@ public class LoadingActivity extends BaseActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+        //第一个参数为MainActivity进入的动画效果，第二个为LoadingActivity退出的效果
+        overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
 
     }
 }
