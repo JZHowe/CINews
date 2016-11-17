@@ -23,7 +23,6 @@ import com.jju.yuxin.cinews.service.PagerDateInit;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.InnerViewPager;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,13 +137,14 @@ public class News_Pageadapter extends PagerAdapter {
             new_inner_vp = (InnerViewPager) viewList.get(position).findViewById(R.id.new_inner_vp);
             new_inner_vp.setOnPageChangeListener(listener);
 
+
             Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
                     switch (msg.what) {
                         case R.id.text1:
                             String info = (String) msg.obj;
-                            MyLogger.lLog().e(info);
+                            MyLogger.lLog().e("*&*&*"+info);
                             olist1 = JsonUtil.parseJSON(info);
                             MyLogger.lLog().e("zi" + ll.getChildCount());
                             if (ll.getChildCount() == 0) {
@@ -284,6 +284,8 @@ public class News_Pageadapter extends PagerAdapter {
 
         }
     };
+
+
 
     //列表项点击事件
     private AdapterView.OnItemClickListener itmeListener = new AdapterView.OnItemClickListener() {

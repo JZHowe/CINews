@@ -1,6 +1,7 @@
 package com.jju.yuxin.cinews.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.activity.NewsDetailsActivity;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
 
@@ -64,15 +66,25 @@ public class InnerPagerAdapter extends PagerAdapter {
 
 	//为下一个即将加载的item初始化
 	@Override
-	public Object instantiateItem(ViewGroup container, int position) {
+	public Object instantiateItem(ViewGroup container, final int position) {
 		// 实例化控件
 		ImageView imageView = new ImageView(context);
-
-
+		//给图片添加点击事件
+		imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//				String id_ = picList.get(position).getKey();
+//				MyLogger.lLog().e("&**&&**&*&"+id_);
+				Intent intent = new Intent(context, NewsDetailsActivity.class);
+//				intent.putExtra("id",id_);
+				intent.putExtra("news",picList.get(position));
+				context.startActivity(intent);
+			}
+		});
 		//设置图片拉伸填充整个控件
 		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 		//使用图片三级缓存
-		ImageCacheManager.loadImage(context, picList.get(position).getUrl(), imageView, R.drawable.defaut_pic, R.drawable.fail_pic,0,0, ImageView.ScaleType.FIT_XY);
+		ImageCacheManager.loadImage(context, picList.get(position).getUrl(), imageView, R.drawable.picture_loading, R.drawable.picture_failure,0,0, ImageView.ScaleType.FIT_XY);
 		//将控件放置到容器中
 		container.addView(imageView);
 		return imageView;

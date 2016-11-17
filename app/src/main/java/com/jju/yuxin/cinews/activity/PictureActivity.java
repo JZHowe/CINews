@@ -1,9 +1,11 @@
 package com.jju.yuxin.cinews.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -33,6 +35,7 @@ import java.util.Map;
  * ==============================================================================
  */
 public class PictureActivity extends BaseActivity {
+    private static final String ID = "404d560a-442c-46a5-b1cf-c44fe459f893";
     private Map<String, Object> oMap = new HashMap<>();
     private String name = "getlistartile";
     private List<NewsBean> olist = new ArrayList<>();
@@ -59,14 +62,25 @@ public class PictureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
         listView = (ListView) findViewById(R.id.p_listView);
+
         //加载动画
         pb_loading = (LinearLayout) findViewById(R.id.pb_loading);
         pb_loading.setVisibility(View.VISIBLE);
+        listView.setOnItemClickListener(listener);
 
-        oMap.put("id", "404d560a-442c-46a5-b1cf-c44fe459f893");
+        oMap.put("id", ID);
         oMap.put("page", 1);
         Ksoap2Util.doBackgroud(handler, R.id.text4, name, oMap);
 
     }
+    //列表项点击事件
+    private AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(PictureActivity.this, NewsDetailsActivity.class);
+            intent.putExtra("news",olist.get(position));
+            startActivity(intent);
+        }
+    };
 
 }

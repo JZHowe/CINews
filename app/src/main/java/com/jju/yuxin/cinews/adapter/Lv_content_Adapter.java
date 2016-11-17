@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.bean.NewsBean;
-import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
 
 import java.util.List;
@@ -75,7 +74,7 @@ public class Lv_content_Adapter extends BaseAdapter {
         if (oList.get(position).getUrl()!=null) {
             holder.image.setVisibility(View.VISIBLE);
             holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
-            ImageCacheManager.loadImage(context, oList.get(position).getUrl(), holder.image, R.drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.FIT_XY);
+            ImageCacheManager.loadImage(context, oList.get(position).getUrl(), holder.image, R.drawable.picture_loading, R.drawable.picture_failure, 0, 0, ImageView.ScaleType.FIT_XY);
             holder.name.setText(oList.get(position).getName());
             holder.summary.setText(oList.get(position).getSummary());
             holder.time.setText(oList.get(position).getTime());

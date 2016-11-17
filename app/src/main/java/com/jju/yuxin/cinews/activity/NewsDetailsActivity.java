@@ -13,16 +13,13 @@ import android.widget.Toast;
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.bean.MessageBean;
 import com.jju.yuxin.cinews.bean.NewsBean;
-import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.service.JsonUtil;
-import com.jju.yuxin.cinews.utils.JsoupUtils;
 import com.jju.yuxin.cinews.utils.Ksoap2Util;
 import com.jju.yuxin.cinews.utils.MyLogger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class NewsDetailsActivity extends BaseActivity {
 
@@ -59,11 +56,21 @@ public class NewsDetailsActivity extends BaseActivity {
                     String info = (String) msg.obj;
                     olist = JsonUtil.parseJSON_(info);
                     MyLogger.zLog().e(olist+"%%%%%%%%%%%%%%%%%%%%");
-                    webView.getSettings().setJavaScriptEnabled(true);
-                    webView.loadDataWithBaseURL(null,olist.get(0).getContent(),"text/html","UTF-8",null);
-                    news_title.setText(olist.get(0).getName());
-                    push_date.setText("发布时间:"+olist.get(0).getTime());
-                    reader_count.setText("阅读量:"+olist.get(0).getCount());
+                    //在这里进行非空判断
+                    if (olist.size()>0) {
+                        webView.getSettings().setJavaScriptEnabled(true);
+                        webView.loadDataWithBaseURL(null,olist.get(0).getContent(),"text/html","UTF-8",null);
+                        news_title.setText(olist.get(0).getName());
+                        push_date.setText("发布时间:"+olist.get(0).getTime());
+                        reader_count.setText("阅读量:"+olist.get(0).getCount());
+                    }else{
+                        //如果olist为空，则所有控件不显示
+                        webView.setVisibility(View.GONE);
+                        news_title.setVisibility(View.GONE);
+                        push_date.setVisibility(View.GONE);
+                        reader_count.setVisibility(View.GONE);
+                        Toast.makeText(NewsDetailsActivity.this, "暂无内容！", Toast.LENGTH_SHORT).show();
+                    }
                 default:
                     break;
             }
@@ -122,8 +129,15 @@ public class NewsDetailsActivity extends BaseActivity {
         //获取传送过来的新闻对象,方便收藏操作存储
         newsBean = intent.getParcelableExtra("news");
         Map<String,Object> oMap = new HashMap<String,Object>();
-        oMap.put("id", newsBean.getId());
-        Ksoap2Util.doBackgroud(mhandler,R.id.text3,"getartile",oMap);
+        //由于图片滑动部分点击进入时传入的是“key”,“id”为空，因此要在这里进行判断
+        if (newsBean.getId()==null) {
+            oMap.put("id", newsBean.getKey());
+            Ksoap2Util.doBackgroud(mhandler,R.id.text3,"getartile",oMap);
+        //有ID的时候，表示是listview条目的点击传过来的
+        }else {
+            oMap.put("id", newsBean.getId());
+            Ksoap2Util.doBackgroud(mhandler,R.id.text3,"getartile",oMap);
+        }
     }
 
     @Override

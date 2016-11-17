@@ -1,7 +1,6 @@
 package com.jju.yuxin.cinews.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
@@ -72,7 +71,7 @@ public class BaseActivity extends Activity {
                     firstTime = secondTime;
                     return true;
                 } else {
-                    ActivityCollector.removeActivity(this);
+                    ActivityCollector.finishAll();
                 }
                 break;
         }
