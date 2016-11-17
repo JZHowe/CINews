@@ -48,6 +48,8 @@ public class BaseActivity extends Activity {
         //volley工具类的封装,在构造函数中已经对RequestQueue进行了初始化
         volleyUtils = new VolleyUtils(this);
 
+
+
     }
 
 
