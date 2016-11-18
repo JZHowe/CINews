@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,8 +17,10 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.bean.FavorBean;
 import com.jju.yuxin.cinews.adapter.VedioList_Adapter;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
+import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private Button bt_top_left;
     private Button bt_top_right;
     private VedioInfoBean vedioInfoBean;
+    private FavorBean mFavorBean = new FavorBean();
+    //是否收藏
+    private boolean isFavor = false;
     //加载完成的新闻集合
     private List<VedioInfoBean> vedioinfos;
 
@@ -57,7 +61,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             super.handleMessage(msg);
 
             switch (msg.what) {
-
                 //加载成功
                 case SUCCESS_LOAD:
                     vedioinfos = (List<VedioInfoBean>) msg.obj;
@@ -123,6 +126,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         //视屏播放器
         vedio_paly = (VideoView) findViewById(R.id.vedio_paly);
 
+        getInfo();
         //更多视频
         lv_more_vedio = (ListView) findViewById(R.id.lv_more_vedio);
 
@@ -139,14 +143,19 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         bt_top_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo 收藏操作
-                Toast.makeText(VedioNewsDetailsActivity.this, "收藏操作", Toast.LENGTH_SHORT).show();
+                if (isFavor) {
+                    bt_top_right.setBackgroundResource(R.drawable.shoucang_new_one);
+                    DbUtils.deleteVideoFavor(vedioInfoBean);
+                    isFavor = false;
+                    Toast.makeText(VedioNewsDetailsActivity.this, "已取消", Toast.LENGTH_SHORT).show();
+                } else {
+                    bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+                    DbUtils.saveFavor(mFavorBean);
+                    isFavor = true;
+                    Toast.makeText(VedioNewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-        //传过来的视频新闻对象
-        vedioInfoBean = getIntent().getParcelableExtra("vedio_news");
-
         lv_more_vedio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -160,8 +169,33 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             }
         });
 
-
     }
+
+
+
+
+    //接收list的信息
+    private void getInfo() {
+        //传过来的视频新闻对象
+        vedioInfoBean = getIntent().getParcelableExtra("vedio_news");
+        getFavor();
+        //判断是否收藏
+        if (DbUtils.searchVideoFavor(vedioInfoBean).size() > 0) {
+            isFavor = true;
+            bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+        }
+    }
+
+    //获得要存储的新闻信息
+    private void getFavor() {
+        mFavorBean.setDate(vedioInfoBean.getNews_date());
+        mFavorBean.setTitle(vedioInfoBean.getNews_info());
+        mFavorBean.setNews_id(String.valueOf(vedioInfoBean.getId()));
+        mFavorBean.setImg_src(vedioInfoBean.getImg_src());
+        mFavorBean.setVideo_src(vedioInfoBean.getVideo_src());
+        mFavorBean.setType("video");
+    }
+
 
 
     @Override
@@ -252,6 +286,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
      * @param play_src
      */
     private void playVedio(String play_src) {
+
 
         Uri uri = Uri.parse(play_src);
 

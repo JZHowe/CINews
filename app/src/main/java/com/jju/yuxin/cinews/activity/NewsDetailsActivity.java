@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -11,11 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.bean.FavorBean;
 import com.jju.yuxin.cinews.bean.MessageBean;
 import com.jju.yuxin.cinews.bean.NewsBean;
+import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.utils.Ksoap2Util;
 import com.jju.yuxin.cinews.utils.MyLogger;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +34,11 @@ public class NewsDetailsActivity extends BaseActivity {
     private TextView reader_count;
     private WebView webView;
     List<MessageBean> olist;
+    private FavorBean mFavorBean = new FavorBean();
+
+    //是否收藏
+    private boolean isFavor = false;
+
     //加载成功
     private static final int SUCCESS_LOAD = 0;
     //加载失败
@@ -46,7 +55,6 @@ public class NewsDetailsActivity extends BaseActivity {
                 case SUCCESS_LOAD:
 
 
-
                     break;
                 //视频新闻加载失败
                 case FAIL_LOAD:
@@ -55,21 +63,23 @@ public class NewsDetailsActivity extends BaseActivity {
                 case R.id.text3:
                     String info = (String) msg.obj;
                     olist = JsonUtil.parseJSON_(info);
-                    MyLogger.zLog().e(olist+"%%%%%%%%%%%%%%%%%%%%");
+                    MyLogger.zLog().e(olist + "%%%%%%%%%%%%%%%%%%%%");
                     //在这里进行非空判断
-                    if (olist.size()>0) {
+                    if (olist.size() > 0) {
                         webView.getSettings().setJavaScriptEnabled(true);
-                        webView.loadDataWithBaseURL(null,olist.get(0).getContent(),"text/html","UTF-8",null);
+                        webView.loadDataWithBaseURL(null, olist.get(0).getContent(), "text/html",
+                                "UTF-8", null);
                         news_title.setText(olist.get(0).getName());
-                        push_date.setText("发布时间:"+olist.get(0).getTime());
-                        reader_count.setText("阅读量:"+olist.get(0).getCount());
-                    }else{
+                        push_date.setText("发布时间:" + olist.get(0).getTime());
+                        reader_count.setText("阅读量:" + olist.get(0).getCount());
+                    } else {
                         //如果olist为空，则所有控件不显示
                         webView.setVisibility(View.GONE);
                         news_title.setVisibility(View.GONE);
                         push_date.setVisibility(View.GONE);
                         reader_count.setVisibility(View.GONE);
-                        Toast.makeText(NewsDetailsActivity.this, "暂无内容！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewsDetailsActivity.this, "暂无内容！", Toast.LENGTH_SHORT)
+                                .show();
                     }
                 default:
                     break;
@@ -93,7 +103,7 @@ public class NewsDetailsActivity extends BaseActivity {
         bt_top_left.setVisibility(View.VISIBLE);
         bt_top_right.setVisibility(View.VISIBLE);
         bt_top_left.setBackgroundResource(R.drawable.bt_return_selector);
-        bt_top_right.setBackgroundResource(R.drawable.bt_shoucang_selector);
+        bt_top_right.setBackgroundResource(R.drawable.shoucang_new_one);
 
         //新闻标题
         news_title = (TextView) findViewById(R.id.news_title);
@@ -101,6 +111,7 @@ public class NewsDetailsActivity extends BaseActivity {
         push_date = (TextView) findViewById(R.id.push_date);
         //新闻阅读次数,或者视频播放次数
         reader_count = (TextView) findViewById(R.id.reader_count);
+        getInfo();
 
 
         //给左侧按键设置点击事件,点击左侧按键将当前activity销毁
@@ -114,31 +125,60 @@ public class NewsDetailsActivity extends BaseActivity {
         bt_top_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo 收藏操作
-                Toast.makeText(NewsDetailsActivity.this, "收藏操作", Toast.LENGTH_SHORT).show();
+                if (isFavor) {
+                    bt_top_right.setBackgroundResource(R.drawable.shoucang_new_one);
+                    DbUtils.deleteFavor(newsBean);
+                    isFavor = false;
+                    Toast.makeText(NewsDetailsActivity.this, "已取消", Toast.LENGTH_SHORT).show();
+                } else {
+                    bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+                    DbUtils.saveFavor(mFavorBean);
+                    isFavor = true;
+                    Toast.makeText(NewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
-        getInfo();
 
     }
 
     //接收的list信息详情
-    private void getInfo(){
+    private void getInfo() {
         Intent intent = getIntent();
         //获取传送过来的新闻对象,方便收藏操作存储
         newsBean = intent.getParcelableExtra("news");
-        Map<String,Object> oMap = new HashMap<String,Object>();
+        Map<String, Object> oMap = new HashMap<String, Object>();
         //由于图片滑动部分点击进入时传入的是“key”,“id”为空，因此要在这里进行判断
-        if (newsBean.getId()==null) {
+        if (newsBean.getId() == null) {
             oMap.put("id", newsBean.getKey());
-            Ksoap2Util.doBackgroud(mhandler,R.id.text3,"getartile",oMap);
-        //有ID的时候，表示是listview条目的点击传过来的
-        }else {
+            Ksoap2Util.doBackgroud(mhandler, R.id.text3, "getartile", oMap);
+            //有ID的时候，表示是listview条目的点击传过来的
+        } else {
             oMap.put("id", newsBean.getId());
-            Ksoap2Util.doBackgroud(mhandler,R.id.text3,"getartile",oMap);
+            Ksoap2Util.doBackgroud(mhandler, R.id.text3, "getartile", oMap);
         }
+
+        //判断是否收藏
+        if (DbUtils.searchFavor(newsBean).size() > 0) {
+            isFavor = true;
+            bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+        }
+        getFavor();
     }
+
+    //获得要存储的新闻信息
+    private void getFavor() {
+        mFavorBean.setDate(newsBean.getTime());
+        mFavorBean.setTitle(newsBean.getName());
+        mFavorBean.setSummary(newsBean.getSummary());
+        mFavorBean.setNews_id(newsBean.getId());
+        mFavorBean.setImg_src(newsBean.getUrl());
+        mFavorBean.setKey(newsBean.getKey());
+        mFavorBean.setType("new");
+
+    }
+
 
     @Override
     protected void onResume() {

@@ -16,7 +16,7 @@ android {
         config {
             keyAlias 'key'
             keyPassword '962464'
-            storeFile file('C:/Users/yuxin/Key.store.jks')
+            storeFile file('C:/Key.store.jks')
             storePassword '962464'
         }
     }
@@ -64,4 +64,5 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.7.10.jar')
     compile project(':library')
     compile files('libs/jpush-android-2.2.0.jar')
+    compile files('libs/litepal-1.4.0-src.jar')
 }
