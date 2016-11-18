@@ -57,8 +57,10 @@ public class PictureActivity extends BaseActivity {
                     String info = (String) msg.obj;
                     MyLogger.lLog().e(info);
                     olist = JsonUtil.parseJSON(info);
-                    pAdapter = new PAdapter(PictureActivity.this, olist);
-                    listView.setAdapter(pAdapter);
+                    if (olist!=null){
+                        pAdapter = new PAdapter(PictureActivity.this, olist);
+                        listView.setAdapter(pAdapter);
+                    }
 
                     break;
             }

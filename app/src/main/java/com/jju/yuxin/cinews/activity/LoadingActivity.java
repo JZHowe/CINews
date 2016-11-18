@@ -47,9 +47,7 @@ public class LoadingActivity extends BaseActivity {
         //SharedSDK的初始化
         ShareSDK.initSDK(this);
 
-        //极光推送的初始化
-        JPushInterface.setDebugMode(true);//如果时正式版就改成false
-        JPushInterface.init(this);
+
 
         BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(LoadingActivity.this);
         builder.statusBarDrawable = R.mipmap.ic_launcher;
@@ -66,13 +64,10 @@ public class LoadingActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        //用于极光推送的统计
-        JPushInterface.onResume(this);
-
         //检查联网状态
         if (NetUtils.isConnected(LoadingActivity.this) == NetUtils.NO_CONNECTED) {
             hlog.e("联网失败");
-
+            JPushInterface.onResume(this);
             //开启一个定时器,在1.5秒后跳出提示信息
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -119,6 +114,12 @@ public class LoadingActivity extends BaseActivity {
                 }
             }, DALAY_TIME);
         } else {
+
+            //极光推送的初始化
+            JPushInterface.setDebugMode(true);//如果时正式版就改成false
+            JPushInterface.init(this);
+            //用于极光推送的统计
+            JPushInterface.onResume(this);
             //网络连接正常
             new Timer().schedule(new TimerTask() {
                 @Override

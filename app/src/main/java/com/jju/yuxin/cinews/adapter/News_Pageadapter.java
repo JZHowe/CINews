@@ -154,7 +154,7 @@ public class News_Pageadapter extends PagerAdapter {
                             MyLogger.lLog().e("*&*&*"+info);
                             olist1 = JsonUtil.parseJSON(info);
                             //通过判断当前视图的子视图的个数,放置viewpager的小圆点重复创建
-                            if (ll.getChildCount() == 0) {
+                            if (ll.getChildCount() == 0&&olist1!=null) {
                                 textviewLists = new ArrayList<>();
                                 for (int i = 0; i < olist1.size(); i++) {
                                     TextView textView = new TextView(context);
@@ -169,8 +169,10 @@ public class News_Pageadapter extends PagerAdapter {
                                     ll.addView(textView);
                                 }
                             }
+                            if (olist1!=null){
                             new_inner_vp.setAdapter(new InnerPagerAdapter(context, olist1,
                                     textView));
+                            }
 
                             break;
                     }
