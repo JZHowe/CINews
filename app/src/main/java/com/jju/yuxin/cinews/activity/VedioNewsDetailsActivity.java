@@ -59,7 +59,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
             switch (msg.what) {
                 //加载成功
                 case SUCCESS_LOAD:
