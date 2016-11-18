@@ -47,6 +47,9 @@ public class LoadingActivity extends BaseActivity {
         //SharedSDK的初始化
         ShareSDK.initSDK(this);
 
+        //极光推送的初始化
+        JPushInterface.setDebugMode(true);//如果时正式版就改成false
+        JPushInterface.init(this);
 
 
         BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(LoadingActivity.this);
@@ -115,9 +118,6 @@ public class LoadingActivity extends BaseActivity {
             }, DALAY_TIME);
         } else {
 
-            //极光推送的初始化
-            JPushInterface.setDebugMode(true);//如果时正式版就改成false
-            JPushInterface.init(this);
             //用于极光推送的统计
             JPushInterface.onResume(this);
             //网络连接正常
