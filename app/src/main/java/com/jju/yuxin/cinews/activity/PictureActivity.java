@@ -123,7 +123,7 @@ public class PictureActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(PictureActivity.this, NewsDetailsActivity.class);
-            intent.putExtra("news",olist.get(position));
+            intent.putExtra("news",olist.get(position-1));
             startActivity(intent);
         }
     };

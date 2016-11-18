@@ -39,6 +39,9 @@ public class Lv_content_Adapter extends BaseAdapter {
         this.oList = oList;
         inflater = LayoutInflater.from(context);
     }
+    public void replaceList(List<NewsBean> oList) {
+        this.oList = oList;
+    }
 
     @Override
     public int getCount() {

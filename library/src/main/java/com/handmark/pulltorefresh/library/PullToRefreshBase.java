@@ -1363,7 +1363,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		 * setting the Refresh state via
 		 * {@link PullToRefreshBase#setRefreshing() setRefreshing()}.
 		 */
-		MANUAL_REFRESH_ONLY(0x4);
+		MANUAL_REFRESH_ONLY(0x4), ;
 
 		/**
 		 * @deprecated Use {@link #PULL_FROM_START} from now on.

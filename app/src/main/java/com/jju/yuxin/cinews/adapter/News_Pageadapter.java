@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +17,22 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.activity.NewsDetailsActivity;
 import com.jju.yuxin.cinews.bean.NewsBean;
+import com.jju.yuxin.cinews.service.GetDataTask;
+import com.jju.yuxin.cinews.service.GetDataTask2;
 import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.service.PagerDateInit;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.InnerViewPager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * =============================================================================
@@ -56,7 +63,12 @@ public class News_Pageadapter extends PagerAdapter {
     //初始化图片轮播的线程
     private MyThread threads = new MyThread();
     //标志位,放置信息的重复加载
-    private  Object object_flag=100;
+    private Object object_flag = 100;
+
+    private Lv_content_Adapter adapter;         //新闻条目的adapter
+//    private int page=2;
+    int [] pageArray = new int[]{2,2,2,2,2,2,2,2};
+    private Map<String,Object> pagenumber = new HashMap<>();
 
     /**
      * viewList是需要加载的item集合（OuterViewPager的集合）
@@ -74,23 +86,26 @@ public class News_Pageadapter extends PagerAdapter {
         //在viewpager的构造中将初始化了的图片轮播线程开启
         thread.start();
     }
+
     //获取消息,加载当前页面视图
-    Handler handler_text5 = new Handler(){
+    Handler handler_text5 = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what==R.id.text5) {
+            if (msg.what == R.id.text5) {
                 String info = (String) msg.obj;
                 olist2 = JsonUtil.parseJSON(info);
             }
         }
     };
+
     //切换页面到当前,开启线程加载当前页面的信息发送给适配器,更新页面
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         //第一次进来,不相等,直到切换页面才会再次的加载页面,有效的放置了,数据不断重复加载
-        if (!object_flag.equals(object)){
-        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler_text5,R.id.text5);
-            object_flag=object;
+        if (!object_flag.equals(object)) {
+            MyLogger.lLog().e("***&****&&");
+            PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler_text5, R.id.text5);
+            object_flag = object;
         }
 
     }
@@ -109,7 +124,7 @@ public class News_Pageadapter extends PagerAdapter {
 
     //为下一个即将加载的item初始化
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         //当第一个页面被初始化的时候，将线程从暂停状态转为运行状态
         if (position == 0) {
             isstop = false;
@@ -124,9 +139,11 @@ public class News_Pageadapter extends PagerAdapter {
 
 
         //获取当前item的listview
-        final ListView lv_content = (ListView) viewList.get(position).findViewById(R.id.lv_content);
+        final PullToRefreshListView lv_content = (PullToRefreshListView) viewList.get(position).findViewById(R.id.pull_refresh_list);
+
+
         //加载动画
-        final LinearLayout pb_loading = (LinearLayout)viewList.get(position).findViewById(R.id.pb_loading);
+        final LinearLayout pb_loading = (LinearLayout) viewList.get(position).findViewById(R.id.pb_loading);
         pb_loading.setVisibility(View.VISIBLE);
 
 
@@ -151,7 +168,7 @@ public class News_Pageadapter extends PagerAdapter {
                     switch (msg.what) {
                         case R.id.text1:
                             String info = (String) msg.obj;
-                            MyLogger.lLog().e("*&*&*"+info);
+                            MyLogger.lLog().e("*&*&*" + info);
                             olist1 = JsonUtil.parseJSON(info);
                             //通过判断当前视图的子视图的个数,放置viewpager的小圆点重复创建
                             if (ll.getChildCount() == 0&&olist1!=null) {
@@ -185,7 +202,42 @@ public class News_Pageadapter extends PagerAdapter {
 
         }
 
+        final PullToRefreshBase.OnRefreshListener2<ListView> refreshListener = new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                String label = DateUtils.formatDateTime(
+                        context,
+                        System.currentTimeMillis(),
+                        DateUtils.FORMAT_SHOW_TIME
+                                | DateUtils.FORMAT_SHOW_DATE
+                                | DateUtils.FORMAT_ABBREV_ALL);
+                // 显示最后更新的时间
+                refreshView.getLoadingLayoutProxy()
+                        .setLastUpdatedLabel(label);
+
+                Log.e("TAG", "onPullDownToRefresh");
+                //这里写下拉刷新的任务
+                new GetDataTask2(lv_content,adapter).execute();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                Log.e("TAG", "onPullUpToRefresh");
+                //这里写上拉加载更多的任务
+
+                pagenumber.put((String) viewList.get(position).getTag(),pageArray[position]);
+
+                int chuanpage = (int)pagenumber.get((String) viewList.get(position).getTag());
+                new GetDataTask(adapter,olist2,lv_content,(String) viewList.get(position).getTag(),context,chuanpage).execute();
+                pageArray[position]++;
+                MyLogger.lLog().e("page"+pageArray[position]);
+
+            }
+        };
+
+        //新闻listview条目的handle
         Handler handler_text2 = new Handler() {
+
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -196,8 +248,13 @@ public class News_Pageadapter extends PagerAdapter {
                         olist = JsonUtil.parseJSON(info);
                         //listview的数据初始化
                         if (olist != null) {
-                            lv_content.setAdapter(new Lv_content_Adapter(context, olist));
+                            MyLogger.lLog().e("%%%%%&&%%%%%%&");
+                            adapter = new Lv_content_Adapter(context, olist);
+                            lv_content.setAdapter(adapter);
                             lv_content.setOnItemClickListener(itmeListener);
+
+                            //设置刷新监听
+                            lv_content.setOnRefreshListener(refreshListener);
 
                         }
                         break;
@@ -207,7 +264,7 @@ public class News_Pageadapter extends PagerAdapter {
         };
 
         //根据view当前位置,对应ListView的内容
-        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler_text2,R.id.text2);
+        PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler_text2, R.id.text2);
 
         //将当前的的页面添加至最外层的viewpages
         container.addView(viewList.get(position));
@@ -238,7 +295,7 @@ public class News_Pageadapter extends PagerAdapter {
             while (true) {
                 while (!isstop) {
                     try {
-                        sleep(2000);
+                        sleep(4000);
                         index++;
                         image_handler.sendEmptyMessage(R.id.image_thread);
 
@@ -301,15 +358,20 @@ public class News_Pageadapter extends PagerAdapter {
     };
 
 
-
     //列表项点击事件
+    //PullToRefreshListView的Position问题:
+    // 在OnItemClickListener方法参数position，从1开始，
+    // 而不是像ListView那般从0开始。原因是因为PullToRefreshListView有Header
     private AdapterView.OnItemClickListener itmeListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(context, NewsDetailsActivity.class);
             //将新闻列表对象传入方便收藏操作存储
-            intent.putExtra("news",olist2.get(position));
+            intent.putExtra("news", olist2.get(position-1));
             context.startActivity(intent);
         }
     };
+
+
+
 }

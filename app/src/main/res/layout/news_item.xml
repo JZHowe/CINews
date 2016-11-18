@@ -53,11 +53,26 @@
         </RelativeLayout>
 
 
-        <ListView
-            android:id="@+id/lv_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff" />
+        <!--<ListView-->
+            <!--android:id="@+id/lv_content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="#ffffff" />-->
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pull_refresh_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true"
+            android:background="#ffffff"
+            ptr:ptrMode="both">
+        </com.handmark.pulltorefresh.library.PullToRefreshListView>
     </LinearLayout>
     <!--加载动画-->
     <include layout="@layout/activity_loading_pb" />
