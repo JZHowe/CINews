@@ -48,6 +48,7 @@ public class NewsActivity extends BaseActivity {
     private TextView tv_new_content;
     private GridView gv_add, gv_sub;
     private List<String> list_add, list_sub;
+    private List<String> list_isadd, list_issub;
     private ArrayAdapter<String> adapter, adapter2;
 
 
@@ -60,6 +61,8 @@ public class NewsActivity extends BaseActivity {
         viewList = new ArrayList<>();
         list_add = new ArrayList<>();
         list_sub = new ArrayList<>();
+        list_isadd = new ArrayList<>();
+        list_issub = new ArrayList<>();
         //ViewPageritem的item数据模拟初始化
         datainit(vp_new_content);
     }
@@ -184,6 +187,18 @@ public class NewsActivity extends BaseActivity {
                 //关闭抽屉
                 case R.id.ib_item_add:
                     drawer.animateClose();
+                    for (String s : list_issub) {
+                        list_add.add(s);
+                        list_sub.remove(s);
+                    }
+                    for (String s : list_isadd) {
+                        list_sub.add(s);
+                        list_add.remove(s);
+                    }
+                    adapter.notifyDataSetChanged();
+                    adapter2.notifyDataSetChanged();
+                    list_isadd.clear();
+                    list_issub.clear();
                     break;
 
                 //保存修改导航栏的操作
@@ -224,6 +239,9 @@ public class NewsActivity extends BaseActivity {
                     } else {
                         //添加要删除的项到未添加栏目的list中
                         list_sub.add(list_add.get(position));
+                        if (!list_issub.contains(list_add.get(position))) {
+                            list_issub.add(list_add.get(position));
+                        }
                         adapter2.notifyDataSetChanged();
                         //删除已添加栏目中的该项
                         list_add.remove(position);
@@ -236,6 +254,9 @@ public class NewsActivity extends BaseActivity {
                 case R.id.subItem:
                     //添加要删除的项到已添加栏目的list中
                     list_add.add(list_sub.get(position));
+                    if (list_isadd.contains(list_sub.get(position))) {
+                        list_isadd.add(list_sub.get(position));
+                    }
                     adapter.notifyDataSetChanged();
                     //删除未添加栏目中的该项
                     list_sub.remove(position);

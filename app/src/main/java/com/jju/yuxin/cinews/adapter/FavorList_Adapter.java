@@ -103,6 +103,7 @@ public class FavorList_Adapter extends BaseAdapter {
             holder.time.setText(oList.get(position).getDate());
 
         }
+
         //将当前位置作为holder.delete.的tag
         holder.delete.setTag(position);
 
