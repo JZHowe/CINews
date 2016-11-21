@@ -14,11 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
+        <!--<ListView-->
+            <!--android:id="@+id/lv_vedio_news"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+        <!--</ListView>-->
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/lv_vedio_news"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#19000000"
+            android:dividerHeight="1dp"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true"
+            ptr:ptrMode="both">
+        </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
         <!--加载动画,id=pb_loading,需要注意的是应该和ListView在同一个RelativeLayout下-->
         <include layout="@layout/activity_loading_pb"/>
 

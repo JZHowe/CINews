@@ -49,6 +49,7 @@ public class PictureActivity extends BaseActivity {
     private LinearLayout pb_loading;   //进来时加载的动画
 
     private PAdapter pAdapter;
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -97,7 +98,7 @@ public class PictureActivity extends BaseActivity {
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);
 
-                Log.e("TAG", "onPullDownToRefresh");
+                llog.e("onPullDownToRefresh");
                 //这里写下拉刷新的任务
                 new GetDataTask().execute();
             }

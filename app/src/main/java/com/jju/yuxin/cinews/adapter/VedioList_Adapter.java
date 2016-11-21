@@ -47,6 +47,11 @@ public class VedioList_Adapter extends BaseAdapter {
         return vedioinfos.size();
     }
 
+
+    public void replaceList(List<VedioInfoBean> vedioinfos){
+        this.vedioinfos = vedioinfos;
+    }
+
     @Override
     public Object getItem(int position) {
         return vedioinfos.get(position);

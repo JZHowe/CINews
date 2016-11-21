@@ -1,6 +1,7 @@
 package com.jju.yuxin.cinews.activity;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
@@ -10,6 +11,10 @@ import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.volleyutils.VolleyUtils;
+
+import cn.jpush.android.api.BasicPushNotificationBuilder;
+import cn.jpush.android.api.JPushInterface;
+import cn.sharesdk.framework.ShareSDK;
 
 /**
  * =============================================================================
@@ -51,8 +56,32 @@ public class BaseActivity extends Activity {
         //将所有的activity跳转都带动画
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
 
+
+        //SharedSDK的初始化
+        ShareSDK.initSDK(this);
+
+        //极光推送的初始化
+        JPushInterface.setDebugMode(true);//如果时正式版就改成false
+        JPushInterface.init(this);
+
+
+        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(BaseActivity.this);
+        builder.statusBarDrawable = R.mipmap.ic_launcher;
+        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
+                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
+        builder.notificationDefaults = Notification.DEFAULT_SOUND
+                | Notification.DEFAULT_VIBRATE
+                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
+        JPushInterface.setPushNotificationBuilder(1, builder);
+
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
 
     @Override
     protected void onDestroy() {
@@ -61,23 +90,31 @@ public class BaseActivity extends Activity {
         ActivityCollector.removeActivity(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //用于极光推送的统计
+        JPushInterface.onPause(this);
+    }
+
     //记录用户首次点击返回键的时间
     private long firstTime = 0;
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                long secondTime = System.currentTimeMillis();
-                if (secondTime - firstTime > 2000) {
-                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                    firstTime = secondTime;
-                    return true;
-                } else {
-                    ActivityCollector.finishAll();
-                }
-                break;
-        }
-        return super.onKeyUp(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        switch (keyCode) {
+//            case KeyEvent.KEYCODE_BACK:
+//                long secondTime = System.currentTimeMillis();
+//                if (secondTime - firstTime > 2000) {
+//                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+//                    firstTime = secondTime;
+//                    return true;
+//                } else {
+//                    ActivityCollector.finishAll();
+//                }
+//                break;
+//        }
+//        return super.onKeyUp(keyCode, event);
+//    }
 }

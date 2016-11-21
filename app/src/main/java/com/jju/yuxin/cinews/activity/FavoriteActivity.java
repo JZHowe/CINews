@@ -35,6 +35,7 @@ import java.util.List;
 public class FavoriteActivity extends BaseActivity {
 
     private Button bt_top_right;
+    private Button bt_top_left;
     private ListView mListView;
     private List<Favors> mFavorsList;
     private FavorList_Adapter adapter;
@@ -52,6 +53,7 @@ public class FavoriteActivity extends BaseActivity {
         bt_top_right.setVisibility(View.VISIBLE);
         bt_top_right.setBackgroundResource(R.drawable.bt_delete_selector);
         bt_top_right.setOnClickListener(mOnClickListener);
+
 
         mListView = (ListView) findViewById(R.id.lv_favor);
         mListView.setOnItemClickListener(mOnItemClickListener);
@@ -79,7 +81,6 @@ public class FavoriteActivity extends BaseActivity {
                         isDelete = true;
                     }
                     break;
-
                 default:
                     break;
             }

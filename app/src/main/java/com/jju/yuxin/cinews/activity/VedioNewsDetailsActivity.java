@@ -1,6 +1,7 @@
 package com.jju.yuxin.cinews.activity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,7 +26,15 @@ import com.jju.yuxin.cinews.utils.JsoupUtils;
 
 import java.util.List;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.favorite.WechatFavorite;
+import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 
 import static android.util.Log.e;
 
@@ -94,6 +103,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private ImageView iv_shard;
     private int per_position = 0;
     private ListView lv_more_vedio;
+    private ImageView iv_download;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +120,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         SharedClickListener sharedClickListener = new SharedClickListener();
 
-        //新浪微博分享按钮
+        //分享按钮
         iv_shard = (ImageView) findViewById(R.id.iv_shard);
         //点击事件
         iv_shard.setOnClickListener(sharedClickListener);
@@ -128,6 +138,17 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         getInfo();
         //更多视频
         lv_more_vedio = (ListView) findViewById(R.id.lv_more_vedio);
+
+        iv_download = (ImageView) findViewById(R.id.iv_download);
+
+        //下载视频到本地
+        iv_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadVedio(vedioInfoBean.getPlay_src());
+
+            }
+        });
 
         JsoupUtils.getNewPaper(path,mhandler);
 
@@ -169,7 +190,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         });
 
     }
-
 
 
 
@@ -255,26 +275,10 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
-// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
-        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
-        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle(vedioInfoBean.getNews_title());
-        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-        oks.setTitleUrl(vedioInfoBean.getPlay_src()+"");
-        // text是分享文本，所有平台都需要这个字段
-        oks.setText(vedioInfoBean.getNews_info()+"");
-        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
-        oks.setImageUrl(vedioInfoBean.getImg_src()+"");
-        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-        // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl(vedioInfoBean.getPlay_src()+"");
-        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-        oks.setComment(vedioInfoBean.getPlay_count());
-        // site是分享此内容的网站名称，仅在QQ空间使用
-        oks.setSite("CINews");
-        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl(vedioInfoBean.getPlay_src()+"");
+
+        oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
+        // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+
         // 启动分享GUI
         oks.show(this);
     }
@@ -338,6 +342,10 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         }
     }
+
+    /**
+     * 播放器播放完成监听
+     */
     private class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
 
         @Override
@@ -345,6 +353,84 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             Toast.makeText(VedioNewsDetailsActivity.this, "播放完成!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * 分享方法的实现，需要注意的是，对应每一个平台，他能分享的信息都不尽相同
+     * 可以参考  http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
+     */
+    private class ShareContentCustomizeDemo implements ShareContentCustomizeCallback {
+
+        @Override
+        public void onShare(Platform platform, Platform.ShareParams paramsToShare) {
+
+            hlog.e(platform.getName());
+            //微信分享
+            if (Wechat.NAME.equals(platform .getName())){
+
+                // text是分享文本，所有平台都需要这个字段
+                paramsToShare.setText(vedioInfoBean.getNews_info()+""+vedioInfoBean.getPlay_src());
+                //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+                paramsToShare.setImageUrl(vedioInfoBean.getImg_src()+"");
+                // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+                //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+                // url仅在微信（包括好友和朋友圈）中使用
+                paramsToShare.setUrl(vedioInfoBean.getPlay_src()+"");
+
+                //QQ分享
+            }else if(QQ.NAME.equals(platform .getName())){
+                //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+                // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+                paramsToShare.setTitle(vedioInfoBean.getNews_title());
+                // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+                paramsToShare.setTitleUrl(vedioInfoBean.getPlay_src()+"");
+                // text是分享文本，所有平台都需要这个字段
+                paramsToShare.setText(vedioInfoBean.getNews_info()+""+vedioInfoBean.getPlay_src());
+                //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+                paramsToShare.setImageUrl(vedioInfoBean.getImg_src()+"");
+
+                // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+                paramsToShare.setComment(vedioInfoBean.getPlay_count());
+                // site是分享此内容的网站名称，仅在QQ空间使用
+                paramsToShare.setSite("CINews");
+                // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+                paramsToShare.setSiteUrl(vedioInfoBean.getPlay_src()+"");
+
+                //新浪微博分享
+            } else if(SinaWeibo.NAME.equals(platform .getName())){
+
+                // text是分享文本，所有平台都需要这个字段
+                paramsToShare.setText(vedioInfoBean.getNews_info()+""+vedioInfoBean.getPlay_src());
+                //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+                paramsToShare.setImageUrl(vedioInfoBean.getImg_src()+"");
+
+                //微信朋友圈分享
+            } else if(WechatMoments.NAME.equals(platform.getName())){
+
+                paramsToShare.setTitle(vedioInfoBean.getNews_title());
+                paramsToShare.setText(vedioInfoBean.getNews_info()+""+vedioInfoBean.getPlay_src());
+                paramsToShare.setShareType(Platform.SHARE_WEBPAGE);
+                paramsToShare.setUrl(vedioInfoBean.getVideo_src()+"");
+                paramsToShare.setImagePath(vedioInfoBean.getImg_src()+"");
+
+                //微信收藏
+            }else if(WechatFavorite.NAME.equals(platform.getName())){
+                paramsToShare.setTitle(vedioInfoBean.getNews_title());
+                paramsToShare.setText(vedioInfoBean.getNews_info()+""+vedioInfoBean.getPlay_src());
+                paramsToShare.setShareType(Platform.SHARE_WEBPAGE);
+                paramsToShare.setUrl(vedioInfoBean.getVideo_src()+"");
+                paramsToShare.setImagePath(vedioInfoBean.getImg_src()+"");
+            }
+        }
+    }
+
+    /**
+     * 下载视频到本地
+     * @param play_src
+     */
+    private void downloadVedio(String play_src) {
+
+    }
+
 
 
 }

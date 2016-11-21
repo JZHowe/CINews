@@ -76,7 +76,9 @@
             android:layout_centerVertical="true"
             android:textSize="@dimen/text_size18"
             android:text="@string/more_vedio"/>
+
         <TextView
+            android:id="@+id/tv_fenxiang"
             android:layout_toLeftOf="@+id/iv_shard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,6 +91,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/share_button"/>
+        <ImageView
+            android:id="@+id/iv_download"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:layout_toLeftOf="@id/tv_fenxiang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/download"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"

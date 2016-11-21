@@ -19,12 +19,24 @@
         <item>文化金融</item>
         <item>协会动态</item>
     </array>
+    <array name="sliding_list">
+        <item>离线视频</item>
+        <item>夜间模式</item>
+        <item>关于</item>
+    </array>
+
 
     <string name="methodname">getlistartile</string>
 
     <string name="id">69e8ad24-76f8-40c3-9e6c-f09c4eb39839</string>
     <string name="share">分享:</string>
     <string name="more_vedio">更多视频</string>
+    <string name="auth_complete">授权成功，正在跳转登录操作…</string>
+    <string name="auth_error">抱歉,授权操作遇到错误!</string>
+    <string name="auth_cancel">授权操作已取消</string>
+    <string name="userid_found">用户信息已存在，正在跳转登录操作…</string>
+    <string name="logining">使用%s帐号登录中…</string>
+    <string name="denglu">登录</string>
 
     <integer name="page">1</integer>
 

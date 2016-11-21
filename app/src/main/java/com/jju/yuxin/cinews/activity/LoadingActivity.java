@@ -44,22 +44,6 @@ public class LoadingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        //SharedSDK的初始化
-        ShareSDK.initSDK(this);
-
-        //极光推送的初始化
-        JPushInterface.setDebugMode(true);//如果时正式版就改成false
-        JPushInterface.init(this);
-
-
-        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(LoadingActivity.this);
-        builder.statusBarDrawable = R.mipmap.ic_launcher;
-        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
-                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
-        builder.notificationDefaults = Notification.DEFAULT_SOUND
-                | Notification.DEFAULT_VIBRATE
-                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
-        JPushInterface.setPushNotificationBuilder(1, builder);
 
     }
 
@@ -70,7 +54,6 @@ public class LoadingActivity extends BaseActivity {
         //检查联网状态
         if (NetUtils.isConnected(LoadingActivity.this) == NetUtils.NO_CONNECTED) {
             hlog.e("联网失败");
-            JPushInterface.onResume(this);
             //开启一个定时器,在1.5秒后跳出提示信息
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -118,8 +101,6 @@ public class LoadingActivity extends BaseActivity {
             }, DALAY_TIME);
         } else {
 
-            //用于极光推送的统计
-            JPushInterface.onResume(this);
             //网络连接正常
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -138,13 +119,6 @@ public class LoadingActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        //用于极光推送的统计
-        JPushInterface.onPause(this);
-    }
 
     /**
      * 跳转到用户主界面

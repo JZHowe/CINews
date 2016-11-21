@@ -10,9 +10,6 @@ import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.jju.yuxin.cinews.activity.LoadingActivity;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -24,12 +21,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.jju.yuxin.cinews.activity.LoadingActivity;
 
 /**
  * =============================================================================
- * Copyright (c) 2016 yuxin All rights reserved.
- * Packname com.jju.yuxin.cinews.utils
- * Created by yuxin.
+ * <p>
  * Created time 2016/11/18 0018 上午 10:58.
  * Version   1.0;
  * Describe :全局异常捕获器
@@ -93,13 +89,14 @@ public class CauchExceptionHandler implements Thread.UncaughtExceptionHandler {
             } catch (InterruptedException e) {
                 Log.e(TAG, "error : ", e);
             }
-//          //退出程序
+//          //退出程序,只需要退出程序,启动这段代码注释下面代码
 //          android.os.Process.killProcess(android.os.Process.myPid());
 //          System.exit(1);
 
 
-            // 重新启动程序，注释上面的退出程序
+            // 重新启动程序，
             Intent intent = new Intent();
+            //LoadingActivity程序入口
             intent.setClass(mContext, LoadingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
@@ -166,6 +163,7 @@ public class CauchExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * 保存错误信息到文件中
+     * 可以在这里将文件上传至服务器,分析程序崩溃原因
      *
      * @param ex
      * @return 返回文件名称, 便于将文件传送到服务器
@@ -193,8 +191,10 @@ public class CauchExceptionHandler implements Thread.UncaughtExceptionHandler {
         try {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
+            //保存的文件名
             String fileName = "crash-" + time + "-" + timestamp + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                //保存的文件地址
                 String path = "/sdcard/CINews/";
                 File dir = new File(path);
                 if (!dir.exists()) {
