@@ -57,6 +57,8 @@ public class BaseActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
 
 
+        //SharedSDK的初始化
+        ShareSDK.initSDK(this);
 
         //极光推送的初始化
         JPushInterface.setDebugMode(true);//如果时正式版就改成false

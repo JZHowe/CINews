@@ -14,7 +14,6 @@ public class FavorBean {
     private String news_id;     //新闻id
     private String video_src;   //视频所在网页链接
     private String type;
-    private String userid;
 
     public int getId() {
         return id;
@@ -86,13 +85,5 @@ public class FavorBean {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
     }
 }
