@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -78,24 +79,24 @@ public class MainActivity extends TabActivity {
         Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
 
         //如果QQ已经授权了
-        if (qq.isAuthValid()){
-            plat=qq;
+        if (qq.isAuthValid()) {
+            plat = qq;
             String nickname = plat.getDb().get("nickname");
             String figureurl_qq_2 = plat.getDb().get("figureurl_qq_2");
-            loaduserinfo(figureurl_qq_2,nickname);
+            loaduserinfo(figureurl_qq_2, nickname);
             //如果微信已经授权了
-        }else if (wechat.isAuthValid()){
-            plat=wechat;
+        } else if (wechat.isAuthValid()) {
+            plat = wechat;
 
             //如果新浪微博已经授权了
-        }else if(sinaWeibo.isAuthValid()){
-            plat=sinaWeibo;
+        } else if (sinaWeibo.isAuthValid()) {
+            plat = sinaWeibo;
             //用户头像地址
             String profile_image_url = plat.getDb().get("avatar_large");
             //用户名称
-            String screen_name =  plat.getDb().get("screen_name");
+            String screen_name = plat.getDb().get("screen_name");
 
-            loaduserinfo(profile_image_url,screen_name);
+            loaduserinfo(profile_image_url, screen_name);
         }
 
 
@@ -107,6 +108,8 @@ public class MainActivity extends TabActivity {
 
         //功能List
         lv_sliding = (ListView) findViewById(R.id.lv_sliding);
+        lv_sliding.setOnItemClickListener(mOnItemClickListener);
+
 
         //获取当前TabActivity的tabhost
         tabHost = this.getTabHost();
@@ -172,6 +175,36 @@ public class MainActivity extends TabActivity {
 
     }
 
+
+    /**
+     * listview item 点击事件
+     */
+    private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView
+            .OnItemClickListener() {
+
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (position) {
+                //离线视频
+                case 0:
+
+                    break;
+                //夜间模式
+                case 1:
+
+                    break;
+                //关于
+                case 2:
+                    startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
+
     /**
      * 点击事件
      */
@@ -207,7 +240,8 @@ public class MainActivity extends TabActivity {
         } else {
             //做登录操作
             //startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), REQUEST_CODE);
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                    REQUEST_CODE);
         }
 
     }
@@ -234,7 +268,7 @@ public class MainActivity extends TabActivity {
             sinaWeibo.removeAccount(true);
         }
         tv_user_name.setText(R.string.denglu);
-        iv_user_head.setImageResource(R.drawable.ic_launcher);
+        iv_user_head.setImageResource(R.mipmap.ic_launcher);
 
         Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
     }
@@ -247,22 +281,23 @@ public class MainActivity extends TabActivity {
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String platform = data.getStringExtra("platform");
-            HashMap<String, Object> userinfo = (HashMap<String, Object>) data.getSerializableExtra("userinfo");
-            if ("QQ".equals(platform)){
+            HashMap<String, Object> userinfo = (HashMap<String, Object>) data
+                    .getSerializableExtra("userinfo");
+            if ("QQ".equals(platform)) {
                 //用户头像地址
                 String figureurl_qq_2 = (String) userinfo.get("figureurl_qq_2");
                 //用户名称
                 String nickname = (String) userinfo.get("nickname");
                 //加载用户信息
-                loaduserinfo(figureurl_qq_2,nickname);
-            }else if ("SinaWeibo".equals(platform)){
+                loaduserinfo(figureurl_qq_2, nickname);
+            } else if ("SinaWeibo".equals(platform)) {
                 //用户头像地址
                 String avatar_large = (String) userinfo.get("avatar_large");
                 //用户名称
                 String screen_name = (String) userinfo.get("screen_name");
                 e(TAG, "onActivityResult" + "screen_name:" + screen_name);
 
-                loaduserinfo(avatar_large,screen_name);
+                loaduserinfo(avatar_large, screen_name);
             }
 
             e(TAG, "onActivityResult" + "platform:" + platform + "userinfo" + userinfo);
@@ -270,7 +305,7 @@ public class MainActivity extends TabActivity {
         }
     }
 
-    private void loaduserinfo(String imageuel,String username){
+    private void loaduserinfo(String imageuel, String username) {
         ImageCacheManager.loadImage(this, imageuel, iv_user_head, R
                 .drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.CENTER_CROP);
         tv_user_name.setText(username + "");

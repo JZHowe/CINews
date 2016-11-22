@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.jju.yuxin.cinews"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.jju.yuxin.cinews">
 
     <!-- 极光推送 -->
     <permission
@@ -222,6 +222,8 @@
             android:value="bb0c0379aacc2da4b70dd714"/> <!-- </>值来自开发者平台取得的AppKey -->
 
         <activity android:name=".activity.LoginActivity">
+        </activity>
+        <activity android:name=".activity.AboutActivity">
         </activity>
     </application>
 
