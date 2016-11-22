@@ -49,7 +49,7 @@ public class CircleImageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        mPaint = new Paint();
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = drawableToBitmap(getDrawable());
 
         //初始化BitmapShader，传入bitmap对象

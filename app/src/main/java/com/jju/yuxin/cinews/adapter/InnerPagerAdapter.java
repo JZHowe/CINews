@@ -22,7 +22,7 @@ import java.util.List;
  * Copyright (c) 2016  yuxin rights reserved.
  * ClassName InnerPagerAdapter
  * Created by yuxin.
- * Created time 13-11-2016 00:weather_03.
+ * Created time 13-11-2016 00:03.
  * Describe :自定义的新闻模块里层的viewpager
  * History:
  * Version   1.0.

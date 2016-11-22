@@ -13,4 +13,5 @@
     <!-- textcolor -->
     <color name="black">#ff000000</color>
     <color name="gray">#ff5b5b5b</color>
+    <color name="red_top">#cB0B0B</color>
 </resources>

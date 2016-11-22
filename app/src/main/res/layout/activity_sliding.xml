@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/top_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="@dimen/dimen_20dp">
@@ -18,21 +19,23 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"/>
 
         <TextView
-            android:layout_marginTop="@dimen/dimen_5dp"
             android:id="@+id/tv_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
             android:gravity="center"
-            android:textSize="@dimen/text_size18"
-            android:text="@string/denglu"/>
+            android:text="@string/denglu"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size18"/>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/high_1px"
-        android:background="@color/gray"/>
+        android:background="@color/tab_text_color"/>
     <!--功能列表模块-->
     <ListView
         android:id="@+id/lv_sliding"
@@ -43,14 +46,9 @@
         android:scrollbars="none"/>
 
     <!--天气模块-->
-    <TextView
-        android:id="@+id/weather"
-        android:drawableTop="@drawable/weather_03"
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="天气"
-        android:gravity="center"
-        android:textColor="@color/black"/>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
