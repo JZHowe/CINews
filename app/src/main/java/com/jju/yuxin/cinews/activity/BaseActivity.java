@@ -66,12 +66,13 @@ public class BaseActivity extends Activity {
         //极光推送的初始化
         JPushInterface.setDebugMode(true);//如果时正式版就改成false
         JPushInterface.init(this);
-        JPushInterface.setAlias(this, "hu", new TagAliasCallback() {
-            @Override
-            public void gotResult(int i, String s, Set<String> set) {
-
-            }
-        });
+        //给设备设置别名
+//        JPushInterface.setAlias(this, "hu", new TagAliasCallback() {
+//            @Override
+//            public void gotResult(int i, String s, Set<String> set) {
+//
+//            }
+//        });
 
         //自定义普通推送
 //        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(BaseActivity.this);
