@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -18,6 +20,7 @@ import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.adapter.PAdapter;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.service.JsonUtil;
+import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.Ksoap2Util;
 import com.jju.yuxin.cinews.utils.MyLogger;
 
@@ -58,7 +61,7 @@ public class PictureActivity extends BaseActivity {
                     String info = (String) msg.obj;
                     MyLogger.lLog().e(info);
                     olist = JsonUtil.parseJSON(info);
-                    if (olist!=null){
+                    if (olist != null) {
                         pAdapter = new PAdapter(PictureActivity.this, olist);
                         listView.setAdapter(pAdapter);
                     }
@@ -124,32 +127,26 @@ public class PictureActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(PictureActivity.this, NewsDetailsActivity.class);
-            intent.putExtra("news",olist.get(position-1));
+            intent.putExtra("news", olist.get(position - 1));
             startActivity(intent);
         }
     };
 
 
-
     //这里执行刷新操作
-    private class GetDataTask extends AsyncTask<Void, Void, String>
-    {
+    private class GetDataTask extends AsyncTask<Void, Void, String> {
 
         @Override
-        protected String doInBackground(Void... params)
-        {
-            try
-            {
+        protected String doInBackground(Void... params) {
+            try {
                 Thread.sleep(2000);
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
             }
             return "" + (mItemCount++);
         }
 
         @Override
-        protected void onPostExecute(String result)
-        {
+        protected void onPostExecute(String result) {
             //刷新时再次获取数据
             get_Data();
             pAdapter.notifyDataSetChanged();
@@ -158,4 +155,14 @@ public class PictureActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 双击退出
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return MainActivity.doubleExit(PictureActivity.this);
+        }
+        return super.onKeyUp(keyCode, event);
+    }
 }

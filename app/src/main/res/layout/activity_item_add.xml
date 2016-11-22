@@ -34,12 +34,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10.0dip"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp">
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center_vertical"
             android:text="已添加栏目"
             android:textColor="#ff5b5b5b"
             android:textSize="18.0sp"/>
@@ -48,21 +51,21 @@
             android:id="@+id/addItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:numColumns="3"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10.0dip"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp">
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:enabled="false"
+            android:background="@null"
+            android:gravity="center_vertical"
             android:text="未添加栏目"
             android:textColor="#ff5b5b5b"
             android:textSize="18.0sp"/>
@@ -71,26 +74,27 @@
             android:id="@+id/subItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:numColumns="3"/>
     </LinearLayout>
 
-    <View
+    <Button
+        android:background="@null"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
     <LinearLayout
+        android:id="@+id/ll_item_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_20dp"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         >
 
-        <ImageButton
-            android:id="@+id/ib_item_add"
-            android:layout_width="@dimen/dimen_50dp"
-            android:layout_height="@dimen/dimen_20dp"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_20dp"
             android:background="@drawable/return_button"/>
     </LinearLayout>
 </LinearLayout>

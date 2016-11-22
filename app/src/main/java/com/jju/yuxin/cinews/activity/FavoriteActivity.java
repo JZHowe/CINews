@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,6 +19,8 @@ import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.db.Favors;
 import com.jju.yuxin.cinews.db.Users;
+import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
+import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
 
 import java.util.HashMap;
@@ -56,7 +59,7 @@ public class FavoriteActivity extends BaseActivity {
     private TextView tv_favor;
     private Button btn_favor;
     private static final int REQUEST_CODE = 100;
-    private static final String TAG=FavoriteActivity.class.getSimpleName();
+    private static final String TAG = FavoriteActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class FavoriteActivity extends BaseActivity {
         bt_top_right.setBackgroundResource(R.drawable.bt_delete_selector);
         bt_top_right.setOnClickListener(mOnClickListener);
 
+
         mListView = (ListView) findViewById(R.id.lv_favor);
 
         tv_favor = (TextView) findViewById(R.id.tv_favor);
@@ -79,20 +83,20 @@ public class FavoriteActivity extends BaseActivity {
         mListView.setOnItemClickListener(mOnItemClickListener);
         String loginUserid = LoginPlatformUtil.getLoginUserid();
         //如果用户已经登录
-        if (loginUserid !=null){
+        if (loginUserid != null) {
 
             tv_favor.setVisibility(View.GONE);
             btn_favor.setVisibility(View.GONE);
 
             mFavorsList = DbUtils.searchFavor(loginUserid);
             //用户还没有登陆
-        }else{
-            mFavorsList=null;
+        } else {
+            mFavorsList = null;
             tv_favor.setVisibility(View.VISIBLE);
             btn_favor.setVisibility(View.VISIBLE);
             btn_favor.setOnClickListener(mOnClickListener);
         }
-        if (mFavorsList!=null&&mFavorsList.size()>0){
+        if (mFavorsList != null && mFavorsList.size() > 0) {
             adapter = new FavorList_Adapter(FavoriteActivity.this, mFavorsList);
             mListView.setAdapter(adapter);
         }
@@ -105,6 +109,7 @@ public class FavoriteActivity extends BaseActivity {
 
                 //删除按钮
                 case R.id.bt_top_right:
+
                     //判断是否处于删除状态
                     if (isDelete) {
                         updata(false);
@@ -140,8 +145,8 @@ public class FavoriteActivity extends BaseActivity {
                 vedioInfoBean.setNews_info(favors.getTitle());
                 vedioInfoBean.setNews_date(favors.getDate());
 
-                Intent intent = new Intent(FavoriteActivity.this,VedioNewsDetailsActivity.class);
-                intent.putExtra("vedio_news",vedioInfoBean);
+                Intent intent = new Intent(FavoriteActivity.this, VedioNewsDetailsActivity.class);
+                intent.putExtra("vedio_news", vedioInfoBean);
                 startActivity(intent);
             } else if (favors.getType().equals("new")) {
                 NewsBean newsBean = new NewsBean();
@@ -153,8 +158,8 @@ public class FavoriteActivity extends BaseActivity {
                 newsBean.setSummary(favors.getSummary());
                 newsBean.setTime(favors.getDate());
 
-                Intent intent2 = new Intent(FavoriteActivity.this,NewsDetailsActivity.class);
-                intent2.putExtra("news",newsBean);
+                Intent intent2 = new Intent(FavoriteActivity.this, NewsDetailsActivity.class);
+                intent2.putExtra("news", newsBean);
                 startActivity(intent2);
             }
         }
@@ -173,19 +178,19 @@ public class FavoriteActivity extends BaseActivity {
         //多次判断是否已经登录,防止从生命周期从onPause->onResume
         String loginUserids = LoginPlatformUtil.getLoginUserid();
         //如果已经登陆了
-        if (loginUserids!=null){
+        if (loginUserids != null) {
             //将提示信息隐藏
             tv_favor.setVisibility(View.GONE);
             btn_favor.setVisibility(View.GONE);
             //从数据库中获取当前用户收藏的内容
             mFavorsList = DbUtils.searchFavor(loginUserids);
             hlog.e(mFavorsList.toString());
-        }else{
+        } else {
             //如果没有登录
-            mFavorsList=null;
+            mFavorsList = null;
 
             //如果是登陆了,但是注销了,本次验证为loginUserids=null,adapter!=null
-            if (adapter!=null){
+            if (adapter != null) {
                 //移除全部已经加载的item
                 adapter.removeallItem();
                 adapter.notifyDataSetChanged();
@@ -196,11 +201,11 @@ public class FavoriteActivity extends BaseActivity {
             }
 
         }
-        if (mFavorsList!=null&&mFavorsList.size()>0){
-            if (adapter!=null){
+        if (mFavorsList != null && mFavorsList.size() > 0) {
+            if (adapter != null) {
                 adapter.replaceList(mFavorsList, isDelete);
                 adapter.notifyDataSetChanged();
-            }else{
+            } else {
                 adapter = new FavorList_Adapter(FavoriteActivity.this, mFavorsList);
                 mListView.setAdapter(adapter);
             }
@@ -219,7 +224,8 @@ public class FavoriteActivity extends BaseActivity {
         } else {
             //做登录操作
             //startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            startActivityForResult(new Intent(FavoriteActivity.this, LoginActivity.class), REQUEST_CODE);
+            startActivityForResult(new Intent(FavoriteActivity.this, LoginActivity.class),
+                    REQUEST_CODE);
         }
 
     }
@@ -231,7 +237,8 @@ public class FavoriteActivity extends BaseActivity {
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String platform = data.getStringExtra("platform");
-            HashMap<String, Object> userinfo = (HashMap<String, Object>) data.getSerializableExtra("userinfo");
+            HashMap<String, Object> userinfo = (HashMap<String, Object>) data
+                    .getSerializableExtra("userinfo");
             if ("QQ".equals(platform)) {
                 //用户头像地址
                 String figureurl_qq_2 = (String) userinfo.get("figureurl_qq_2");
@@ -260,4 +267,15 @@ public class FavoriteActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * 双击退出
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return MainActivity.doubleExit(FavoriteActivity.this);
+        }
+        return super.onKeyUp(keyCode, event);
+    }
 }

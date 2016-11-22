@@ -1,14 +1,12 @@
 package com.jju.yuxin.cinews.activity;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.jju.yuxin.cinews.R;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends BaseActivity {
     private Button bt_top_left;
 
     @Override

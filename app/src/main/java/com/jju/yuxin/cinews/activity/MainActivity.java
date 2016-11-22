@@ -1,10 +1,10 @@
 package com.jju.yuxin.cinews.activity;
 
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -357,5 +357,23 @@ public class MainActivity extends TabActivity {
         ImageCacheManager.loadImage(this, imageuel, iv_user_head, R
                 .drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.CENTER_CROP);
         tv_user_name.setText(username + "");
+    }
+
+
+    //记录用户首次点击返回键的时间
+    private static long firstTime = 0;
+
+    //双击退出的方法
+    public static boolean doubleExit(Context context) {
+        long secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) {
+            Toast.makeText(context, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            firstTime = secondTime;
+            return true;
+        } else {
+            ActivityCollector.finishAll();
+            return false;
+        }
+
     }
 }
