@@ -42,28 +42,41 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LoadingActivity">
+        <activity android:name=".activity.LoadingActivity"
+                  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+                  android:theme="@style/RedTopTheme">
         </activity>
-        <activity android:name=".activity.NewsActivity">
+        <activity android:name=".activity.NewsActivity"
+            >
         </activity>
-        <activity android:name=".activity.PictureActivity">
+        <activity android:name=".activity.PictureActivity"
+                  >
         </activity>
         <activity android:name=".activity.VedioActivity">
         </activity>
-        <activity android:name=".activity.FavoriteActivity">
+        <activity android:name=".activity.FavoriteActivity"
+                  >
         </activity>
-        <activity android:name=".activity.NewsDetailsActivity">
+        <activity android:name=".activity.NewsDetailsActivity"
+                  android:theme="@style/RedTopTheme">
         </activity>
         <activity
             android:name=".activity.VedioNewsDetailsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/RedTopTheme">
+        </activity>
+        <activity android:name=".activity.LoginActivity"
+                  android:theme="@style/RedTopTheme">
+        </activity>
+        <activity android:name=".activity.AboutActivity"
+                  android:theme="@style/RedTopTheme">
         </activity>
         <!-- ShardSDK分享模块 -->
         <activity
@@ -220,10 +233,6 @@
             android:name="JPUSH_APPKEY"
             android:value="bb0c0379aacc2da4b70dd714"/> <!-- </>值来自开发者平台取得的AppKey -->
 
-        <activity android:name=".activity.LoginActivity">
-        </activity>
-        <activity android:name=".activity.AboutActivity">
-        </activity>
     </application>
 
 </manifest>
