@@ -120,7 +120,6 @@ public class FavoriteActivity extends BaseActivity {
                     }
                     break;
                 case R.id.btn_favor:
-                    Toast.makeText(FavoriteActivity.this, "登录", Toast.LENGTH_SHORT).show();
                     login_();
                     break;
 

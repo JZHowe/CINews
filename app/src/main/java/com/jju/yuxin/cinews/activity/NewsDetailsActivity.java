@@ -124,13 +124,7 @@ public class NewsDetailsActivity extends BaseActivity {
         //新闻阅读次数,或者视频播放次数
         reader_count = (TextView) findViewById(R.id.reader_count);
 
-
-
-
     }
-
-
-
 
 
     @Override
@@ -170,19 +164,6 @@ public class NewsDetailsActivity extends BaseActivity {
             }
         });
     }
-
-    //获得要存储的新闻信息
-    private void getFavor() {
-        mFavorBean.setDate(newsBean.getTime());
-        mFavorBean.setTitle(newsBean.getName());
-        mFavorBean.setSummary(newsBean.getSummary());
-        mFavorBean.setNews_id(newsBean.getId());
-        mFavorBean.setImg_src(newsBean.getUrl());
-        mFavorBean.setKey(newsBean.getKey());
-        mFavorBean.setType("new");
-
-    }
-
     //接收的list信息详情
     private void getInfo() {
         Intent intent = getIntent();
@@ -192,9 +173,11 @@ public class NewsDetailsActivity extends BaseActivity {
         //由于图片滑动部分点击进入时传入的是“key”,“id”为空，因此要在这里进行判断
         if (newsBean.getId() == null) {
             oMap.put("id", newsBean.getKey());
+            hlog.e("newsBean.getKey()"+newsBean.getKey());
             Ksoap2Util.doBackgroud(mhandler, R.id.text3, "getartile", oMap);
             //有ID的时候，表示是listview条目的点击传过来的
         } else {
+            hlog.e("newsBean.getId()"+newsBean.getId());
             oMap.put("id", newsBean.getId());
             Ksoap2Util.doBackgroud(mhandler, R.id.text3, "getartile", oMap);
         }
@@ -210,6 +193,19 @@ public class NewsDetailsActivity extends BaseActivity {
             getFavor();
         }
     }
+    //获得要存储的新闻信息
+    private void getFavor() {
+        mFavorBean.setDate(newsBean.getTime());
+        mFavorBean.setTitle(newsBean.getName());
+        mFavorBean.setSummary(newsBean.getSummary());
+        mFavorBean.setNews_id(newsBean.getId());
+        mFavorBean.setImg_src(newsBean.getUrl());
+        mFavorBean.setKey(newsBean.getKey());
+        mFavorBean.setType("new");
+
+    }
+
+
 
 
     /**

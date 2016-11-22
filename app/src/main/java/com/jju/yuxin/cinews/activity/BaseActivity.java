@@ -3,6 +3,7 @@ package com.jju.yuxin.cinews.activity;
 import android.app.Activity;
 import android.app.Notification;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
@@ -12,8 +13,11 @@ import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.volleyutils.VolleyUtils;
 
+import java.util.Set;
+
 import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.ShareSDK;
 
 /**
@@ -36,6 +40,7 @@ public class BaseActivity extends Activity {
     public MyLogger llog;
     public MyLogger zlog;
     public VolleyUtils volleyUtils;
+    private static final String TAG=BaseActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +66,22 @@ public class BaseActivity extends Activity {
         //极光推送的初始化
         JPushInterface.setDebugMode(true);//如果时正式版就改成false
         JPushInterface.init(this);
+        JPushInterface.setAlias(this, "hu", new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
 
+            }
+        });
 
-        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(BaseActivity.this);
-        builder.statusBarDrawable = R.mipmap.ic_launcher;
-        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
-                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
-        builder.notificationDefaults = Notification.DEFAULT_SOUND
-                | Notification.DEFAULT_VIBRATE
-                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
-        JPushInterface.setPushNotificationBuilder(1, builder);
+        //自定义普通推送
+//        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(BaseActivity.this);
+//        builder.statusBarDrawable = R.mipmap.ic_launcher;
+//        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
+//                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
+//        builder.notificationDefaults = Notification.DEFAULT_SOUND
+//                | Notification.DEFAULT_VIBRATE
+//                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
+//        JPushInterface.setPushNotificationBuilder(1, builder);
 
     }
 
@@ -96,7 +107,23 @@ public class BaseActivity extends Activity {
         JPushInterface.onPause(this);
     }
 
+    //记录用户首次点击返回键的时间
+ //   private long firstTime = 0;
 
-
-
+//    @Override
+//    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        switch (keyCode) {
+//            case KeyEvent.KEYCODE_BACK:
+//                long secondTime = System.currentTimeMillis();
+//                if (secondTime - firstTime > 2000) {
+//                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+//                    firstTime = secondTime;
+//                    return true;
+//                } else {
+//                    ActivityCollector.finishAll();
+//                }
+//                break;
+//        }
+//        return super.onKeyUp(keyCode, event);
+//    }
 }
