@@ -6,6 +6,7 @@ import com.jju.yuxin.cinews.bean.FavorBean;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 
+import org.litepal.crud.ClusterQuery;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
@@ -104,6 +105,16 @@ public class DbUtils {
         return mFavorsList;
     }
 
+    public static void saveUser(Users user){
+        //之前是否已经登录过了
+        ClusterQuery clusterQuery = DataSupport.select("*").where("userid=?",user.getUserid());
+        //如果存在,那么将其删除
+        if (clusterQuery!=null||clusterQuery.count(Users.class)>0) {
+            DataSupport.deleteAll(Users.class,"userid=?",user.getUserid());
+        }
+        //最新的用户信息更新到数据库中去
+        user.save();
+    }
 
 
 }

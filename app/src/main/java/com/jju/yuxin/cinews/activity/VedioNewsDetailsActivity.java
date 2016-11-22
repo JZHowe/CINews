@@ -27,10 +27,12 @@ import com.jju.yuxin.cinews.bean.FavorBean;
 import com.jju.yuxin.cinews.adapter.VedioList_Adapter;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.db.DbUtils;
+import com.jju.yuxin.cinews.db.Users;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
 import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.sharesdk.framework.Platform;
@@ -71,6 +73,8 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private static final int FAIL_LOAD = 1;
     //加载失败
     private static final int SUCCESS_LOAD_DETAIL = 2;
+
+    private static final int REQUEST_CODE = 100;
 
     //当加载数据完毕需要更新界面数据
     Handler mhandler = new Handler() {
@@ -126,7 +130,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         bt_top_left.setVisibility(View.VISIBLE);
         bt_top_right.setVisibility(View.VISIBLE);
         bt_top_left.setBackgroundResource(R.drawable.bt_return_selector);
-        bt_top_right.setBackgroundResource(R.drawable.bt_shoucang_selector);
+        bt_top_right.setBackgroundResource(R.drawable.shoucang_new_one);
 
         SharedClickListener sharedClickListener = new SharedClickListener();
 
@@ -148,7 +152,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         //视屏播放器
         vedio_paly = (VideoView) findViewById(R.id.vedio_paly);
 
-        getInfo();
         //更多视频
         lv_more_vedio = (ListView) findViewById(R.id.lv_more_vedio);
 
@@ -166,6 +169,31 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
 
         JsoupUtils.getNewPaper(path,mhandler);
+
+
+        lv_more_vedio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //获取当前点击的item的对象
+                VedioInfoBean vedioInfoBean = vedioinfos.get(position);
+                //跳转至新闻详情页面
+                Intent intent=new Intent(VedioNewsDetailsActivity.this,VedioNewsDetailsActivity.class);
+                intent.putExtra("vedio_news",vedioInfoBean);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+    }
+
+    /**
+     * 验证操作放置在onResume中放置从onpause跳转
+     */
+    @Override
+    protected void onResume() {
+        e(TAG, "onResume" + "");
+        super.onResume();
+        getInfo();
 
         //给左侧按键设置点击事件,点击左侧按键将当前activity销毁
         bt_top_left.setOnClickListener(new View.OnClickListener() {
@@ -192,27 +220,27 @@ public class VedioNewsDetailsActivity extends BaseActivity {
                         isFavor = true;
                         Toast.makeText(VedioNewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(VedioNewsDetailsActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VedioNewsDetailsActivity.this, "请先登录!", Toast.LENGTH_SHORT).show();
+                        login_();
                     }
                 }
             }
         });
-        lv_more_vedio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //获取当前点击的item的对象
-                VedioInfoBean vedioInfoBean = vedioinfos.get(position);
-                //跳转至新闻详情页面
-                Intent intent=new Intent(VedioNewsDetailsActivity.this,VedioNewsDetailsActivity.class);
-                intent.putExtra("vedio_news",vedioInfoBean);
-                startActivity(intent);
-                finish();
+
+        //根据当前进度是否为零判断之前是否播放过
+        if (per_position == 0) {
+            //如果没有播放过那么加载视频资源
+            if (vedioInfoBean != null) {
+                //获取视频详情
+                JsoupUtils.getNewsDetails(vedioInfoBean, mhandler);
             }
-        });
-
+            //如果已经播放过那么跳转到上次的播放进度之后
+        } else {
+            vedio_paly.seekTo(per_position);
+            vedio_paly.start();
+            per_position = 0;
+        }
     }
-
-
 
     //接收list的信息
     private void getInfo() {
@@ -238,30 +266,6 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         mFavorBean.setImg_src(vedioInfoBean.getImg_src());
         mFavorBean.setVideo_src(vedioInfoBean.getVideo_src());
         mFavorBean.setType("video");
-    }
-
-
-
-    @Override
-    protected void onResume() {
-
-        e(TAG, "onResume" + "");
-        super.onResume();
-        //根据当前进度是否为零判断之前是否播放过
-        if (per_position == 0) {
-            //如果没有播放过那么加载视频资源
-            if (vedioInfoBean != null) {
-                //获取视频详情
-                JsoupUtils.getNewsDetails(vedioInfoBean, mhandler);
-            }
-            //如果已经播放过那么跳转到上次的播放进度之后
-        } else {
-            vedio_paly.seekTo(per_position);
-            vedio_paly.start();
-            per_position = 0;
-        }
-
-
     }
 
     /**
@@ -471,7 +475,60 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         }else{
             Toast.makeText(this, "请插入SD卡...", Toast.LENGTH_SHORT).show();
         }
-       
+    }
+
+
+    /**
+     * 登录
+     */
+    private void login_() {
+        Platform qq = ShareSDK.getPlatform(QQ.NAME);
+        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+        //只要其中一种授权方式已经授权了
+        if (qq.isAuthValid() || wechat.isAuthValid() || sinaWeibo.isAuthValid()) {
+
+            e(TAG, "login_" + "你已经登陆了");
+        } else {
+            //做登录操作
+            //startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            startActivityForResult(new Intent(VedioNewsDetailsActivity.this, LoginActivity.class), REQUEST_CODE);
+        }
+    }
+    //根据登录成功的返回信息更新数据库信息
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            String platform = data.getStringExtra("platform");
+            HashMap<String, Object> userinfo = (HashMap<String, Object>) data.getSerializableExtra("userinfo");
+            if ("QQ".equals(platform)) {
+                //用户头像地址
+                String figureurl_qq_2 = (String) userinfo.get("figureurl_qq_2");
+                //用户名称
+                String nickname = (String) userinfo.get("nickname");
+
+                Platform qq = ShareSDK.getPlatform(QQ.NAME);
+                String userId = qq.getDb().getUserId();
+                //在第一次登录操作中将用户信息保存到数据库中
+                Users user = new Users(userId, nickname, figureurl_qq_2);
+                DbUtils.saveUser(user);
+            } else if ("SinaWeibo".equals(platform)) {
+                //用户头像地址
+                String avatar_large = (String) userinfo.get("avatar_large");
+                //用户名称
+                String screen_name = (String) userinfo.get("screen_name");
+                e(TAG, "onActivityResult" + "screen_name:" + screen_name);
+
+                Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+                String userId = sinaWeibo.getDb().getUserId();
+                //在第一次登录操作中将用户信息保存到数据库中
+                Users user = new Users(userId, screen_name, avatar_large);
+                DbUtils.saveUser(user);
+            }
+            e(TAG, "onActivityResult" + "platform:" + platform + "userinfo" + userinfo);
+        }
     }
 
 }

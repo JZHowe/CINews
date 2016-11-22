@@ -4,6 +4,7 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.db.Users;
 import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
@@ -64,6 +66,7 @@ public class MainActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        e(TAG, "onCreate" + "__________________");
 
         MainClickListener listener = new MainClickListener();
 
@@ -85,31 +88,7 @@ public class MainActivity extends TabActivity {
             }
         });
 
-        //判断是否已经登录
-        Platform qq = ShareSDK.getPlatform(QQ.NAME);
-        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
 
-        //如果QQ已经授权了
-        if (qq.isAuthValid()) {
-            plat = qq;
-            String nickname = plat.getDb().get("nickname");
-            String figureurl_qq_2 = plat.getDb().get("figureurl_qq_2");
-            loaduserinfo(figureurl_qq_2, nickname);
-            //如果微信已经授权了
-        } else if (wechat.isAuthValid()) {
-            plat = wechat;
-
-            //如果新浪微博已经授权了
-        } else if (sinaWeibo.isAuthValid()) {
-            plat = sinaWeibo;
-            //用户头像地址
-            String profile_image_url = plat.getDb().get("avatar_large");
-            //用户名称
-            String screen_name = plat.getDb().get("screen_name");
-
-            loaduserinfo(profile_image_url, screen_name);
-        }
 
 
         iv_user_head.setOnClickListener(listener);
@@ -211,6 +190,42 @@ public class MainActivity extends TabActivity {
 
     }
 
+
+    /**
+     * 在其他的页面进入登录界面时,同步登录信息
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        e(TAG, "onResume" + "_________________");
+
+        //判断是否已经登录
+        Platform qq = ShareSDK.getPlatform(QQ.NAME);
+        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+
+        //如果QQ已经授权了
+        if (qq.isAuthValid()) {
+            plat = qq;
+            String nickname = plat.getDb().get("nickname");
+            String figureurl_qq_2 = plat.getDb().get("figureurl_qq_2");
+            loaduserinfo(figureurl_qq_2, nickname);
+            //如果微信已经授权了
+        } else if (wechat.isAuthValid()) {
+            plat = wechat;
+
+            //如果新浪微博已经授权了
+        } else if (sinaWeibo.isAuthValid()) {
+            plat = sinaWeibo;
+            //用户头像地址
+            String profile_image_url = plat.getDb().get("avatar_large");
+            //用户名称
+            String screen_name = plat.getDb().get("screen_name");
+
+            loaduserinfo(profile_image_url, screen_name);
+        }
+    }
+
     /**
      * 点击事件
      */
@@ -259,29 +274,36 @@ public class MainActivity extends TabActivity {
      */
     private void login_out() {
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
+        Platform plat=null;
         if (qq.isAuthValid()) {
-
+            plat=qq;
             MyLogger.hLog().e("已经取消QQ的授权!");
-            qq.removeAccount(true);
+            plat.removeAccount(true);
+            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
         }
         Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
         if (wechat.isAuthValid()) {
+            plat=wechat;
             MyLogger.hLog().e("已经取消微信的授权!");
-            wechat.removeAccount(true);
+            plat.removeAccount(true);
+            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
         }
         Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
         if (sinaWeibo.isAuthValid()) {
+            plat=sinaWeibo;
             MyLogger.hLog().e("已经取消新浪微博的授权!");
-            sinaWeibo.removeAccount(true);
+            plat.removeAccount(true);
+            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
+        }
+        if (plat==null){
+            Toast.makeText(this, "请先登录!", Toast.LENGTH_SHORT).show();
         }
         tv_user_name.setText(R.string.denglu);
         iv_user_head.setImageResource(R.mipmap.ic_launcher);
-
-        Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
     }
 
 
-    //根据登录成功的返回信息设置控件信息
+    //根据登录成功的返回信息设置控件信息和数据库
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -299,7 +321,7 @@ public class MainActivity extends TabActivity {
                 String userId = qq.getDb().getUserId();
                 //在第一次登录操作中将用户信息保存到数据库中
                 Users user = new Users(userId, nickname, figureurl_qq_2);
-                user.save();
+                DbUtils.saveUser(user);
                 //加载用户信息
                 loaduserinfo(figureurl_qq_2, nickname);
             } else if ("SinaWeibo".equals(platform)) {
@@ -313,7 +335,7 @@ public class MainActivity extends TabActivity {
                 String userId = sinaWeibo.getDb().getUserId();
                 //在第一次登录操作中将用户信息保存到数据库中
                 Users user = new Users(userId, screen_name, avatar_large);
-                user.save();
+                DbUtils.saveUser(user);
                 loaduserinfo(avatar_large, screen_name);
             }
 

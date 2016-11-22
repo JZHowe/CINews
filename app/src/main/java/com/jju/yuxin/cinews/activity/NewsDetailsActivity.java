@@ -16,6 +16,7 @@ import com.jju.yuxin.cinews.bean.FavorBean;
 import com.jju.yuxin.cinews.bean.MessageBean;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.db.DbUtils;
+import com.jju.yuxin.cinews.db.Users;
 import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.utils.Ksoap2Util;
 import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
@@ -26,8 +27,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
+
+import static android.util.Log.e;
+
 public class NewsDetailsActivity extends BaseActivity {
 
+    private static final String TAG = NewsDetailsActivity.class.getSimpleName();
     private Button bt_top_left;
     private Button bt_top_right;
     private TextView news_title;
@@ -44,6 +54,8 @@ public class NewsDetailsActivity extends BaseActivity {
     private static final int SUCCESS_LOAD = 0;
     //加载失败
     private static final int FAIL_LOAD = 1;
+
+    private static final int REQUEST_CODE = 100;
 
     //当加载数据完毕需要更新界面数据
     Handler mhandler = new Handler() {
@@ -111,9 +123,20 @@ public class NewsDetailsActivity extends BaseActivity {
         push_date = (TextView) findViewById(R.id.push_date);
         //新闻阅读次数,或者视频播放次数
         reader_count = (TextView) findViewById(R.id.reader_count);
+
+
+
+
+    }
+
+
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getInfo();
-
-
         //给左侧按键设置点击事件,点击左侧按键将当前activity销毁
         bt_top_left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,12 +163,23 @@ public class NewsDetailsActivity extends BaseActivity {
                         Toast.makeText(NewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(NewsDetailsActivity.this, "请先登录!", Toast.LENGTH_SHORT).show();
+                        login_();
                     }
                 }
 
             }
         });
+    }
 
+    //获得要存储的新闻信息
+    private void getFavor() {
+        mFavorBean.setDate(newsBean.getTime());
+        mFavorBean.setTitle(newsBean.getName());
+        mFavorBean.setSummary(newsBean.getSummary());
+        mFavorBean.setNews_id(newsBean.getId());
+        mFavorBean.setImg_src(newsBean.getUrl());
+        mFavorBean.setKey(newsBean.getKey());
+        mFavorBean.setType("new");
 
     }
 
@@ -177,22 +211,57 @@ public class NewsDetailsActivity extends BaseActivity {
         }
     }
 
-    //获得要存储的新闻信息
-    private void getFavor() {
-        mFavorBean.setDate(newsBean.getTime());
-        mFavorBean.setTitle(newsBean.getName());
-        mFavorBean.setSummary(newsBean.getSummary());
-        mFavorBean.setNews_id(newsBean.getId());
-        mFavorBean.setImg_src(newsBean.getUrl());
-        mFavorBean.setKey(newsBean.getKey());
-        mFavorBean.setType("new");
 
+    /**
+     * 登录
+     */
+    private void login_() {
+        Platform qq = ShareSDK.getPlatform(QQ.NAME);
+        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+        //只要其中一种授权方式已经授权了
+        if (qq.isAuthValid() || wechat.isAuthValid() || sinaWeibo.isAuthValid()) {
+
+            e(TAG, "login_" + "你已经登陆了");
+        } else {
+            //做登录操作
+            //startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            startActivityForResult(new Intent(NewsDetailsActivity.this, LoginActivity.class), REQUEST_CODE);
+        }
     }
-
-
+    //根据登录成功的返回信息更新数据库信息
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            String platform = data.getStringExtra("platform");
+            HashMap<String, Object> userinfo = (HashMap<String, Object>) data.getSerializableExtra("userinfo");
+            if ("QQ".equals(platform)) {
+                //用户头像地址
+                String figureurl_qq_2 = (String) userinfo.get("figureurl_qq_2");
+                //用户名称
+                String nickname = (String) userinfo.get("nickname");
+
+                Platform qq = ShareSDK.getPlatform(QQ.NAME);
+                String userId = qq.getDb().getUserId();
+                //在第一次登录操作中将用户信息保存到数据库中
+                Users user = new Users(userId, nickname, figureurl_qq_2);
+                DbUtils.saveUser(user);
+            } else if ("SinaWeibo".equals(platform)) {
+                //用户头像地址
+                String avatar_large = (String) userinfo.get("avatar_large");
+                //用户名称
+                String screen_name = (String) userinfo.get("screen_name");
+                e(TAG, "onActivityResult" + "screen_name:" + screen_name);
+
+                Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+                String userId = sinaWeibo.getDb().getUserId();
+                //在第一次登录操作中将用户信息保存到数据库中
+                Users user = new Users(userId, screen_name, avatar_large);
+                DbUtils.saveUser(user);
+            }
+            e(TAG, "onActivityResult" + "platform:" + platform + "userinfo" + userinfo);
+        }
     }
 }
