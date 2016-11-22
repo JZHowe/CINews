@@ -144,6 +144,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
             msg.what = MSG_AUTH_COMPLETE;
             msg.obj = new Object[]{platform.getName(), hashMap};
             hlog.e("------------"+hashMap);
+
             //将信息存储在平台对象中
             if ("QQ".equals(platform.getName())){
                 //QQ登录返回的内容

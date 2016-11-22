@@ -65,7 +65,6 @@
             android:name=".activity.VedioNewsDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
-
         <!-- ShardSDK分享模块 -->
         <activity
             android:name="com.mob.tools.MobUIShell"

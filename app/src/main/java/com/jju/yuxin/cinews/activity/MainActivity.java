@@ -3,7 +3,7 @@ package com.jju.yuxin.cinews.activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,11 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
+import com.jju.yuxin.cinews.db.Users;
+import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.CircleImageView;
 import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
@@ -49,6 +50,7 @@ public class MainActivity extends TabActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE = 100;
+    private static final int REQUEST_VEDIO_CODE = 200;
     private TabHost tabHost;
     private CircleImageView iv_user_head;
     private TextView tv_user_name;
@@ -56,6 +58,7 @@ public class MainActivity extends TabActivity {
     private Button bt_login_out;
 
     Platform plat = null;
+    private Button bt_exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,15 @@ public class MainActivity extends TabActivity {
 
         //取消授权
         bt_login_out = (Button) findViewById(R.id.bt_login_out);
+
+        bt_exit = (Button) findViewById(R.id.bt_exit);
+        bt_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityCollector.finishAll();
+                finish();
+            }
+        });
 
         //判断是否已经登录
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
@@ -108,8 +120,6 @@ public class MainActivity extends TabActivity {
 
         //功能List
         lv_sliding = (ListView) findViewById(R.id.lv_sliding);
-        lv_sliding.setOnItemClickListener(mOnItemClickListener);
-
 
         //获取当前TabActivity的tabhost
         tabHost = this.getTabHost();
@@ -173,37 +183,33 @@ public class MainActivity extends TabActivity {
             }
         });
 
-    }
+        //功能列表的点击事件
+        lv_sliding.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                        openAlbumIntent.setDataAndType(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "video/mp4");
+                        startActivityForResult(openAlbumIntent, REQUEST_VEDIO_CODE);
+                        break;
+                    case 1:
 
+                        break;
+                    case 2:
+                        //跳转到关于界面
+                        startActivity(new Intent(MainActivity.this, AboutActivity.class));
 
-    /**
-     * listview item 点击事件
-     */
-    private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView
-            .OnItemClickListener() {
+                        break;
 
+                    default:
+                        break;
+                }
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            switch (position) {
-                //离线视频
-                case 0:
-
-                    break;
-                //夜间模式
-                case 1:
-
-                    break;
-                //关于
-                case 2:
-                    startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                    break;
-                default:
-                    break;
             }
+        });
 
-        }
-    };
+    }
 
     /**
      * 点击事件
@@ -215,9 +221,11 @@ public class MainActivity extends TabActivity {
 
             switch (v.getId()) {
                 case R.id.iv_user_head:
+                    //点击头像执行登录操作
                     login_();
                     break;
                 case R.id.bt_login_out:
+                    //执行退出操作
                     login_out();
 
                     break;
@@ -240,8 +248,7 @@ public class MainActivity extends TabActivity {
         } else {
             //做登录操作
             //startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
-                    REQUEST_CODE);
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), REQUEST_CODE);
         }
 
     }
@@ -281,13 +288,18 @@ public class MainActivity extends TabActivity {
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String platform = data.getStringExtra("platform");
-            HashMap<String, Object> userinfo = (HashMap<String, Object>) data
-                    .getSerializableExtra("userinfo");
+            HashMap<String, Object> userinfo = (HashMap<String, Object>) data.getSerializableExtra("userinfo");
             if ("QQ".equals(platform)) {
                 //用户头像地址
                 String figureurl_qq_2 = (String) userinfo.get("figureurl_qq_2");
                 //用户名称
                 String nickname = (String) userinfo.get("nickname");
+
+                Platform qq = ShareSDK.getPlatform(QQ.NAME);
+                String userId = qq.getDb().getUserId();
+                //在第一次登录操作中将用户信息保存到数据库中
+                Users user = new Users(userId, nickname, figureurl_qq_2);
+                user.save();
                 //加载用户信息
                 loaduserinfo(figureurl_qq_2, nickname);
             } else if ("SinaWeibo".equals(platform)) {
@@ -297,14 +309,28 @@ public class MainActivity extends TabActivity {
                 String screen_name = (String) userinfo.get("screen_name");
                 e(TAG, "onActivityResult" + "screen_name:" + screen_name);
 
+                Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+                String userId = sinaWeibo.getDb().getUserId();
+                //在第一次登录操作中将用户信息保存到数据库中
+                Users user = new Users(userId, screen_name, avatar_large);
+                user.save();
                 loaduserinfo(avatar_large, screen_name);
             }
 
             e(TAG, "onActivityResult" + "platform:" + platform + "userinfo" + userinfo);
+        }
+
+        if (requestCode == REQUEST_VEDIO_CODE && resultCode == RESULT_OK) {
 
         }
     }
 
+    /**
+     * 设置头像部位信息封装的方法
+     *
+     * @param imageuel
+     * @param username
+     */
     private void loaduserinfo(String imageuel, String username) {
         ImageCacheManager.loadImage(this, imageuel, iv_user_head, R
                 .drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.CENTER_CROP);

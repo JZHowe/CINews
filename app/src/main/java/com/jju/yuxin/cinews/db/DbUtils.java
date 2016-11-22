@@ -56,6 +56,7 @@ public class DbUtils {
         mFavors.setKey(mFavorBean.getKey());
         mFavors.setVideo_src(mFavorBean.getVideo_src());
         mFavors.setType(mFavorBean.getType());
+        mFavors.setUserid(mFavorBean.getUserid());
         mFavors.save();
     }
 
@@ -89,9 +90,20 @@ public class DbUtils {
     /**
      * 查询所有
      */
+    public static List<Favors> searchFavor(String userid) {
+
+        List<Favors> mFavorsList;
+
+        mFavorsList = DataSupport.where("userid=?", String.valueOf(userid)).find
+                (Favors.class);
+
+        return mFavorsList;
+    }
     public static List<Favors> searchAllFavor() {
         List<Favors> mFavorsList = DataSupport.findAll(Favors.class);
         return mFavorsList;
     }
+
+
 
 }

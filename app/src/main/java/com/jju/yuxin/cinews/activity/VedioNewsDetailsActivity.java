@@ -1,12 +1,17 @@
 package com.jju.yuxin.cinews.activity;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,7 +28,9 @@ import com.jju.yuxin.cinews.adapter.VedioList_Adapter;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
+import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
 
+import java.io.File;
 import java.util.List;
 
 import cn.sharesdk.framework.Platform;
@@ -36,6 +43,8 @@ import cn.sharesdk.wechat.favorite.WechatFavorite;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
+import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE;
+import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
 import static android.util.Log.e;
 
 
@@ -104,6 +113,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     private int per_position = 0;
     private ListView lv_more_vedio;
     private ImageView iv_download;
+    private DownloadManager downManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +129,9 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         bt_top_right.setBackgroundResource(R.drawable.bt_shoucang_selector);
 
         SharedClickListener sharedClickListener = new SharedClickListener();
+
+
+        downManager = (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
 
         //分享按钮
         iv_shard = (ImageView) findViewById(R.id.iv_shard);
@@ -145,10 +158,12 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         iv_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadVedio(vedioInfoBean.getPlay_src());
+                downloadVedio(vedioInfoBean);
 
             }
         });
+
+
 
         JsoupUtils.getNewPaper(path,mhandler);
 
@@ -169,10 +184,16 @@ public class VedioNewsDetailsActivity extends BaseActivity {
                     isFavor = false;
                     Toast.makeText(VedioNewsDetailsActivity.this, "已取消", Toast.LENGTH_SHORT).show();
                 } else {
-                    bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
-                    DbUtils.saveFavor(mFavorBean);
-                    isFavor = true;
-                    Toast.makeText(VedioNewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+                    String loginUserid = LoginPlatformUtil.getLoginUserid();
+                    if (loginUserid!=null) {
+                        mFavorBean.setUserid(loginUserid);
+                        bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+                        DbUtils.saveFavor(mFavorBean);
+                        isFavor = true;
+                        Toast.makeText(VedioNewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(VedioNewsDetailsActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -198,10 +219,14 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         //传过来的视频新闻对象
         vedioInfoBean = getIntent().getParcelableExtra("vedio_news");
         getFavor();
-        //判断是否收藏
-        if (DbUtils.searchVideoFavor(vedioInfoBean).size() > 0) {
-            isFavor = true;
-            bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+        //只有登陆了用户才要判断当前内容是否已经被收藏
+        String loginUserid = LoginPlatformUtil.getLoginUserid();
+        if (loginUserid!=null) {
+            //判断是否已经收藏
+            if (DbUtils.searchVideoFavor(vedioInfoBean).size() > 0) {
+                isFavor = true;
+                bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+            }
         }
     }
 
@@ -350,7 +375,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
         @Override
         public void onCompletion(MediaPlayer mp) {
-            Toast.makeText(VedioNewsDetailsActivity.this, "播放完成!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VedioNewsDetailsActivity.this, "播放完成.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -425,12 +450,28 @@ public class VedioNewsDetailsActivity extends BaseActivity {
 
     /**
      * 下载视频到本地
-     * @param play_src
+     * @param play_info
      */
-    private void downloadVedio(String play_src) {
-
+    private void downloadVedio(VedioInfoBean play_info) {
+        //判断是否存在SD卡
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            File file=new File(Environment.DIRECTORY_DOWNLOADS, play_info.getNews_title().replace(" ","")+".mp4");
+            Log.e(TAG, "downloadVedio" + file.getAbsolutePath()+file.exists());
+            if (!file.exists()){
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(play_info.getPlay_src()));
+                request.setNotificationVisibility(VISIBILITY_VISIBLE);//用于设置下载时时候在状态栏显示通知信
+                request.allowScanningByMediaScanner();//用于设置是否允许本MediaScanner扫描。
+                request.setTitle("下载中");
+                request.setDescription("视频正在下载中");
+                request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, play_info.getNews_title().replace(" ","")+".mp4");
+                long enqueue = downManager.enqueue(request);
+            }else{
+                Toast.makeText(this, "您已经下载过了这个视频...", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(this, "请插入SD卡...", Toast.LENGTH_SHORT).show();
+        }
+       
     }
-
-
 
 }

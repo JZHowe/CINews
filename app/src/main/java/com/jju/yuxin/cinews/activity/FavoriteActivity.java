@@ -2,6 +2,7 @@ package com.jju.yuxin.cinews.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.db.Favors;
+import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
 
 import java.util.List;
 
@@ -57,11 +59,16 @@ public class FavoriteActivity extends BaseActivity {
 
         mListView = (ListView) findViewById(R.id.lv_favor);
         mListView.setOnItemClickListener(mOnItemClickListener);
-
-        mFavorsList = DbUtils.searchAllFavor();
-
-        adapter = new FavorList_Adapter(FavoriteActivity.this, mFavorsList);
-        mListView.setAdapter(adapter);
+        String loginUserid = LoginPlatformUtil.getLoginUserid();
+        if (loginUserid !=null){
+            mFavorsList = DbUtils.searchFavor(loginUserid);
+        }else{
+            mFavorsList=null;
+        }
+        if (mFavorsList!=null&&mFavorsList.size()>0){
+            adapter = new FavorList_Adapter(FavoriteActivity.this, mFavorsList);
+            mListView.setAdapter(adapter);
+        }
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -132,9 +139,35 @@ public class FavoriteActivity extends BaseActivity {
 
     //更新listview
     private void updata(Boolean isDelete) {
-        mFavorsList = DbUtils.searchAllFavor();
-        adapter.replaceList(mFavorsList, isDelete);
-        adapter.notifyDataSetChanged();
+        //多次判断是否已经登录,防止从生命周期从onPause->onResume
+        String loginUserids = LoginPlatformUtil.getLoginUserid();
+        //如果已经登陆了
+        if (loginUserids!=null){
+            //从数据库中获取当前用户收藏的内容
+            mFavorsList = DbUtils.searchFavor(loginUserids);
+            hlog.e(mFavorsList.toString());
+        }else{
+            //如果没有登录
+            mFavorsList=null;
+
+            //如果是登陆了,但是注销了,本次验证为loginUserids=null,adapter!=null
+            if (adapter!=null){
+                //移除全部已经加载的item
+                adapter.removeallItem();
+                adapter.notifyDataSetChanged();
+            }
+
+        }
+        if (mFavorsList!=null&&mFavorsList.size()>0){
+            if (adapter!=null){
+                adapter.replaceList(mFavorsList, isDelete);
+                adapter.notifyDataSetChanged();
+            }else{
+                adapter = new FavorList_Adapter(FavoriteActivity.this, mFavorsList);
+                mListView.setAdapter(adapter);
+            }
+
+        }
     }
 
 }

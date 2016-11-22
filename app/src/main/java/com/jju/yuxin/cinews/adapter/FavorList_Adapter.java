@@ -17,6 +17,7 @@ import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.db.Favors;
 import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +56,12 @@ public class FavorList_Adapter extends BaseAdapter {
     public void replaceList(List<Favors> favorsList, boolean isDelete) {
         oList = favorsList;
         this.isDelete = isDelete;
+    }
+
+    public void removeallItem() {
+        List<Favors> favorsList=new ArrayList<>();
+        oList = favorsList;
+
     }
 
     public void removeitem(int position){

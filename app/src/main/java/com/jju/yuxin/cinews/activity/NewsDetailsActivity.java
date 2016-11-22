@@ -18,6 +18,7 @@ import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.service.JsonUtil;
 import com.jju.yuxin.cinews.utils.Ksoap2Util;
+import com.jju.yuxin.cinews.utils.LoginPlatformUtil;
 import com.jju.yuxin.cinews.utils.MyLogger;
 
 
@@ -53,7 +54,6 @@ public class NewsDetailsActivity extends BaseActivity {
             switch (msg.what) {
                 //视频新闻加载成功
                 case SUCCESS_LOAD:
-
 
                     break;
                 //视频新闻加载失败
@@ -131,10 +131,16 @@ public class NewsDetailsActivity extends BaseActivity {
                     isFavor = false;
                     Toast.makeText(NewsDetailsActivity.this, "已取消", Toast.LENGTH_SHORT).show();
                 } else {
-                    bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
-                    DbUtils.saveFavor(mFavorBean);
-                    isFavor = true;
-                    Toast.makeText(NewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+                    String loginUserid = LoginPlatformUtil.getLoginUserid();
+                    if (loginUserid!=null){
+                        mFavorBean.setUserid(loginUserid);
+                        bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+                        DbUtils.saveFavor(mFavorBean);
+                        isFavor = true;
+                        Toast.makeText(NewsDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(NewsDetailsActivity.this, "请先登录!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -159,12 +165,16 @@ public class NewsDetailsActivity extends BaseActivity {
             Ksoap2Util.doBackgroud(mhandler, R.id.text3, "getartile", oMap);
         }
 
-        //判断是否收藏
-        if (DbUtils.searchFavor(newsBean).size() > 0) {
-            isFavor = true;
-            bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+        //只有登陆了用户才要判断当前内容是否已经被收藏
+        String loginUserid = LoginPlatformUtil.getLoginUserid();
+        if (loginUserid!=null) {
+            //判断是否已经收藏
+            if (DbUtils.searchFavor(newsBean).size() > 0) {
+                isFavor = true;
+                bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
+            }
+            getFavor();
         }
-        getFavor();
     }
 
     //获得要存储的新闻信息
