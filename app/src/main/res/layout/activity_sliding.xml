@@ -43,11 +43,14 @@
         android:scrollbars="none"/>
 
     <!--天气模块-->
-    <ImageView
+    <TextView
         android:id="@+id/weather"
-        android:background="@drawable/weather_03"
+        android:drawableTop="@drawable/weather_03"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="天气"
+        android:gravity="center"
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"

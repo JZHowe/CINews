@@ -54,7 +54,7 @@ public class MainActivity extends TabActivity {
     private TabHost tabHost;
     private CircleImageView iv_user_head;
     private TextView tv_user_name;
-    private ImageView iv_weather;
+    private TextView iv_weather;
     private ListView lv_sliding;
     private Button bt_login_out;
 
@@ -86,7 +86,7 @@ public class MainActivity extends TabActivity {
 
 
         //天气
-        iv_weather = (ImageView) findViewById(R.id.weather);
+        iv_weather = (TextView) findViewById(R.id.weather);
 
         //取消授权
         bt_login_out = (Button) findViewById(R.id.bt_login_out);
