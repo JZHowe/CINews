@@ -85,6 +85,14 @@
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
                   android:screenOrientation="landscape">
         </activity>
+        <activity android:name=".activity.CityPickerActivity"/>
+        <activity android:name=".activity.WeathActivity"/>
+
+
+        <!--百度地图key值-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="n0z5cGzgHGuVceGmrv3OQyO5i04o1lzp" />
 
         <!-- ShardSDK分享模块 -->
         <activity
@@ -224,6 +232,7 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="bb0c0379aacc2da4b70dd714"/> <!-- </>值来自开发者平台取得的AppKey -->
+
 
     </application>
 

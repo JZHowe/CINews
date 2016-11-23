@@ -24,4 +24,13 @@
     <color name="red_select">#fd4848</color>
     <color name="black_text">#626262</color>
     <color name="white_button">#ffffff</color>
+
+
+    <color name="divider">#E5E5E5</color>
+    <color name="shadow">#AAEBEBEB</color>
+    <color name="common_bg">#FAFAFA</color>
+    <color name="content_bg">#F3F3F3</color>
+    <color name="gray_deep">#5c5c5c</color>
+    <color name="alpha_gray">#CC646464</color>
+    <color name="theme_gray">#646464</color>
 </resources>

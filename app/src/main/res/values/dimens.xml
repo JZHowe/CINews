@@ -25,4 +25,9 @@
     <dimen name="dimen_50dp">50dp</dimen>
     <dimen name="dimen_5dp">5dp</dimen>
     <dimen name="dimen_80dp">80dp</dimen>
+
+
+    <dimen name="side_letter_bar_letter_size">12sp</dimen>
+    <dimen name="side_letter_bar_width">36dp</dimen>
+    <dimen name="city_text_size">16sp</dimen>
 </resources>

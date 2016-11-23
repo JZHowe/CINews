@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +16,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jju.yuxin.cinews.App;
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.db.DbUtils;
 import com.jju.yuxin.cinews.db.Users;
@@ -58,6 +58,7 @@ public class MainActivity extends TabActivity {
     private TabHost tabHost;
     private CircleImageView iv_user_head;
     private TextView tv_user_name;
+    private TextView tv_weather;
     private ListView lv_sliding;
     private Button bt_login_out;
     private boolean isDark = false;
@@ -65,6 +66,8 @@ public class MainActivity extends TabActivity {
 //    private int item = getResources().getStringArray(R.array.sliding_list).length;
 
     Platform plat = null;
+
+
     private Button bt_exit;
 
     @Override
@@ -76,11 +79,15 @@ public class MainActivity extends TabActivity {
 
         MainClickListener listener = new MainClickListener();
 
+
         //用户头像
         iv_user_head = (CircleImageView) findViewById(R.id.iv_user_head);
 
         //用户昵称
         tv_user_name = (TextView) findViewById(R.id.tv_user_name);
+
+        //天气
+        tv_weather = (TextView) findViewById(R.id.m_weather);
 
         //取消授权
         bt_login_out = (Button) findViewById(R.id.bt_login_out);
@@ -100,6 +107,8 @@ public class MainActivity extends TabActivity {
         tv_user_name.setOnClickListener(listener);
 
         bt_login_out.setOnClickListener(listener);
+
+        tv_weather.setOnClickListener(listener);
 
         //功能List
         lv_sliding = (ListView) findViewById(R.id.lv_sliding);
@@ -262,12 +271,23 @@ public class MainActivity extends TabActivity {
                     login_out();
 
                     break;
+                case R.id.m_weather:
+                    jump_weather();
+                    break;
                 default:
                     break;
             }
 
 
         }
+    }
+
+    private void jump_weather() {
+        Intent intent = new Intent(MainActivity.this, WeathActivity.class);
+        String city = ((App)getApplication()).getCity();
+        MyLogger.lLog().i("city_is_"+city);
+        intent.putExtra("city",city);
+        startActivity(intent);
     }
 
     private void login_() {
