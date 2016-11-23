@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <VideoView
+        android:id="@+id/full_vedioview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!--加载动画,id=pb_loading,需要注意的是应该和ListView在同一个RelativeLayout下-->
+    <include layout="@layout/activity_loading_pb"/>
+    </RelativeLayout>
+</RelativeLayout>

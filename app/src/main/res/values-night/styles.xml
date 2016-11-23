@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    "
+
     <style name="MMTabButton">
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_horizontal</item>
@@ -21,7 +24,6 @@
     </style>
 
 
-
     <style name="mProgress_circle">
         <item name="android:indeterminateDrawable">@drawable/progressbar_circle_</item>
         <item name="android:minWidth">76dp</item>
@@ -29,6 +31,7 @@
         <item name="android:maxWidth">76dp</item>
         <item name="android:maxHeight">76dp</item>
     </style>
+
     <style name="MyTabLayoutTextAppearance">
         <item name="android:textSize">15sp</item>
     </style>

@@ -80,6 +80,12 @@
         <activity android:name=".activity.TestActivity">
 
         </activity>
+
+        <activity android:name=".activity.LandScapeVedio"
+                  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+                  android:screenOrientation="landscape">
+        </activity>
+
         <!-- ShardSDK分享模块 -->
         <activity
             android:name="com.mob.tools.MobUIShell"
