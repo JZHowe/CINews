@@ -25,10 +25,8 @@ public class Ksoap2Util {
                 //TODO
                 //message.obj = JsonUtil.getInstance().StringToJson(info, what);
                 message.obj = info;
-//                MyLogger.zLog().e(info+"!!!!!!!!!!!!!!!!!");
                 message.what = what;
                 handler.sendMessage(message);
-
             }
         }).start();
 
@@ -59,8 +57,6 @@ public class Ksoap2Util {
 
             //5.使用getResponse方法获得WebService方法的返回结果
             info = envelope.getResponse().toString();
-            MyLogger.zLog().e(info+"$$$$$$$$$$$$$$$$");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

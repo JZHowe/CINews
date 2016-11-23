@@ -2,7 +2,8 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <TabHost
         android:id="@android:id/tabhost"
@@ -87,6 +88,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="left"
         >
+
         <include layout="@layout/activity_sliding"/>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

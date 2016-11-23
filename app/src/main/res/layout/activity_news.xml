@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/rl"
     tools:context="com.jju.yuxin.cinews.activity.NewsActivity">
 
     <LinearLayout
@@ -27,19 +28,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:overScrollMode="never"
-                app:tabBackground="@android:color/white"
-                app:tabIndicatorColor="#a00001"
+                app:tabBackground="@color/white_tablayout"
+                app:tabIndicatorColor="@color/red_icon"
                 app:tabIndicatorHeight="3dp"
                 app:tabMode="scrollable"
-                app:tabSelectedTextColor="#fd4848"
+                app:tabSelectedTextColor="@color/red_select"
                 app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-                app:tabTextColor="#626262"/>
+                app:tabTextColor="@color/black_text"/>
 
             <ImageButton
                 android:id="@+id/ib_new_content"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
+                android:background="@color/white_button"
                 android:padding="8dp"
                 android:src="@drawable/add_new_button"/>
         </LinearLayout>
@@ -47,7 +48,7 @@
         <com.jju.yuxin.cinews.views.OuterViewPager
             android:id="@+id/vp_new_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -58,8 +59,7 @@
         android:layout_marginBottom="60dp"
         app:content="@+id/content"
         app:direction="topToBottom"
-        app:handle="@+id/handle"
-        >
+        app:handle="@+id/handle">
 
         <include
             android:id="@id/content"

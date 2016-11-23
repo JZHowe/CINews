@@ -18,6 +18,14 @@ public class Favors extends DataSupport{
     private String type;
     private String userid;
 
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String user_id) {
+        this.userid = user_id;
+    }
+
     public int getId() {
         return id;
     }
@@ -88,13 +96,5 @@ public class Favors extends DataSupport{
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
     }
 }

@@ -76,7 +76,8 @@ public class NewsBean implements Parcelable {
     @Override
     public String toString() {
         return "NewsBean{" +
-                "url='" + url + '\'' +
+                "id='" + id + '\'' +
+                ", url='" + url + '\'' +
                 ", key='" + key + '\'' +
                 ", name='" + name + '\'' +
                 ", summary='" + summary + '\'' +

@@ -1,20 +1,23 @@
 package com.jju.yuxin.cinews.activity;
 
+
 import android.app.Activity;
-import android.app.Notification;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.volleyutils.VolleyUtils;
 
-import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
-import cn.sharesdk.framework.ShareSDK;
 
 /**
  * =============================================================================
@@ -29,18 +32,20 @@ import cn.sharesdk.framework.ShareSDK;
  * ==============================================================================
  */
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
     public MyLogger hlog;
     public MyLogger jlog;
     public MyLogger llog;
     public MyLogger zlog;
     public VolleyUtils volleyUtils;
+    private MyBroad broad;
+    private static final String TAG=BaseActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setTheme(R.style.AppTheme);
 
         hlog = MyLogger.hLog();
         jlog = MyLogger.jLog();
@@ -57,25 +62,46 @@ public class BaseActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
 
 
-        //SharedSDK的初始化
-        ShareSDK.initSDK(this);
 
         //极光推送的初始化
         JPushInterface.setDebugMode(true);//如果时正式版就改成false
         JPushInterface.init(this);
+        //给设备设置别名
+//        JPushInterface.setAlias(this, "hu", new TagAliasCallback() {
+//            @Override
+//            public void gotResult(int i, String s, Set<String> set) {
+//
+//            }
+//        });
 
+        //自定义普通推送
+//        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(BaseActivity.this);
+//        builder.statusBarDrawable = R.mipmap.ic_launcher;
+//        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
+//                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
+//        builder.notificationDefaults = Notification.DEFAULT_SOUND
+//                | Notification.DEFAULT_VIBRATE
+//                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
+//        JPushInterface.setPushNotificationBuilder(1, builder);
 
-        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(BaseActivity.this);
-        builder.statusBarDrawable = R.mipmap.ic_launcher;
-        builder.notificationFlags = Notification.FLAG_AUTO_CANCEL
-                | Notification.FLAG_SHOW_LIGHTS;  //设置为自动消失和呼吸灯闪烁
-        builder.notificationDefaults = Notification.DEFAULT_SOUND
-                | Notification.DEFAULT_VIBRATE
-                | Notification.DEFAULT_LIGHTS;  // 设置为铃声、震动、呼吸灯闪烁都要
-        JPushInterface.setPushNotificationBuilder(1, builder);
-
+        broad = new MyBroad();
+        IntentFilter filter = new IntentFilter("MyBroad");
+        registerReceiver(broad,filter);
     }
 
+    //夜日间模式广播接收
+    class MyBroad extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isDark = intent.getBooleanExtra("isDark",false);
+            if(!isDark){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+//            recreate();
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -86,6 +112,9 @@ public class BaseActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(broad!=null){
+            unregisterReceiver(broad);
+        }
         //当执行onDestroy()方法，将activity从活动管理器中移除
         ActivityCollector.removeActivity(this);
     }
@@ -99,7 +128,7 @@ public class BaseActivity extends Activity {
     }
 
     //记录用户首次点击返回键的时间
-    private long firstTime = 0;
+ //   private long firstTime = 0;
 
 //    @Override
 //    public boolean onKeyUp(int keyCode, KeyEvent event) {

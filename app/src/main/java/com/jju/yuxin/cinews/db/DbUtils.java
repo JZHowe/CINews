@@ -1,9 +1,12 @@
 package com.jju.yuxin.cinews.db;
 
+import android.util.Log;
+
 import com.jju.yuxin.cinews.bean.FavorBean;
 import com.jju.yuxin.cinews.bean.NewsBean;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
 
+import org.litepal.crud.ClusterQuery;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
@@ -54,6 +57,7 @@ public class DbUtils {
         mFavors.setKey(mFavorBean.getKey());
         mFavors.setVideo_src(mFavorBean.getVideo_src());
         mFavors.setType(mFavorBean.getType());
+        mFavors.setUserid(mFavorBean.getUserid());
         mFavors.save();
     }
 
@@ -87,9 +91,30 @@ public class DbUtils {
     /**
      * 查询所有
      */
+    public static List<Favors> searchFavor(String userid) {
+
+        List<Favors> mFavorsList;
+
+        mFavorsList = DataSupport.where("userid=?", String.valueOf(userid)).find
+                (Favors.class);
+
+        return mFavorsList;
+    }
     public static List<Favors> searchAllFavor() {
         List<Favors> mFavorsList = DataSupport.findAll(Favors.class);
         return mFavorsList;
     }
+
+    public static void saveUser(Users user){
+        //之前是否已经登录过了
+        ClusterQuery clusterQuery = DataSupport.select("*").where("userid=?",user.getUserid());
+        //如果存在,那么将其删除
+        if (clusterQuery!=null||clusterQuery.count(Users.class)>0) {
+            DataSupport.deleteAll(Users.class,"userid=?",user.getUserid());
+        }
+        //最新的用户信息更新到数据库中去
+        user.save();
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.jju.yuxin.cinews.activity;
 
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.utils.ActivityCollector;
+import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.utils.NetUtils;
 
 import java.util.Timer;

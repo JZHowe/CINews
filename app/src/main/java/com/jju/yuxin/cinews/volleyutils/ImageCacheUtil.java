@@ -20,22 +20,22 @@ import java.io.OutputStream;
 
 
 /**
- *=============================================================================
- *
+ * =============================================================================
+ * <p>
  * Copyright (c) 2016  yuxin rights reserved.
  * ClassName ImageCacheUtil
  * Created by javen.
  * Created time 15-11-2016 16:57.
  * Describe : * 图片缓存帮助类
- *              包含内存缓存LruCache和磁盘缓存DiskLruCache
+ * 包含内存缓存LruCache和磁盘缓存DiskLruCache
  * History:
  * Version   1.0.
- *
- *==============================================================================
+ * <p>
+ * ==============================================================================
  */
 public class ImageCacheUtil implements ImageCache {
 
-    private String TAG=ImageCacheUtil.this.getClass().getSimpleName();
+    private String TAG = ImageCacheUtil.this.getClass().getSimpleName();
 
     //缓存类
     private static LruCache<String, Bitmap> mLruCache;
@@ -80,10 +80,15 @@ public class ImageCacheUtil implements ImageCache {
                     DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
                     Bitmap bitmap = null;
                     if (snapshot != null) {
+//                        BitmapFactory.Options opt = new BitmapFactory.Options();
+//                        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+//                        opt.inPurgeable = true;
+//                        opt.inSampleSize = 10;
+//                        bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0),null,opt);
                         bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0));
                         // 存入LruCache缓存
                         mLruCache.put(url, bitmap);
-                       MyLogger.hLog().i("从DiskLruCahce获取");
+                        MyLogger.hLog().i("从DiskLruCahce获取");
                     }
                     return bitmap;
                 }

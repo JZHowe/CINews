@@ -77,28 +77,24 @@ public class PagerDateInit {
 
         //加载产业新闻的ListViewn内容
         if (stringArray[0].equals(viewtag)) {
-            MyLogger.zLog().e(viewtag+"###0");
             Map<String,Object>oMap = new HashMap<String,Object>();
             oMap.put("id","69e8ad24-76f8-40c3-9e6c-f09c4eb39839");
             oMap.put("page",1);
             Ksoap2Util.doBackgroud(handler, what, "getlistartile", oMap);
             //加载动漫游戏的ListViewn内容
         } else if (stringArray[1].equals(viewtag)) {
-            MyLogger.zLog().e(viewtag+"###1");
             Map<String,Object>oMap = new HashMap<String,Object>();
             oMap.put("id","d2ce6ce0-d55c-46ce-9b9e-0df3bb726877");
             oMap.put("page",1);
             Ksoap2Util.doBackgroud(handler, what, "getlistartile", oMap);
             //加载工艺美术的ListViewn内容
         } else if (stringArray[2].equals(viewtag)) {
-            MyLogger.zLog().e(viewtag+"###2");
             Map<String,Object>oMap = new HashMap<String,Object>();
             oMap.put("id","218617c3-539b-4fe6-9023-a891750590da");
             oMap.put("page",1);
             Ksoap2Util.doBackgroud(handler, what, "getlistartile", oMap);
             //加载休闲旅游的ListViewn内容
         } else if (stringArray[3].equals(viewtag)) {
-            MyLogger.zLog().e(viewtag+"###3");
             Map<String,Object>oMap = new HashMap<String,Object>();
             oMap.put("id","c0bb5dab-2120-4e5b-885c-e17dd227ec3e");
             oMap.put("page",1);

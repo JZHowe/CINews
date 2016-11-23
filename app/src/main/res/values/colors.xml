@@ -10,7 +10,18 @@
     <color name="block_red">#ff640001</color>
     <color name="tab_text_select_color">#fd4848</color>
     <color name="tab_text_color">#626262</color>
+    <color name="red_top">#cB0B0B</color>
     <!-- textcolor -->
-    <color name="black">#ff000000</color>
-    <color name="gray">#ff5b5b5b</color>
+    <color name="black">#000000</color>
+    <color name="black_title">#000000</color>
+    <color name="black_time">#000000</color>
+    <color name="gray">#5b5b5b</color>
+    <color name="red_icon">#a00001</color>
+
+    <color name="white">#fefefe</color>
+    <color name="white_content">#fefefe</color>
+    <color name="white_tablayout">#fefefe</color>
+    <color name="red_select">#fd4848</color>
+    <color name="black_text">#626262</color>
+    <color name="white_button">#ffffff</color>
 </resources>

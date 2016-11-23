@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:id="@+id/activity_login"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:fitsSystemWindows="true"
     tools:context="com.jju.yuxin.cinews.activity.LoginActivity">
 
+    <include layout="@layout/top_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
     <ImageView
         android:id="@+id/iv_login_qq"
         android:background="@drawable/login_qq"
@@ -30,4 +37,5 @@
         android:layout_marginBottom="@dimen/dimen_20dp"
         android:layout_width="@dimen/dimen_80dp"
         android:layout_height="@dimen/dimen_80dp"/>
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Copyright (c) 2016 yuxin All rights reserved.
  * Packname com.jju.yuxin.cinews.bean
  * Created by yuxin.
- * Created time 2016/11/17 0017 上午 8:42.
+ * Created time 2016/11/16 16:41.
  * Version   1.0;
  * Describe : 新闻详情的Bean
  * History:

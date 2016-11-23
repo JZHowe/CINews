@@ -107,10 +107,9 @@ public class News_Pageadapter extends PagerAdapter {
             PagerDateInit.getItemListdata(context, (String) viewList.get(position).getTag(), handler_text5, R.id.text5);
             object_flag = object;
         }
-
     }
 
-
+    //获取外层viewpager的页数
     @Override
     public int getCount() {
         return viewList.size();
@@ -137,7 +136,6 @@ public class News_Pageadapter extends PagerAdapter {
 
         }
 
-
         //获取当前item的listview
         final PullToRefreshListView lv_content = (PullToRefreshListView) viewList.get(position).findViewById(R.id.pull_refresh_list);
 
@@ -146,14 +144,12 @@ public class News_Pageadapter extends PagerAdapter {
         final LinearLayout pb_loading = (LinearLayout) viewList.get(position).findViewById(R.id.pb_loading);
         pb_loading.setVisibility(View.VISIBLE);
 
-
-        //判断顶栏的viewpages是否是需要显示
+        //判断顶栏的viewpager是否是需要显示
         if (ll_top.getTag().equals(View.GONE)) {
 
             //设置隐藏
             ll_top.setVisibility(View.GONE);
         } else {
-
             //设置可见
             ll_top.setVisibility(View.VISIBLE);
 
@@ -295,7 +291,7 @@ public class News_Pageadapter extends PagerAdapter {
             while (true) {
                 while (!isstop) {
                     try {
-                        sleep(4000);
+                        sleep(2000);
                         index++;
                         image_handler.sendEmptyMessage(R.id.image_thread);
 
@@ -316,7 +312,6 @@ public class News_Pageadapter extends PagerAdapter {
             isstop = true;
             index = 0;
         }
-
         container.removeView(viewList.get(position));
     }
 
@@ -371,7 +366,4 @@ public class News_Pageadapter extends PagerAdapter {
             context.startActivity(intent);
         }
     };
-
-
-
 }
