@@ -1,12 +1,10 @@
 package com.jju.yuxin.cinews.activity;
 
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,10 +13,11 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.jju.yuxin.cinews.R;
-import com.jju.yuxin.cinews.db.DbUtils;
-import com.jju.yuxin.cinews.db.Users;
-import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.MyLogger;
 import com.jju.yuxin.cinews.views.CircleImageView;
 import com.jju.yuxin.cinews.volleyutils.ImageCacheManager;
@@ -52,23 +51,32 @@ public class MainActivity extends TabActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE = 100;
-    private static final int REQUEST_VEDIO_CODE = 200;
     private TabHost tabHost;
     private CircleImageView iv_user_head;
     private TextView tv_user_name;
+    private TextView iv_weather;
     private ListView lv_sliding;
     private Button bt_login_out;
 
     Platform plat = null;
-    private Button bt_exit;
+
+    //百度地图
+    public LocationClient mLocationClient = null;
+    public BDLocationListener myListener = new MyLocationListener();
+    private String city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        e(TAG, "onCreate" + "__________________");
 
         MainClickListener listener = new MainClickListener();
+
+        //百度地图获得位置
+        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
+        mLocationClient.registerLocationListener( myListener );    //注册监听函数
+        initLocation();
+        mLocationClient.start();
 
         //用户头像
         iv_user_head = (CircleImageView) findViewById(R.id.iv_user_head);
@@ -76,19 +84,38 @@ public class MainActivity extends TabActivity {
         //用户昵称
         tv_user_name = (TextView) findViewById(R.id.tv_user_name);
 
+
+        //天气
+        iv_weather = (TextView) findViewById(R.id.weather);
+
         //取消授权
         bt_login_out = (Button) findViewById(R.id.bt_login_out);
 
-        bt_exit = (Button) findViewById(R.id.bt_exit);
-        bt_exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityCollector.finishAll();
-                finish();
-            }
-        });
+        //判断是否已经登录
+        Platform qq = ShareSDK.getPlatform(QQ.NAME);
+        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
 
+        //如果QQ已经授权了
+        if (qq.isAuthValid()){
+            plat=qq;
+            String nickname = plat.getDb().get("nickname");
+            String figureurl_qq_2 = plat.getDb().get("figureurl_qq_2");
+            loaduserinfo(figureurl_qq_2,nickname);
+            //如果微信已经授权了
+        }else if (wechat.isAuthValid()){
+            plat=wechat;
 
+            //如果新浪微博已经授权了
+        }else if(sinaWeibo.isAuthValid()){
+            plat=sinaWeibo;
+            //用户头像地址
+            String profile_image_url = plat.getDb().get("avatar_large");
+            //用户名称
+            String screen_name =  plat.getDb().get("screen_name");
+
+            loaduserinfo(profile_image_url,screen_name);
+        }
 
 
         iv_user_head.setOnClickListener(listener);
@@ -96,6 +123,8 @@ public class MainActivity extends TabActivity {
         tv_user_name.setOnClickListener(listener);
 
         bt_login_out.setOnClickListener(listener);
+
+        iv_weather.setOnClickListener(listener);
 
         //功能List
         lv_sliding = (ListView) findViewById(R.id.lv_sliding);
@@ -162,68 +191,21 @@ public class MainActivity extends TabActivity {
             }
         });
 
-        //功能列表的点击事件
-        lv_sliding.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                        openAlbumIntent.setDataAndType(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "video/mp4");
-                        startActivityForResult(openAlbumIntent, REQUEST_VEDIO_CODE);
-                        break;
-                    case 1:
-
-                        break;
-                    case 2:
-                        //跳转到关于界面
-                        startActivity(new Intent(MainActivity.this, AboutActivity.class));
-
-                        break;
-
-                    default:
-                        break;
-                }
-
-            }
-        });
-
     }
 
+    //初始化位置
+    private void initLocation() {
+        LocationClientOption option = new LocationClientOption();
+        //就是这个方法设置为true，才能获取当前的位置信息
+        option.setIsNeedAddress(true);
+        option.setOpenGps(true);
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
+        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("gcj02");//可选，默认gcj02，设置返回的定位结果坐标系
+        //int span = 1000;
+        //option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        mLocationClient.setLocOption(option);
 
-    /**
-     * 在其他的页面进入登录界面时,同步登录信息
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        e(TAG, "onResume" + "_________________");
-
-        //判断是否已经登录
-        Platform qq = ShareSDK.getPlatform(QQ.NAME);
-        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-
-        //如果QQ已经授权了
-        if (qq.isAuthValid()) {
-            plat = qq;
-            String nickname = plat.getDb().get("nickname");
-            String figureurl_qq_2 = plat.getDb().get("figureurl_qq_2");
-            loaduserinfo(figureurl_qq_2, nickname);
-            //如果微信已经授权了
-        } else if (wechat.isAuthValid()) {
-            plat = wechat;
-
-            //如果新浪微博已经授权了
-        } else if (sinaWeibo.isAuthValid()) {
-            plat = sinaWeibo;
-            //用户头像地址
-            String profile_image_url = plat.getDb().get("avatar_large");
-            //用户名称
-            String screen_name = plat.getDb().get("screen_name");
-
-            loaduserinfo(profile_image_url, screen_name);
-        }
     }
 
     /**
@@ -236,14 +218,16 @@ public class MainActivity extends TabActivity {
 
             switch (v.getId()) {
                 case R.id.iv_user_head:
-                    //点击头像执行登录操作
                     login_();
                     break;
                 case R.id.bt_login_out:
-                    //执行退出操作
                     login_out();
 
                     break;
+                case R.id.weather:
+                    Intent intent = new Intent(MainActivity.this, WeathActivity.class);
+                    intent.putExtra("city",city);
+                    startActivity(intent);
                 default:
                     break;
             }
@@ -274,36 +258,29 @@ public class MainActivity extends TabActivity {
      */
     private void login_out() {
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
-        Platform plat=null;
         if (qq.isAuthValid()) {
-            plat=qq;
+
             MyLogger.hLog().e("已经取消QQ的授权!");
-            plat.removeAccount(true);
-            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
+            qq.removeAccount(true);
         }
         Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
         if (wechat.isAuthValid()) {
-            plat=wechat;
             MyLogger.hLog().e("已经取消微信的授权!");
-            plat.removeAccount(true);
-            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
+            wechat.removeAccount(true);
         }
         Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
         if (sinaWeibo.isAuthValid()) {
-            plat=sinaWeibo;
             MyLogger.hLog().e("已经取消新浪微博的授权!");
-            plat.removeAccount(true);
-            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
-        }
-        if (plat==null){
-            Toast.makeText(this, "请先登录!", Toast.LENGTH_SHORT).show();
+            sinaWeibo.removeAccount(true);
         }
         tv_user_name.setText(R.string.denglu);
-        iv_user_head.setImageResource(R.mipmap.ic_launcher);
+        iv_user_head.setImageResource(R.drawable.ic_launcher);
+
+        Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
     }
 
 
-    //根据登录成功的返回信息设置控件信息和数据库
+    //根据登录成功的返回信息设置控件信息
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -311,69 +288,54 @@ public class MainActivity extends TabActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String platform = data.getStringExtra("platform");
             HashMap<String, Object> userinfo = (HashMap<String, Object>) data.getSerializableExtra("userinfo");
-            if ("QQ".equals(platform)) {
+            if ("QQ".equals(platform)){
                 //用户头像地址
                 String figureurl_qq_2 = (String) userinfo.get("figureurl_qq_2");
                 //用户名称
                 String nickname = (String) userinfo.get("nickname");
-
-                Platform qq = ShareSDK.getPlatform(QQ.NAME);
-                String userId = qq.getDb().getUserId();
-                //在第一次登录操作中将用户信息保存到数据库中
-                Users user = new Users(userId, nickname, figureurl_qq_2);
-                DbUtils.saveUser(user);
                 //加载用户信息
-                loaduserinfo(figureurl_qq_2, nickname);
-            } else if ("SinaWeibo".equals(platform)) {
+                loaduserinfo(figureurl_qq_2,nickname);
+            }else if ("SinaWeibo".equals(platform)){
                 //用户头像地址
                 String avatar_large = (String) userinfo.get("avatar_large");
                 //用户名称
                 String screen_name = (String) userinfo.get("screen_name");
                 e(TAG, "onActivityResult" + "screen_name:" + screen_name);
 
-                Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-                String userId = sinaWeibo.getDb().getUserId();
-                //在第一次登录操作中将用户信息保存到数据库中
-                Users user = new Users(userId, screen_name, avatar_large);
-                DbUtils.saveUser(user);
-                loaduserinfo(avatar_large, screen_name);
+                loaduserinfo(avatar_large,screen_name);
             }
 
             e(TAG, "onActivityResult" + "platform:" + platform + "userinfo" + userinfo);
-        }
-
-        if (requestCode == REQUEST_VEDIO_CODE && resultCode == RESULT_OK) {
 
         }
     }
 
-    /**
-     * 设置头像部位信息封装的方法
-     *
-     * @param imageuel
-     * @param username
-     */
-    private void loaduserinfo(String imageuel, String username) {
+    private void loaduserinfo(String imageuel,String username){
         ImageCacheManager.loadImage(this, imageuel, iv_user_head, R
                 .drawable.defaut_pic, R.drawable.fail_pic, 0, 0, ImageView.ScaleType.CENTER_CROP);
         tv_user_name.setText(username + "");
     }
 
 
-    //记录用户首次点击返回键的时间
-    private static long firstTime = 0;
+    //监听获得位置
+    private class MyLocationListener implements BDLocationListener {
 
-    //双击退出的方法
-    public static boolean doubleExit(Context context) {
-        long secondTime = System.currentTimeMillis();
-        if (secondTime - firstTime > 2000) {
-            Toast.makeText(context, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            firstTime = secondTime;
-            return true;
-        } else {
-            ActivityCollector.finishAll();
-            return false;
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            //Receive Location
+            //经纬度
+            double lati = location.getLatitude();
+            double longa = location.getLongitude();
+            //打印出当前位置
+            Log.i("TAG", "location.getAddrStr()=" + location.getAddrStr());
+            //打印出当前城市
+            Log.i("TAG", "location.getCity()=" + location.getCity());
+            //返回码
+            int i = location.getLocType();
+            Log.i("TAG","location.getLocType()=" + i);
+            city=location.getCity();
         }
 
     }
+
 }

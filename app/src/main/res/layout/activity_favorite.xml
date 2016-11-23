@@ -5,43 +5,16 @@
     android:id="@+id/activity_favorite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.jju.yuxin.cinews.activity.FavoriteActivity">
 
     <include layout="@layout/top_bar"/>
 
-    <RelativeLayout
+    <ListView
+        android:id="@+id/lv_favor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"/>
 
-        <ListView
-            android:id="@+id/lv_favor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/tv_favor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="对不起,\n收藏功能只有登录后才能使用!\n请先登录!"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size18"
-            android:visibility="gone"
-            />
-
-        <Button
-            android:id="@+id/btn_favor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_favor"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dimen_20dp"
-            android:text="点我登录"
-            android:visibility="invisible"
-            />
-    </RelativeLayout>
 
 </LinearLayout>

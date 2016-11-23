@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,7 +35,6 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     private ImageView iv_login_out;
 
     private Handler handler;
-    private Button bt_top_left;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +48,6 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         iv_login_qq = (ImageView) findViewById(R.id.iv_login_qq);
         iv_login_wechat = (ImageView) findViewById(R.id.iv_login_wechat);
         iv_login_weinbo = (ImageView) findViewById(R.id.iv_login_weinbo);
-        bt_top_left = (Button) findViewById(R.id.bt_top_left);
-        bt_top_left.setVisibility(View.VISIBLE);
-        bt_top_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                finish();
-            }
-        });
 
         iv_login_qq.setOnClickListener(listener);
         iv_login_wechat.setOnClickListener(listener);
@@ -122,7 +111,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         //设置平台登录监听
         plat.setPlatformActionListener(this);
         // true不使用SSO授权，false使用SSO授权,优先调用客户端登录授权
-        plat.SSOSetting(false);
+        plat.SSOSetting(true);
         //获取用户资料
         plat.showUser(null);
 
@@ -155,7 +144,6 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
             msg.what = MSG_AUTH_COMPLETE;
             msg.obj = new Object[]{platform.getName(), hashMap};
             hlog.e("------------"+hashMap);
-
             //将信息存储在平台对象中
             if ("QQ".equals(platform.getName())){
                 //QQ登录返回的内容

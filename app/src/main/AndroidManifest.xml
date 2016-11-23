@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jju.yuxin.cinews">
+    package="com.jju.yuxin.cinews">
 
     <!-- 极光推送 -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 蓝牙分享所需的权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <!-- Required  一些系统要求的权限，如访问网络等 -->
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- Optional for location -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".App"
@@ -42,41 +42,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LoadingActivity"
-                  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <activity android:name=".activity.LoadingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"
-                  android:theme="@style/RedTopTheme">
-        </activity>
-        <activity android:name=".activity.NewsActivity"
-            >
-        </activity>
-        <activity android:name=".activity.PictureActivity"
-                  >
-        </activity>
-        <activity android:name=".activity.VedioActivity">
-        </activity>
-        <activity android:name=".activity.FavoriteActivity"
-                  >
-        </activity>
-        <activity android:name=".activity.NewsDetailsActivity"
-                  android:theme="@style/RedTopTheme">
-        </activity>
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.NewsActivity" />
+        <activity android:name=".activity.PictureActivity" />
+        <activity android:name=".activity.VedioActivity" />
+        <activity android:name=".activity.FavoriteActivity" />
+        <activity android:name=".activity.NewsDetailsActivity" />
         <activity
             android:name=".activity.VedioNewsDetailsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/RedTopTheme">
-        </activity>
-        <activity android:name=".activity.LoginActivity"
-                  android:theme="@style/RedTopTheme">
-        </activity>
-        <activity android:name=".activity.AboutActivity"
-                  android:theme="@style/RedTopTheme">
-        </activity>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
         <!-- ShardSDK分享模块 -->
         <activity
             android:name="com.mob.tools.MobUIShell"
@@ -85,19 +67,19 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <data android:scheme="tencent100371282"/>
+                <data android:scheme="tencent100371282" />
 
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -107,14 +89,14 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- 支付宝分享回调 -->
         <activity
             android:name=".apshare.ShareEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Required SDK核心功能 -->
         <activity
@@ -123,18 +105,17 @@
             android:exported="false"
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity"/>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="${applicationId}"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
         <!-- Required  SDK核心功能 -->
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false" />
 
         <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
@@ -143,10 +124,10 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER"/>
-                <action android:name="cn.jpush.android.intent.REPORT"/>
-                <action android:name="cn.jpush.android.intent.PushService"/>
-                <action android:name="cn.jpush.android.intent.PUSH_TIME"/>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
 
@@ -157,11 +138,15 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService"/>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
 
-                <category android:name="${applicationId}"/>
+                <category android:name="${applicationId}" />
             </intent-filter>
         </service>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
 
         <!-- Required SDK核心功能 -->
         <receiver
@@ -169,53 +154,75 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/> <!-- Required  显示通知栏 -->
-                <category android:name="${applicationId}"/>
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
+                <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
             <!-- Optional -->
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 
         <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false"/>
+            android:exported="false" />
 
         <!-- &lt;!&ndash; User defined.  For test only  用户自定义的广播接收器&ndash;&gt; -->
-         <receiver
-         android:name=".broadcast.MyJPushReceiver"
-         android:enabled="true"
-         android:exported="false">
-         <intent-filter>
-         <action android:name="cn.jpush.android.intent.REGISTRATION"/> <!--Required  用户注册SDK的intent-->
-         <action android:name="cn.jpush.android.intent.UNREGISTRATION"/>
-         <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/> <!--Required  用户接收SDK消息的intent-->
-         <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/> <!--Required  用户接收SDK通知栏信息的intent-->
-         <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/> <!--Required  用户打开自定义通知栏的intent-->
-         <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK"/> <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
-         <action android:name="cn.jpush.android.intent.CONNECTION"/><!-- 接收网络变化 连接/断开 since 1.6.3 -->
-         <category android:name="${applicationId}"/>
-         </intent-filter>
-         </receiver>
+        <!-- <receiver -->
+        <!-- android:name=".MyReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter> -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.REGISTRATION"/> &lt;!&ndash;Required  用户注册SDK的intent&ndash;&gt; -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.UNREGISTRATION"/> -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/> &lt;!&ndash;Required  用户接收SDK消息的intent&ndash;&gt; -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/> &lt;!&ndash;Required  用户接收SDK通知栏信息的intent&ndash;&gt; -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/> &lt;!&ndash;Required  用户打开自定义通知栏的intent&ndash;&gt; -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK"/> &lt;!&ndash;Optional 用户接受Rich Push Javascript 回调函数的intent&ndash;&gt; -->
+
+
+        <!-- <action android:name="cn.jpush.android.intent.CONNECTION"/>&lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt; -->
+
+
+        <!-- <category android:name="${applicationId}"/> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
 
 
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
-            android:value="developer-default"/>
+            android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="bb0c0379aacc2da4b70dd714"/> <!-- </>值来自开发者平台取得的AppKey -->
+            android:value="bb0c0379aacc2da4b70dd714" /> <!-- </>值来自开发者平台取得的AppKey -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="n0z5cGzgHGuVceGmrv3OQyO5i04o1lzp" />
 
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.WeathActivity" />
+        <activity android:name=".activity.CityPickerActivity"></activity>
     </application>
 
 </manifest>

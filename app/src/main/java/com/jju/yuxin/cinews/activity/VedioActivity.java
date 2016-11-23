@@ -6,19 +6,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.adapter.VedioList_Adapter;
 import com.jju.yuxin.cinews.bean.VedioInfoBean;
-import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.JsoupUtils;
 
 import java.util.List;
@@ -62,14 +59,13 @@ public class VedioActivity extends BaseActivity {
                 //加载成功
                 case SUCCESS_LOAD:
                     //第一次adapter没有初始化直接进入赋值
-                    if (vedioList_adapter == null) {
+                    if (vedioList_adapter==null){
                         vedioinfos = (List<VedioInfoBean>) msg.obj;
                         //将内容填充到ListView
-                        vedioList_adapter = new VedioList_Adapter(VedioActivity.this, vedioinfos,
-                                volleyUtils);
+                        vedioList_adapter =  new VedioList_Adapter(VedioActivity.this, vedioinfos, volleyUtils);
                         lv_vedio_news.setAdapter(vedioList_adapter);
                         //adapter初始化完成直接更新里面的list集合内容
-                    } else {
+                    }else{
                         vedioinfos = (List<VedioInfoBean>) msg.obj;
                         vedioList_adapter.replaceList(vedioinfos);
                         vedioList_adapter.notifyDataSetChanged();
@@ -98,7 +94,7 @@ public class VedioActivity extends BaseActivity {
         //新闻列表
         lv_vedio_news = (PullToRefreshListView) findViewById(R.id.lv_vedio_news);
 
-        lv_vedio_news.setMode(PullToRefreshBase.Mode.PULL_FROM_START);//向下拉刷新
+        lv_vedio_news. setMode(PullToRefreshBase.Mode.PULL_FROM_START);//向下拉刷新
 
         //加载动画
         pb_loading = (LinearLayout) findViewById(R.id.pb_loading);
@@ -123,7 +119,7 @@ public class VedioActivity extends BaseActivity {
                         .setLastUpdatedLabel(label);
                 //这里写下拉刷新的任务
                 //获取新闻
-                JsoupUtils.getNewPaper(path, mhandler);
+                JsoupUtils.getNewPaper(path,mhandler);
 
             }
 
@@ -144,10 +140,10 @@ public class VedioActivity extends BaseActivity {
 
             //获取当前点击的item的对象
             //因为存在顶部刷新栏,所以点击的位置要相对于adapter里面的list的position后一位
-            VedioInfoBean vedioInfoBean = vedioinfos.get(position - 1);
+            VedioInfoBean vedioInfoBean = vedioinfos.get(position-1);
             //跳转至新闻详情页面
-            Intent intent = new Intent(VedioActivity.this, VedioNewsDetailsActivity.class);
-            intent.putExtra("vedio_news", vedioInfoBean);
+            Intent intent=new Intent(VedioActivity.this,VedioNewsDetailsActivity.class);
+            intent.putExtra("vedio_news",vedioInfoBean);
             startActivity(intent);
         }
     };
@@ -156,17 +152,7 @@ public class VedioActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         //获取新闻
-        JsoupUtils.getNewPaper(path, mhandler);
+       JsoupUtils.getNewPaper(path,mhandler);
     }
 
-    /**
-     * 双击退出
-     */
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return MainActivity.doubleExit(VedioActivity.this);
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }

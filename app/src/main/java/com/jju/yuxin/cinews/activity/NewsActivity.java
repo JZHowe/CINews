@@ -4,21 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.adapter.News_Pageadapter;
-import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.SharedUtil;
 import com.jju.yuxin.cinews.views.MultiDirectionSlidingDrawer;
 import com.jju.yuxin.cinews.views.OuterViewPager;
@@ -46,8 +43,7 @@ public class NewsActivity extends BaseActivity {
     private OuterViewPager vp_new_content;  //外层的ViewPager
     private List<View> viewList;
     private TabLayout tl_new_content;
-    private ImageButton ib_new;
-    private LinearLayout ll_item_add;
+    private ImageButton ib_new, ib_item_add;
     private MultiDirectionSlidingDrawer drawer;
     private TextView tv_new_content;
     private GridView gv_add, gv_sub;
@@ -161,8 +157,8 @@ public class NewsActivity extends BaseActivity {
         drawer = (MultiDirectionSlidingDrawer) findViewById(R.id.drawer);
 
         //关闭抽屉
-        ll_item_add = (LinearLayout) findViewById(R.id.ll_item_add);
-        ll_item_add.setOnClickListener(mOnClickListener);
+        ib_item_add = (ImageButton) findViewById(R.id.ib_item_add);
+        ib_item_add.setOnClickListener(mOnClickListener);
         //完成导航栏的操作
         tv_new_content = (TextView) findViewById(R.id.tv_item_add);
         tv_new_content.setOnClickListener(mOnClickListener);
@@ -189,7 +185,7 @@ public class NewsActivity extends BaseActivity {
                     break;
 
                 //关闭抽屉
-                case R.id.ll_item_add:
+                case R.id.ib_item_add:
                     drawer.animateClose();
                     for (String s : list_issub) {
                         list_add.add(s);
@@ -272,22 +268,4 @@ public class NewsActivity extends BaseActivity {
         }
     };
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (drawer.isOpened()) {
-            drawer.animateClose();
-        }
-    }
-
-    /**
-     * 双击退出
-     */
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return MainActivity.doubleExit(NewsActivity.this);
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }

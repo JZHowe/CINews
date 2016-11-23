@@ -2,10 +2,9 @@
 <litepal>
     <dbname value="news.db"></dbname>
 
-    <version value="2"></version>
+    <version value="1"></version>
 
     <list>
         <mapping class="com.jju.yuxin.cinews.db.Favors"></mapping>
-        <mapping class="com.jju.yuxin.cinews.db.Users"></mapping>
     </list>
 </litepal>
