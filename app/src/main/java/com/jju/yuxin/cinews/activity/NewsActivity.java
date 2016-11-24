@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.adapter.News_Pageadapter;
-import com.jju.yuxin.cinews.utils.ActivityCollector;
 import com.jju.yuxin.cinews.utils.SharedUtil;
 import com.jju.yuxin.cinews.views.MultiDirectionSlidingDrawer;
 import com.jju.yuxin.cinews.views.OuterViewPager;
@@ -171,6 +170,7 @@ public class NewsActivity extends BaseActivity {
         gv_add.setOnItemClickListener(mOnItemClickListener);
         gv_sub = (GridView) findViewById(R.id.subItem);
         gv_sub.setOnItemClickListener(mOnItemClickListener);
+
     }
 
     /**
@@ -290,4 +290,6 @@ public class NewsActivity extends BaseActivity {
         }
         return super.onKeyUp(keyCode, event);
     }
+
+
 }

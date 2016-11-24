@@ -65,36 +65,33 @@ public class GetDataTask extends AsyncTask<Void, Void, String> {
             oMap.put("page",page);
             //加载工艺美术的ListViewn内容
         } else if (stringArray[2].equals(viewtag)) {
-            oMap.put("id","218617c3-539b-4fe6-9023-a891750590da");
+            oMap.put("id","c0bb5dab-2120-4e5b-885c-e17dd227ec3e");
             oMap.put("page",page);
             //加载休闲旅游的ListViewn内容
         } else if (stringArray[3].equals(viewtag)) {
-            oMap.put("id","c0bb5dab-2120-4e5b-885c-e17dd227ec3e");
+            oMap.put("id","5b5b5cb2-898a-4899-b51a-6a4e684f860e");
             oMap.put("page",page);
 
             //加载园区基地的ListViewn内容
         } else if (stringArray[4].equals(viewtag)) {
-            oMap.put("id","5b5b5cb2-898a-4899-b51a-6a4e684f860e");
+            oMap.put("id","a4ce81c3-727d-45c9-856f-5e7813b05166");
             oMap.put("page",page);
 
             //加载演艺传媒的ListViewn内容
         } else if (stringArray[5].equals(viewtag)) {
-            oMap.put("id","a4ce81c3-727d-45c9-856f-5e7813b05166");
+            oMap.put("id","e14512f4-f384-4575-8982-1df4f3ea96ea");
             oMap.put("page",page);
 
             //加载文化金融的ListViewn内容
         } else if (stringArray[6].equals(viewtag)) {
-            oMap.put("id","e14512f4-f384-4575-8982-1df4f3ea96ea");
+            oMap.put("id","68332b3d-846f-4712-9511-a2467f541550");
             oMap.put("page",page);
 
             //加载协会动态的ListViewn内容
         } else if (stringArray[7].equals(viewtag)) {
-            oMap.put("id","68332b3d-846f-4712-9511-a2467f541550");
+            oMap.put("id","218617c3-539b-4fe6-9023-a891750590da");
             oMap.put("page",page);
 
-        } else {
-            oMap.put("id","404d560a-442c-46a5-b1cf-c44fe459f893");
-            oMap.put("page",page);
         }
         String info = Ksoap2Util.connect("getlistartile", oMap);
 
