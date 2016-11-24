@@ -62,13 +62,11 @@
         <activity android:name=".activity.FavoriteActivity"
                   >
         </activity>
-        <activity android:name=".activity.NewsDetailsActivity"
-                  android:theme="@style/RedTopTheme">
+        <activity android:name=".activity.NewsDetailsActivity">
         </activity>
         <activity
             android:name=".activity.VedioNewsDetailsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/RedTopTheme">
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity android:name=".activity.LoginActivity"
                   android:theme="@style/RedTopTheme">
