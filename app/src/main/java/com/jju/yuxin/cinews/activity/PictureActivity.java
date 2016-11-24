@@ -43,6 +43,8 @@ import java.util.Map;
  * ==============================================================================
  */
 public class PictureActivity extends BaseActivity {
+
+    //图片接口id
     private static final String ID = "404d560a-442c-46a5-b1cf-c44fe459f893";
     private static final String name = "getlistartile";
     private Map<String, Object> oMap = new HashMap<>();   //发送数据是的omap

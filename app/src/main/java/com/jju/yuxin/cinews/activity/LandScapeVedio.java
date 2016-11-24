@@ -24,7 +24,7 @@ import static android.util.Log.e;
  * Created by yuxin.
  * Created time 2016/11/23 0023 上午 8:42.
  * Version   1.0;
- * Describe :
+ * Describe :视屏全屏播放界面
  * History:
  * ==============================================================================
  */
@@ -42,7 +42,7 @@ public class LandScapeVedio extends Activity {
         setContentView(R.layout.activity_landscape);
         full_vedioview = (VideoView) findViewById(R.id.full_vedioview);
 
-        //重新绘制VideoView
+        //重新绘制VideoView,达到全屏的目的
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.FILL_PARENT,
                 RelativeLayout.LayoutParams.FILL_PARENT);
@@ -50,6 +50,7 @@ public class LandScapeVedio extends Activity {
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
         full_vedioview.setLayoutParams(layoutParams);
 
 
@@ -60,7 +61,7 @@ public class LandScapeVedio extends Activity {
         Intent intent = getIntent();
         int currentPosition = intent.getIntExtra("currentPosition", 0);
 
-        e(TAG, "onCreate" + "currentPosition:"+currentPosition);
+       // e(TAG, "onCreate" + "currentPosition:"+currentPosition);
 
         String play_src = intent.getStringExtra("play_src");
         playVedio(play_src, currentPosition);
@@ -84,8 +85,9 @@ public class LandScapeVedio extends Activity {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
 
-                Toast.makeText(LandScapeVedio.this, "视频好像出现了一点问题!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LandScapeVedio.this, R.string.haoxiangchuxianleyidianwenti, Toast.LENGTH_SHORT).show();
                 full_vedioview.seekTo(0);
+                full_vedioview.pause();
                 return true;
             }
         });
@@ -112,7 +114,7 @@ public class LandScapeVedio extends Activity {
 
         @Override
         public void onCompletion(MediaPlayer mp) {
-            Toast.makeText(LandScapeVedio.this, "播放完成.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LandScapeVedio.this, R.string.bofangwancheng, Toast.LENGTH_SHORT).show();
             Intent intent=new Intent();
             intent.setAction("sendposition");
             e(TAG, "onCompletion" + 0);
@@ -161,7 +163,7 @@ public class LandScapeVedio extends Activity {
             full_vedioview.stopPlayback(); //将VideoView所占用的资源释放掉
         }
 
-        e(TAG, "onDestroy" + "释放资源");
+        //e(TAG, "onDestroy" + "释放资源");
     }
 
 

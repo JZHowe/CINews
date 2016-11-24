@@ -105,6 +105,10 @@ public class DbUtils {
         return mFavorsList;
     }
 
+    /**
+     * 更新保存的用户信息
+     * @param user
+     */
     public static void saveUser(Users user){
         //之前是否已经登录过了
         ClusterQuery clusterQuery = DataSupport.select("*").where("userid=?",user.getUserid());

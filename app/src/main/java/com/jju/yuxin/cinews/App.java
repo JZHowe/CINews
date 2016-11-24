@@ -7,6 +7,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.jju.yuxin.cinews.utils.CauchExceptionHandler;
 
 import org.litepal.LitePalApplication;
 
@@ -31,9 +32,10 @@ public class App extends LitePalApplication{
         //SharedSDK的初始化
         ShareSDK.initSDK(this);
 
-//        //应用开始就设置全局捕获异常器没有设置就会用系统默认的
-//        CauchExceptionHandler crashHandler = CauchExceptionHandler.getInstance();
-//        crashHandler.init(getApplicationContext());
+        //应用开始就设置全局捕获异常器没有设置就会用系统默认的
+        CauchExceptionHandler crashHandler = CauchExceptionHandler.getInstance();
+        crashHandler.init(getApplicationContext());
+
         //百度地图获得位置
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener( myListener );    //注册监听函数

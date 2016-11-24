@@ -54,5 +54,13 @@
     <string name="nothing_found">没有搜索结果~</string>
     <string name="locating">正在定位…</string>
     <string name="located_failed">定位失败</string>
+    <string name="zanbuzhiciqitaaddenglu">暂不支持其他第三方登录!</string>
+    <string name="haoxiangchuxianleyidianwenti">视频好像出现了一点问题!</string>
+    <string name="bofangwancheng">播放完成.</string>
+    <string name="weixinzhanweikaitong">微信登录暂未开通...</string>
+    <string name="tuichuchenggong">退出成功!</string>
+    <string name="qingxiandenglu">请先登录!</string>
+    <string name="zaianyicituichu">再按一次退出程序</string>
+    <string name="tianqixinxihuoqushibai">天气信息获取失败!</string>
 
 </resources>

@@ -11,7 +11,7 @@ import com.jju.yuxin.cinews.R;
  * Created by Card.
  * Created time 2016/11/22 20:29.
  * Version   1.0;
- * Describe :
+ * Describe :用于夜间模式切换的刷新
  * History:
  * ==============================================================================
  */

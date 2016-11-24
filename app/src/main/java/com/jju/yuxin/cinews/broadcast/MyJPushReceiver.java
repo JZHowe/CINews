@@ -85,6 +85,9 @@ public class MyJPushReceiver extends BroadcastReceiver {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
             String date = fmt.format(rightNow.getTime());
             map.put("date", date);
+
+
+
             e(TAG, "onReceive" + map);
             NewsBean newsBean=new NewsBean();
             //如果是文字新闻
@@ -92,6 +95,8 @@ public class MyJPushReceiver extends BroadcastReceiver {
             //如果是图片新闻
             newsBean.setKey((String) map.get("key"));
             e(TAG, "onReceive" + newsBean.toString());
+
+
 
             //设置intent跳转
             Intent new_intent = new Intent(context, NewsDetailsActivity.class);
@@ -101,8 +106,19 @@ public class MyJPushReceiver extends BroadcastReceiver {
                     new_intent, 0);
             // 通过Notification.Builder来创建通知，注意API Level
             // API16之后才支持
+
+            String title="";
+            String message="";
             //切割消息
-            String[] split = content.split("/");
+            if (content.contains("/")){
+                String[] split = content.split("/");
+                title=split[0];
+                message=split[1];
+            }else{
+                title=content;
+                message=content;
+            }
+
             //split[0]为消息标题
             //split[1]为消息内容
 
@@ -110,9 +126,9 @@ public class MyJPushReceiver extends BroadcastReceiver {
 
             Notification notify = new Notification.Builder(context)
                     .setSmallIcon(R.drawable.smallicon)
-                    .setTicker(split[1]+"")
-                    .setContentTitle(split[0]+"")
-                    .setContentText(split[1]+"")
+                    .setTicker(message+"")
+                    .setContentTitle(title+"")
+                    .setContentText(message+"")
                     .setLargeIcon(largeicon)
                     .setContentIntent(pendingIntent).setNumber(1).build(); // 需要注意build()是在API
             // level16及之后增加的，API11可以使用getNotificatin()来替代

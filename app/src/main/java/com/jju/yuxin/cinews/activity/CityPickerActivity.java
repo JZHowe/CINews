@@ -26,6 +26,7 @@ import java.util.List;
 
 /**
  * author zaaach on 2016/1/26.
+ * 城市选择界面
  */
 public class CityPickerActivity extends Activity implements View.OnClickListener {
 
@@ -53,7 +54,9 @@ public class CityPickerActivity extends Activity implements View.OnClickListener
         initView();
     }
 
-
+    /**
+     * 数据初始化
+     */
     private void initData() {
         dbManager = new DBManager(this);
         dbManager.copyDBFile();
@@ -70,12 +73,16 @@ public class CityPickerActivity extends Activity implements View.OnClickListener
         mResultAdapter = new ResultListAdapter(this, null);
     }
 
+    /**
+     * 控件初始化
+     */
     private void initView() {
         mListView = (ListView) findViewById(R.id.listview_all_city);
         mListView.setAdapter(mCityAdapter);
 
         TextView overlay = (TextView) findViewById(R.id.tv_letter_overlay);
         mLetterBar = (SideLetterBar) findViewById(R.id.side_letter_bar);
+
         mLetterBar.setOverlay(overlay);
         mLetterBar.setOnLetterChangedListener(new SideLetterBar.OnLetterChangedListener() {
             @Override
@@ -120,6 +127,7 @@ public class CityPickerActivity extends Activity implements View.OnClickListener
         mResultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //返回当前城市名
                 back(mResultAdapter.getItem(position).getName());
             }
         });
@@ -131,6 +139,10 @@ public class CityPickerActivity extends Activity implements View.OnClickListener
         backBtn.setOnClickListener(this);
     }
 
+    /**
+     * 将数据返回到启动这个页面的activity
+     * @param city
+     */
     private void back(String city){
         Intent data = new Intent(this,WeathActivity.class);
         data.putExtra(KEY_PICKED_CITY, city);

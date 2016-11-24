@@ -5,6 +5,19 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jju.yuxin.cinews.R;
+/**
+ *=============================================================================
+ *
+ * Copyright (c) 2016  yuxin rights reserved.
+ * ClassName AboutActivity
+ * Created by yuxin.
+ * Created time 24-11-2016 08:44.
+ * Describe :关于界面
+ * History:
+ * Version   1.0.
+ *
+ *==============================================================================
+ */
 
 public class AboutActivity extends BaseActivity {
     private Button bt_top_left;

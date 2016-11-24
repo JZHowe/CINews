@@ -69,7 +69,11 @@ public class ImageCacheManager {
     public static void loadImage(Context context,String url, ImageView view,int defaultImageResId,int errorImageResId) {
         Bitmap defaultImage= BitmapFactory.decodeResource(context.getResources(), defaultImageResId);
         Bitmap errorImage=BitmapFactory.decodeResource(context.getResources(), errorImageResId);
+        if(url!=null){
         VolleyController.getInstance(context).getImageLoader().get(url, ImageCacheManager.getImageListener(view, defaultImage, errorImage), 0, 0);
+        }else{
+        VolleyController.getInstance(context).getImageLoader().get("", ImageCacheManager.getImageListener(view, defaultImage, errorImage), 0, 0);
+        }
     }
 
 
@@ -86,7 +90,11 @@ public class ImageCacheManager {
     public static void loadImage(Context context,String url, ImageView view,int defaultImageResId,int errorImageResId, int maxWidth, int maxHeight) {
         Bitmap defaultImage= BitmapFactory.decodeResource(context.getResources(), defaultImageResId);
         Bitmap errorImage=BitmapFactory.decodeResource(context.getResources(), errorImageResId);
+        if (url!=null){
         VolleyController.getInstance(context).getImageLoader().get(url, ImageCacheManager.getImageListener(view, defaultImage, errorImage), maxWidth, maxHeight);
+        }else{
+        VolleyController.getInstance(context).getImageLoader().get("", ImageCacheManager.getImageListener(view, defaultImage, errorImage), maxWidth, maxHeight);
+        }
     }
 
     /**
@@ -103,6 +111,10 @@ public class ImageCacheManager {
     public static void loadImage(Context context, String url, ImageView view, int defaultImageResId, int errorImageResId, int maxWidth, int maxHeight, ImageView.ScaleType scaleType) {
         Bitmap defaultImage= BitmapFactory.decodeResource(context.getResources(), defaultImageResId);
         Bitmap errorImage=BitmapFactory.decodeResource(context.getResources(), errorImageResId);
+        if (url!=null){
         VolleyController.getInstance(context).getImageLoader().get(url, ImageCacheManager.getImageListener(view, defaultImage, errorImage), maxWidth, maxHeight,scaleType);
+        }else{
+        VolleyController.getInstance(context).getImageLoader().get("", ImageCacheManager.getImageListener(view, defaultImage, errorImage), maxWidth, maxHeight,scaleType);
+        }
     }
 }
