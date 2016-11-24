@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         iv_login_qq = (ImageView) findViewById(R.id.iv_login_qq);
         iv_login_wechat = (ImageView) findViewById(R.id.iv_login_wechat);
         iv_login_weinbo = (ImageView) findViewById(R.id.iv_login_weinbo);
+        //退出登录
         bt_top_left = (Button) findViewById(R.id.bt_top_left);
         bt_top_left.setVisibility(View.VISIBLE);
         bt_top_left.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +81,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
                 case R.id.iv_login_wechat:
 //                    Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
 //                    authorize(wechat);
-                    Toast.makeText(LoginActivity.this, "微信登录暂未开通...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.weixinzhanweikaitong, Toast.LENGTH_SHORT).show();
                     break;
                 //微博登录
                 case R.id.iv_login_weinbo:
@@ -102,7 +103,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     private void authorize(Platform plat) {
         //如果传入的平台为空,提示暂未支持登录
         if (plat == null) {
-            Toast.makeText(this, "暂不支持其他第三方登录!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.zanbuzhiciqitaaddenglu, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -146,9 +147,16 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 //    }
 
 
-
+    /**
+     * 登录完成监听
+     * @param platform
+     * @param action
+     * @param hashMap
+     */
     @Override
     public void onComplete(Platform platform, int action, HashMap<String, Object> hashMap) {
+
+       // hlog.e("111111platform"+platform+"action"+action+"hashMap"+hashMap);
 
         if (action == Platform.ACTION_USER_INFOR) {
             Message msg = new Message();
@@ -178,6 +186,12 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         }
     }
 
+    /**
+     * 登录出现错误
+     * @param platform
+     * @param action
+     * @param throwable
+     */
     @Override
     public void onError(Platform platform, int action, Throwable throwable) {
 
@@ -187,6 +201,11 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         throwable.printStackTrace();
     }
 
+    /**
+     * 取消登录
+     * @param platform
+     * @param action
+     */
     @Override
     public void onCancel(Platform platform, int action) {
 
@@ -214,6 +233,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
             break;
             //授权成功
             case MSG_AUTH_COMPLETE: {
+               // hlog.e("授权成功!");
                 //授权成功
               //  Toast.makeText(this, R.string.auth_complete, Toast.LENGTH_SHORT).show();
                 Object[] objs = (Object[]) msg.obj;

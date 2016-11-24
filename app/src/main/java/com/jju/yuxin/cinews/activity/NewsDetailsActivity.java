@@ -218,7 +218,7 @@ public class NewsDetailsActivity extends BaseActivity {
         //只要其中一种授权方式已经授权了
         if (qq.isAuthValid() || wechat.isAuthValid() || sinaWeibo.isAuthValid()) {
 
-            e(TAG, "login_" + "你已经登陆了");
+          //  e(TAG, "login_" + "你已经登陆了");
         } else {
             //做登录操作
             //startActivity(new Intent(MainActivity.this,LoginActivity.class));

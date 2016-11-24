@@ -50,6 +50,9 @@ public class WeathActivity extends Activity implements View.OnClickListener {
 
     }
 
+    /**
+     * 控件初始化
+     */
     private void initdata() {
         bt_top_left = (Button) findViewById(R.id.bt_top_left);
         bt_top_right = (Button) findViewById(R.id.bt_top_right);
@@ -104,7 +107,7 @@ public class WeathActivity extends Activity implements View.OnClickListener {
                             e.printStackTrace();
                         }
                     } else {
-                        Toast.makeText(WeathActivity.this, "天气接口已失效！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WeathActivity.this, R.string.tianqixinxihuoqushibai, Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -180,15 +183,23 @@ public class WeathActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            //退出当前activity
             case R.id.bt_top_left:
                 WeathActivity.this.finish();
                 break;
+            //重新选择城市
             case R.id.bt_top_right:
                 startActivityForResult(new Intent(WeathActivity.this, CityPickerActivity.class), 1);
                 break;
         }
     }
 
+    /**
+     * 城市选择 结果返回
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 & resultCode == 1) {

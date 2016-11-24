@@ -20,10 +20,25 @@ android {
             storePassword '962464'
         }
     }
+    lintOptions{
+        //  在打包Release版本的时候进行检测，这里就直接关掉了
+        checkReleaseBuilds false
+        //abortOnError一定要设为false，这样即使有报错也不会停止打包了
+       // abortOnError false
+    }
     buildTypes {
         release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
             minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //签名
             signingConfig signingConfigs.config
         }
         debug {

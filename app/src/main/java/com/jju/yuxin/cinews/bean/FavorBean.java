@@ -2,6 +2,7 @@ package com.jju.yuxin.cinews.bean;
 
 /**
  * Created by Howe on 2016/11/17.
+ * 收藏夹bean
  */
 
 public class FavorBean {

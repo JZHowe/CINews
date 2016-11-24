@@ -68,19 +68,25 @@ public class FavoriteActivity extends BaseActivity {
         init();
     }
 
+    /**
+     * 控件的初始化
+     */
     public void init() {
         bt_top_right = (Button) findViewById(R.id.bt_top_right);
         bt_top_right.setVisibility(View.VISIBLE);
         bt_top_right.setBackgroundResource(R.drawable.bt_delete_selector);
         bt_top_right.setOnClickListener(mOnClickListener);
 
-
+        //收藏列表
         mListView = (ListView) findViewById(R.id.lv_favor);
 
         tv_favor = (TextView) findViewById(R.id.tv_favor);
         btn_favor = (Button) findViewById(R.id.btn_favor);
 
+        //收藏列表点击事件
         mListView.setOnItemClickListener(mOnItemClickListener);
+
+        //获取登录的用户id
         String loginUserid = LoginPlatformUtil.getLoginUserid();
         //如果用户已经登录
         if (loginUserid != null) {
@@ -88,6 +94,7 @@ public class FavoriteActivity extends BaseActivity {
             tv_favor.setVisibility(View.GONE);
             btn_favor.setVisibility(View.GONE);
 
+            //查询当前用户的收藏列表
             mFavorsList = DbUtils.searchFavor(loginUserid);
             //用户还没有登陆
         } else {
@@ -96,6 +103,8 @@ public class FavoriteActivity extends BaseActivity {
             btn_favor.setVisibility(View.VISIBLE);
             btn_favor.setOnClickListener(mOnClickListener);
         }
+
+        //给当前listview设置适配器
         if (mFavorsList != null && mFavorsList.size() > 0) {
             adapter = new FavorList_Adapter(FavoriteActivity.this, mFavorsList);
             mListView.setAdapter(adapter);
@@ -135,6 +144,7 @@ public class FavoriteActivity extends BaseActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Favors favors = mFavorsList.get(position);
+            //判断新闻类型
             if (favors.getType().equals("video")) {
                 VedioInfoBean vedioInfoBean = new VedioInfoBean();
 
@@ -169,10 +179,13 @@ public class FavoriteActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         isDelete = false;
+        //更新数据验证是否已经登录
         updata(isDelete);
     }
 
-    //更新listview
+    /**
+     * 更新数据验证是否已经登录
+     */
     private void updata(Boolean isDelete) {
         //多次判断是否已经登录,防止从生命周期从onPause->onResume
         String loginUserids = LoginPlatformUtil.getLoginUserid();
@@ -212,6 +225,9 @@ public class FavoriteActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 登录验证
+     */
     private void login_() {
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
         Platform wechat = ShareSDK.getPlatform(Wechat.NAME);

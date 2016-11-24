@@ -75,7 +75,7 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
-        e(TAG, "onCreate" + "__________________");
+       // e(TAG, "onCreate" + "__________________");
 
         MainClickListener listener = new MainClickListener();
 
@@ -92,6 +92,7 @@ public class MainActivity extends TabActivity {
         //取消授权
         bt_login_out = (Button) findViewById(R.id.bt_login_out);
 
+        //退出应用按钮
         bt_exit = (Button) findViewById(R.id.bt_exit);
         bt_exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,6 +273,7 @@ public class MainActivity extends TabActivity {
 
                     break;
                 case R.id.m_weather:
+                    //天气
                     jump_weather();
                     break;
                 default:
@@ -290,6 +292,9 @@ public class MainActivity extends TabActivity {
         startActivity(intent);
     }
 
+    /**
+     * 登录验证
+     */
     private void login_() {
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
         Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
@@ -297,7 +302,7 @@ public class MainActivity extends TabActivity {
         //只要其中一种授权方式已经授权了
         if (qq.isAuthValid() || wechat.isAuthValid() || sinaWeibo.isAuthValid()) {
 
-            e(TAG, "login_" + "你已经登陆了");
+        //    e(TAG, "login_" + "你已经登陆了");
         } else {
             //做登录操作
             //startActivity(new Intent(MainActivity.this,LoginActivity.class));
@@ -318,24 +323,24 @@ public class MainActivity extends TabActivity {
             plat=qq;
             MyLogger.hLog().e("已经取消QQ的授权!");
             plat.removeAccount(true);
-            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.tuichuchenggong, Toast.LENGTH_SHORT).show();
         }
         Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
         if (wechat.isAuthValid()) {
             plat=wechat;
             MyLogger.hLog().e("已经取消微信的授权!");
             plat.removeAccount(true);
-            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  R.string.tuichuchenggong, Toast.LENGTH_SHORT).show();
         }
         Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
         if (sinaWeibo.isAuthValid()) {
             plat=sinaWeibo;
             MyLogger.hLog().e("已经取消新浪微博的授权!");
             plat.removeAccount(true);
-            Toast.makeText(this, "退出成功!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  R.string.tuichuchenggong, Toast.LENGTH_SHORT).show();
         }
         if (plat==null){
-            Toast.makeText(this, "请先登录!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.qingxiandenglu, Toast.LENGTH_SHORT).show();
         }
         tv_user_name.setText(R.string.denglu);
         iv_user_head.setImageResource(R.mipmap.ic_launcher);
@@ -406,7 +411,7 @@ public class MainActivity extends TabActivity {
     public static boolean doubleExit(Context context) {
         long secondTime = System.currentTimeMillis();
         if (secondTime - firstTime > 2000) {
-            Toast.makeText(context, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.zaianyicituichu, Toast.LENGTH_SHORT).show();
             firstTime = secondTime;
             return true;
         } else {

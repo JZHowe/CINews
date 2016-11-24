@@ -321,6 +321,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (vedio_paly != null) {
+            vedio_paly.pause();
             vedio_paly.stopPlayback(); //将VideoView所占用的资源释放掉
         }
 
