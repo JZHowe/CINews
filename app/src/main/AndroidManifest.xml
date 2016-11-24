@@ -49,7 +49,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+                  android:theme="@style/RedTopTheme">
         </activity>
         <activity android:name=".activity.NewsActivity"
             >
@@ -62,18 +63,22 @@
         <activity android:name=".activity.FavoriteActivity"
                   >
         </activity>
-        <activity android:name=".activity.NewsDetailsActivity">
+        <activity android:name=".activity.NewsDetailsActivity"
+                  android:theme="@style/RedTopTheme">
         </activity>
         <activity
             android:name=".activity.VedioNewsDetailsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/RedTopTheme">
         </activity>
         <activity android:name=".activity.LoginActivity"
                   android:theme="@style/RedTopTheme">
         </activity>
-        <activity android:name=".activity.AboutActivity">
+        <activity android:name=".activity.AboutActivity"
+                  android:theme="@style/RedTopTheme">
         </activity>
         <activity android:name=".activity.TestActivity">
+
         </activity>
 
         <activity android:name=".activity.LandScapeVedio"

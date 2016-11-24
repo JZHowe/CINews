@@ -7,9 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -69,25 +66,19 @@ public class MainActivity extends TabActivity {
 //    private int item = getResources().getStringArray(R.array.sliding_list).length;
 
     Platform plat = null;
+
+
     private Button bt_exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
-
-        ViewGroup mContentView = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
-        View mTopView = mContentView.getChildAt(0);
-        mTopView = new View(this);
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,40);
-        mTopView.setBackgroundResource(R.color.red_top);
-        mContentView.addView(mTopView,0,lp);
-
-        e(TAG, "onCreate" + "__________________");
+       // e(TAG, "onCreate" + "__________________");
 
         MainClickListener listener = new MainClickListener();
+
 
         //用户头像
         iv_user_head = (CircleImageView) findViewById(R.id.iv_user_head);

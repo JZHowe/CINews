@@ -165,7 +165,6 @@ public class News_Pageadapter extends PagerAdapter {
 
                 //设置隐藏
                 ll_top.setVisibility(View.GONE);
-                
             } else {
                 //设置可见
                 ll_top.setVisibility(View.VISIBLE);
