@@ -9,6 +9,8 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.v4.util.LruCache;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.jju.yuxin.cinews.utils.MD5Utils;
@@ -44,7 +46,18 @@ public class ImageCacheUtil implements ImageCache {
     //磁盘缓存大小
     private static final int DISKMAXSIZE = 20 * 1024 * 1024;
 
+    private Context context;
+
+    private WindowManager manager;
+
+    private int width,height;
+
     public ImageCacheUtil(Context context) {
+        this.context = context;
+        manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        width = display.getWidth();
+        height = display.getHeight();
         // 获取应用可占内存的1/8作为缓存
         int maxSize = (int) (Runtime.getRuntime().maxMemory() / 8);
         // 实例化LruCaceh对象
@@ -80,12 +93,7 @@ public class ImageCacheUtil implements ImageCache {
                     DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
                     Bitmap bitmap = null;
                     if (snapshot != null) {
-//                        BitmapFactory.Options opt = new BitmapFactory.Options();
-//                        opt.inPreferredConfig = Bitmap.Config.RGB_565;
-//                        opt.inPurgeable = true;
-//                        opt.inSampleSize = 10;
-//                        bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0),null,opt);
-                        bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0));
+                        bitmap = decodeImage(snapshot,key);
                         // 存入LruCache缓存
                         mLruCache.put(url, bitmap);
                         MyLogger.hLog().i("从DiskLruCahce获取");
@@ -97,6 +105,53 @@ public class ImageCacheUtil implements ImageCache {
             }
         }
         return null;
+    }
+
+    //解析图片像素大小
+    public Bitmap decodeImage(DiskLruCache.Snapshot snapshot,String key){
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        //获取图片信息但不解析
+        opt.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0),null,opt);
+        //重新打开一次inputstream
+        snapshot.close();
+        try {
+            snapshot = mDiskLruCache.get(key);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //获取网络图片高宽
+        int bit_width = opt.outWidth;
+        int bit_height = opt.outHeight;
+        //计算网络图片与屏幕的高宽比
+        int x = bit_width/(width/3);
+        int y = bit_height/(height/8);
+        //缩放比例 默认为1
+        int p = 1;
+        if(x>1){
+            if(y>1){
+                if(x>y){
+                    p=x;
+                }else {
+                    p=y;
+                }
+            }else{
+                p=x;
+            }
+        }else {
+            if(y>1){
+                p=y;
+            }else {
+                p=1;
+            }
+        }
+        //设置成解析图片
+        opt.inJustDecodeBounds = false;
+        opt.inSampleSize = p;
+        //解析流资源
+        bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0),null,opt);
+        MyLogger.zLog().e(p+"^^^"+width+"^^^^"+height+"^^^^"+bit_width+"^^^^"+bit_height+"^^^^^"+bitmap+"^^^^^"+snapshot);
+        return bitmap;
     }
 
     /**
