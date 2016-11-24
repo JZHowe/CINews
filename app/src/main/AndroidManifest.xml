@@ -49,8 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"
-                  android:theme="@style/RedTopTheme">
+        <activity android:name=".activity.MainActivity">
         </activity>
         <activity android:name=".activity.NewsActivity"
             >
@@ -74,11 +73,9 @@
         <activity android:name=".activity.LoginActivity"
                   android:theme="@style/RedTopTheme">
         </activity>
-        <activity android:name=".activity.AboutActivity"
-                  android:theme="@style/RedTopTheme">
+        <activity android:name=".activity.AboutActivity">
         </activity>
         <activity android:name=".activity.TestActivity">
-
         </activity>
 
         <activity android:name=".activity.LandScapeVedio"

@@ -13,7 +13,7 @@
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/top_bg"
+            android:background="@drawable/top_bg_night"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="@dimen/dimen_20dp">
@@ -33,7 +33,7 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="center"
                 android:text="@string/denglu"
-                android:textColor="@color/white"
+                android:textColor="@color/white_content"
                 android:textSize="@dimen/text_size18" />
 
         </LinearLayout>
@@ -50,7 +50,7 @@
             android:drawableTop="@drawable/d01"
             android:gravity="center"
             android:text="天气"
-            android:textColor="@color/white" />
+            android:textColor="@color/white_content" />
     </RelativeLayout>
 
     <View
@@ -63,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/white"
         android:entries="@array/sliding_list_night"
         android:scrollbars="none" />
 

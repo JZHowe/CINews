@@ -1,11 +1,15 @@
 package com.jju.yuxin.cinews.activity;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -104,7 +108,16 @@ public class NewsDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_news_details);
+
+        ViewGroup mContentView = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
+        View mTopView = mContentView.getChildAt(0);
+        mTopView = new View(this);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,50);
+        mTopView.setBackgroundResource(R.color.red_top);
+        mContentView.addView(mTopView,0,lp);
+
         //将导航栏的左右按钮设置为可见并为其设置背景资源
         bt_top_left = (Button) findViewById(R.id.bt_top_left);
         bt_top_right = (Button) findViewById(R.id.bt_top_right);

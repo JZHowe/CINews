@@ -3,6 +3,7 @@ package com.jju.yuxin.cinews.activity;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.jju.yuxin.cinews.R;
 import com.jju.yuxin.cinews.utils.ActivityCollector;
@@ -46,6 +48,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
+        //透明状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         hlog = MyLogger.hLog();
         jlog = MyLogger.jLog();

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_weather">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_weather"
+                android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/ll_top"
@@ -10,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <include layout="@layout/top_bar" />
+        <include layout="@layout/top_bar"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:text="九江"
-            android:textSize="28sp" />
+            android:textSize="28sp"/>
 
         <TextView
             android:id="@+id/temperature"
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/city"
             android:text="9℃~14℃"
-            android:textSize="48sp" />
+            android:textSize="48sp"/>
 
         <TextView
             android:id="@+id/weather"
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/temperature"
             android:text="阴转多云"
-            android:textSize="36sp" />
+            android:textSize="36sp"/>
 
         <TextView
             android:id="@+id/wind"
@@ -52,7 +53,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/weather"
             android:text="北风3-4 级"
-            android:textSize="30sp" />
+            android:textSize="30sp"/>
 
         <TextView
             android:id="@+id/date_y"
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/weather"
             android:text="2016年11月01日"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/week"
@@ -70,21 +71,24 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/date_y"
             android:text="星期二"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </RelativeLayout>
+
     <LinearLayout
-        android:layout_below="@+id/today_ll"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginRight="@dimen/dimen_10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/today_ll"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal"
             >
+
             <TextView
                 android:id="@+id/f_week1"
                 android:layout_width="wrap_content"
@@ -95,17 +99,18 @@
 
             <ImageView
                 android:id="@+id/f_image1"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
                 android:src="@drawable/d00"/>
+
             <TextView
                 android:id="@+id/f_weather1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:text="小雨-中雨转阵雨"
                 android:textSize="16sp"/>
 
@@ -114,17 +119,19 @@
                 android:id="@+id/f_temp1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:text="12℃~20℃"
                 android:textSize="16sp"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal"
             >
+
             <TextView
                 android:id="@+id/f_week2"
                 android:layout_width="wrap_content"
@@ -135,17 +142,18 @@
 
             <ImageView
                 android:id="@+id/f_image2"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
                 android:src="@drawable/d01"/>
+
             <TextView
                 android:id="@+id/f_weather2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:text="中雨转阵雨"
                 android:textSize="16sp"/>
 
@@ -154,17 +162,19 @@
                 android:id="@+id/f_temp2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:text="12℃~20℃"
                 android:textSize="16sp"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal"
             >
+
             <TextView
                 android:id="@+id/f_week3"
                 android:layout_width="wrap_content"
@@ -175,17 +185,18 @@
 
             <ImageView
                 android:id="@+id/f_image3"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
                 android:src="@drawable/d00"/>
+
             <TextView
                 android:id="@+id/f_weather3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:text="小雨-中雨转阵雨"
                 android:textSize="16sp"/>
 
@@ -194,8 +205,8 @@
                 android:id="@+id/f_temp3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:text="12℃~20℃"
                 android:textSize="16sp"/>
 
@@ -203,14 +214,15 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="match_parent"
-            android:gravity="center"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="本数据来自聚合数据接口"
             android:textColor="@color/white"/>
 

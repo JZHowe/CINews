@@ -14,6 +14,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -128,7 +131,16 @@ public class VedioNewsDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         e(TAG, "onCreate" + "");
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_vedio_news_details);
+
+        ViewGroup mContentView = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
+        View mTopView = mContentView.getChildAt(0);
+        mTopView = new View(this);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,50);
+        mTopView.setBackgroundResource(R.color.red_top);
+        mContentView.addView(mTopView,0,lp);
+
         //将导航栏的左右按钮设置为可见并为其设置背景资源
         bt_top_left = (Button) findViewById(R.id.bt_top_left);
         bt_top_right = (Button) findViewById(R.id.bt_top_right);
