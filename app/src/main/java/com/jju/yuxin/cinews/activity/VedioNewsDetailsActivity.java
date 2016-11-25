@@ -498,6 +498,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             File file = new File(Environment.DIRECTORY_DOWNLOADS, play_info.getNews_title().replace(" ", "") + ".mp4");
             e(TAG, "downloadVedio" + file.getAbsolutePath() + file.exists());
             if (!file.exists()) {
+                Toast.makeText(VedioNewsDetailsActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(play_info.getPlay_src()));
                 request.setNotificationVisibility(VISIBILITY_VISIBLE);//用于设置下载时时候在状态栏显示通知信
                 request.allowScanningByMediaScanner();//用于设置是否允许本MediaScanner扫描。

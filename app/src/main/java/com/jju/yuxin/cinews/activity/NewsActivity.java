@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -258,7 +259,7 @@ public class NewsActivity extends BaseActivity {
                 case R.id.subItem:
                     //添加要删除的项到已添加栏目的list中
                     list_add.add(list_sub.get(position));
-                    if (list_isadd.contains(list_sub.get(position))) {
+                    if (!list_isadd.contains(list_sub.get(position))) {
                         list_isadd.add(list_sub.get(position));
                     }
                     adapter.notifyDataSetChanged();
