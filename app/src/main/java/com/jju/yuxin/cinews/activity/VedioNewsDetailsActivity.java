@@ -219,8 +219,9 @@ public class VedioNewsDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (isFavor) {
+                    String loginUserid = LoginPlatformUtil.getLoginUserid();
                     bt_top_right.setBackgroundResource(R.drawable.shoucang_new_one);
-                    DbUtils.deleteVideoFavor(vedioInfoBean);
+                    DbUtils.deleteVideoFavor(vedioInfoBean,loginUserid);
                     isFavor = false;
                     Toast.makeText(VedioNewsDetailsActivity.this, "已取消", Toast.LENGTH_SHORT).show();
                 } else {
@@ -280,7 +281,7 @@ public class VedioNewsDetailsActivity extends BaseActivity {
         String loginUserid = LoginPlatformUtil.getLoginUserid();
         if (loginUserid != null) {
             //判断是否已经收藏
-            if (DbUtils.searchVideoFavor(vedioInfoBean).size() > 0) {
+            if (DbUtils.searchVideoFavor(vedioInfoBean,loginUserid).size() > 0) {
                 isFavor = true;
                 bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
             }

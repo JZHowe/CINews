@@ -143,8 +143,9 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (isFavor) {
+                    String loginUserid = LoginPlatformUtil.getLoginUserid();
                     bt_top_right.setBackgroundResource(R.drawable.shoucang_new_one);
-                    DbUtils.deleteFavor(newsBean);
+                    DbUtils.deleteFavor(newsBean,loginUserid);
                     isFavor = false;
                     Toast.makeText(NewsDetailsActivity.this, "已取消", Toast.LENGTH_SHORT).show();
                 } else {
@@ -186,7 +187,7 @@ public class NewsDetailsActivity extends BaseActivity {
         String loginUserid = LoginPlatformUtil.getLoginUserid();
         if (loginUserid!=null) {
             //判断是否已经收藏
-            if (DbUtils.searchFavor(newsBean).size() > 0) {
+            if (DbUtils.searchFavor(newsBean,loginUserid).size() > 0) {
                 isFavor = true;
                 bt_top_right.setBackgroundResource(R.drawable.shoucang_new_two);
             }

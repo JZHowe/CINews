@@ -21,7 +21,8 @@ import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
-public class LoginActivity extends BaseActivity implements PlatformActionListener, Handler.Callback {
+public class LoginActivity extends BaseActivity implements PlatformActionListener, Handler
+        .Callback {
 
     private ImageView iv_login_qq;
     private ImageView iv_login_wechat;
@@ -53,10 +54,11 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         //退出登录
         bt_top_left = (Button) findViewById(R.id.bt_top_left);
         bt_top_left.setVisibility(View.VISIBLE);
+        bt_top_left.setBackgroundResource(R.drawable.bt_return_selector);
         bt_top_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -81,7 +83,8 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
                 case R.id.iv_login_wechat:
 //                    Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
 //                    authorize(wechat);
-                    Toast.makeText(LoginActivity.this, R.string.weixinzhanweikaitong, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.weixinzhanweikaitong, Toast
+                            .LENGTH_SHORT).show();
                     break;
                 //微博登录
                 case R.id.iv_login_weinbo:
@@ -139,7 +142,8 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 //    private void login(String plat, String userId, HashMap<String, Object> userInfo) {
 //
 //        hlog.e("login");
-//        hlog.e("----------plat" + plat + "----------userId" + userId + "----------userInfo" + userInfo);
+//        hlog.e("----------plat" + plat + "----------userId" + userId + "----------userInfo" +
+// userInfo);
 //        Message msg = new Message();
 //        msg.what = MSG_LOGIN;
 //        msg.obj = plat;
@@ -149,6 +153,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 
     /**
      * 登录完成监听
+     *
      * @param platform
      * @param action
      * @param hashMap
@@ -156,28 +161,28 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     @Override
     public void onComplete(Platform platform, int action, HashMap<String, Object> hashMap) {
 
-       // hlog.e("111111platform"+platform+"action"+action+"hashMap"+hashMap);
+        // hlog.e("111111platform"+platform+"action"+action+"hashMap"+hashMap);
 
         if (action == Platform.ACTION_USER_INFOR) {
             Message msg = new Message();
             msg.what = MSG_AUTH_COMPLETE;
             msg.obj = new Object[]{platform.getName(), hashMap};
-            hlog.e("------------"+hashMap);
+            hlog.e("------------" + hashMap);
 
             //将信息存储在平台对象中
-            if ("QQ".equals(platform.getName())){
+            if ("QQ".equals(platform.getName())) {
                 //QQ登录返回的内容
                 platform.getDb().put("nickname", (String) hashMap.get("nickname"));
                 platform.getDb().put("figureurl_qq_2", (String) hashMap.get("figureurl_qq_2"));
                 hlog.e((String) hashMap.get("figureurl_qq_2"));
 
-            }else if ("SinaWeibo".equals(platform.getName())){
+            } else if ("SinaWeibo".equals(platform.getName())) {
                 //新浪微博登录
                 platform.getDb().put("screen_name", (String) hashMap.get("screen_name"));
                 platform.getDb().put("avatar_large", (String) hashMap.get("avatar_large"));
 
                 //微信登录
-            }else if ("Wechat".equals(platform.getName())){
+            } else if ("Wechat".equals(platform.getName())) {
 
 
             }
@@ -188,6 +193,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 
     /**
      * 登录出现错误
+     *
      * @param platform
      * @param action
      * @param throwable
@@ -203,6 +209,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 
     /**
      * 取消登录
+     *
      * @param platform
      * @param action
      */
@@ -233,9 +240,9 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
             break;
             //授权成功
             case MSG_AUTH_COMPLETE: {
-               // hlog.e("授权成功!");
+                // hlog.e("授权成功!");
                 //授权成功
-              //  Toast.makeText(this, R.string.auth_complete, Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this, R.string.auth_complete, Toast.LENGTH_SHORT).show();
                 Object[] objs = (Object[]) msg.obj;
                 String platform = (String) objs[0];
                 HashMap<String, Object> userinfo = (HashMap<String, Object>) objs[1];

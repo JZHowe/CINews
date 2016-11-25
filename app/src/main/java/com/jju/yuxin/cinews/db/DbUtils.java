@@ -20,13 +20,13 @@ public class DbUtils {
     /**
      * 根据新闻id查找
      */
-    public static List<Favors> searchFavor(NewsBean newsBean) {
+    public static List<Favors> searchFavor(NewsBean newsBean, String userid) {
         List<Favors> mFavorsList;
         if (newsBean.getKey() == null) {
-            mFavorsList = DataSupport.where("news_id=?", newsBean.getId()).find
-                    (Favors.class);
+            mFavorsList = DataSupport.where("news_id=? and userid = ?", newsBean.getId(), userid)
+                    .find(Favors.class);
         } else {
-            mFavorsList = DataSupport.where("key=?", newsBean.getKey()).find
+            mFavorsList = DataSupport.where("key=? and userid = ?", newsBean.getKey(), userid).find
                     (Favors.class);
         }
         return mFavorsList;
@@ -35,12 +35,11 @@ public class DbUtils {
     /**
      * 根据视频id查找
      */
-    public static List<Favors> searchVideoFavor(VedioInfoBean vedioInfoBean) {
+    public static List<Favors> searchVideoFavor(VedioInfoBean vedioInfoBean, String userid) {
         List<Favors> mFavorsList;
 
-        mFavorsList = DataSupport.where("news_id=?", String.valueOf(vedioInfoBean.getId())).find
-                (Favors.class);
-
+        mFavorsList = DataSupport.where("news_id=? and userid = ?", String.valueOf(vedioInfoBean
+                .getId()), userid).find(Favors.class);
         return mFavorsList;
     }
 
@@ -64,27 +63,28 @@ public class DbUtils {
     /**
      * 删除视频收藏
      */
-    public static void deleteVideoFavor(VedioInfoBean vedioInfoBean) {
+    public static void deleteVideoFavor(VedioInfoBean vedioInfoBean, String userid) {
 
-        DataSupport.deleteAll(Favors.class, "news_id = ?", String.valueOf(vedioInfoBean.getId()));
+        DataSupport.deleteAll(Favors.class, "news_id = ? and userid= ?", String.valueOf
+                (vedioInfoBean.getId()), userid);
 
     }
 
     /**
      * 根据id删除项
      */
-    public static void delete(int id){
-        DataSupport.delete(Favors.class,id);
+    public static void delete(int id) {
+        DataSupport.delete(Favors.class, id);
     }
 
     /**
      * 删除新闻收藏
      */
-    public static void deleteFavor(NewsBean newsBean) {
+    public static void deleteFavor(NewsBean newsBean,String userid) {
         if (newsBean.getKey() == null) {
-            DataSupport.deleteAll(Favors.class, "news_id = ?", newsBean.getId());
+            DataSupport.deleteAll(Favors.class, "news_id = ? and userid = ?", newsBean.getId(),userid);
         } else {
-            DataSupport.deleteAll(Favors.class, "key = ?", newsBean.getKey());
+            DataSupport.deleteAll(Favors.class, "key = ? and userid=?", newsBean.getKey(),userid);
         }
     }
 
@@ -100,6 +100,7 @@ public class DbUtils {
 
         return mFavorsList;
     }
+
     public static List<Favors> searchAllFavor() {
         List<Favors> mFavorsList = DataSupport.findAll(Favors.class);
         return mFavorsList;
@@ -107,14 +108,15 @@ public class DbUtils {
 
     /**
      * 更新保存的用户信息
+     *
      * @param user
      */
-    public static void saveUser(Users user){
+    public static void saveUser(Users user) {
         //之前是否已经登录过了
-        ClusterQuery clusterQuery = DataSupport.select("*").where("userid=?",user.getUserid());
+        ClusterQuery clusterQuery = DataSupport.select("*").where("userid=?", user.getUserid());
         //如果存在,那么将其删除
-        if (clusterQuery!=null||clusterQuery.count(Users.class)>0) {
-            DataSupport.deleteAll(Users.class,"userid=?",user.getUserid());
+        if (clusterQuery != null || clusterQuery.count(Users.class) > 0) {
+            DataSupport.deleteAll(Users.class, "userid=?", user.getUserid());
         }
         //最新的用户信息更新到数据库中去
         user.save();

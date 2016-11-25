@@ -58,6 +58,7 @@ public class FavoriteActivity extends BaseActivity {
     private boolean isDelete = false; //删除状态
     private TextView tv_favor;
     private Button btn_favor;
+    private String loginUserid;
     private static final int REQUEST_CODE = 100;
     private static final String TAG = FavoriteActivity.class.getSimpleName();
 
@@ -87,7 +88,7 @@ public class FavoriteActivity extends BaseActivity {
         mListView.setOnItemClickListener(mOnItemClickListener);
 
         //获取登录的用户id
-        String loginUserid = LoginPlatformUtil.getLoginUserid();
+        loginUserid = LoginPlatformUtil.getLoginUserid();
         //如果用户已经登录
         if (loginUserid != null) {
 
@@ -181,6 +182,8 @@ public class FavoriteActivity extends BaseActivity {
         isDelete = false;
         //更新数据验证是否已经登录
         updata(isDelete);
+
+
     }
 
     /**
@@ -197,6 +200,11 @@ public class FavoriteActivity extends BaseActivity {
             //从数据库中获取当前用户收藏的内容
             mFavorsList = DbUtils.searchFavor(loginUserids);
             hlog.e(mFavorsList.toString());
+            if (mFavorsList != null && mFavorsList.size() > 0) {
+                //查询当前用户的收藏列表
+                adapter.replaceList(mFavorsList, false);
+                adapter.notifyDataSetChanged();
+            }
         } else {
             //如果没有登录
             mFavorsList = null;
